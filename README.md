@@ -54,3 +54,10 @@ Google API Console: https://code.google.com/apis/console
 Google Calendar API Reference: https://developers.google.com/google-apps/calendar/v2/reference
 
 Google Calendar API Event Fields https://developers.google.com/google-apps/calendar/v3/reference/events
+
+Copyright
+---------
+
+This software is licensed under the GNU GENERAL PUBLIC LICENSE Version 3. Please see the `LICENSE` file for detailed information.
+
+Copyright 2013 Bastian Widmer, Patrick Zahnd, Waldvogel
