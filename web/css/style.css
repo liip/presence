@@ -1,0 +1,449 @@
+/* Global
+-------------------------------------------------------------- */
+:root{-webkit-print-color-adjust:exact}
+
+.fixed:after        { content:"."; display:block; height:0; clear:both; visibility:hidden }
+.fixed              { display:block }
+.fixed              { min-height: 0% }
+* html .fixeed      { height:0% }
+.clearall           { clear:both }
+
+body {
+    margin: 0px;
+    font-size: 14px;
+}
+
+* {
+    vertical-align: top;
+    font-family: "Gill Sans", "Arial", sans-serif;
+    color: #616058;
+    font-weight: 500;
+}
+
+.clearDiv {
+   clear: both;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    color: #CB6140;
+}
+
+h1 {
+    font-size: 2.57em;
+    font-weight: 100;
+    margin: 0;
+}
+h1 span {
+    font-size: 0.5em;
+    vertical-align: middle;
+}
+
+/* Availability list specific
+-------------------------------------------------------------- */
+div.header {
+    padding: 15px 20px 20px 20px;
+    position: fixed;
+    top:0px;
+    background-color: #fff;
+    width: 100%;
+    z-index: 2;
+}
+
+div.header .title {
+    float: left;
+    display: block;
+    position: relative;
+}
+div.header .title .teamList {
+    display: none;
+    position: absolute;
+    padding: 1em 0 0 3em;
+}
+div.header .title .teamList li {
+    padding: 12px 40px;
+    background-color: #EBEBE4;
+}
+div.header .title .teamList a {
+    font-size: 1.2em;
+}
+
+div.header .title:hover {
+    cursor: pointer;
+}
+div.header .title:hover .teamList {
+    display: block;
+}
+
+#calendar {
+    margin-top: 96px;
+}
+
+div.additionalInformation {
+    display: block;
+    float: left;
+    padding: 9px 0 0 30px;
+}
+
+div.additionalInformation span.infoBubble {
+    font-size: 1.71em;
+    font-weight: 100;
+    background-color: #ebebe4;
+    border-radius: 25px;
+    padding: 7px 10px 7px 16px;
+    margin: 0 10px 10px 0;
+    display: inline-block;
+}
+
+div.additionalInformation span.number {
+    font-size: 1em;
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 2px 11px;
+    margin-left: 5px;
+    font-weight: 100;
+}
+
+h3.dayNumber {
+    float: left;
+    font-size: 3em;
+    margin: 0 9px 0 0px;
+    padding: 0;
+}
+
+span.dayMonthYear {
+    font-size: 1.14em;
+    line-height: 1.85em;
+}
+
+span.dayName {
+    font-size: 0.92em;
+}
+
+li.day hr {
+    padding: 0;
+    margin: -5px 0 1px 0;
+    height: 1px;
+    background-color: #D4D4CD;
+    border: 0;
+    width: 68px;
+}
+
+li.header {
+    padding: 10px 20px;
+    border-bottom: 1px solid #e7e7e3;
+    position: fixed;
+    background-color: #fff;
+    width: 100%;
+    top: 0;
+    z-index: 1;
+
+}
+
+li.header h2 {
+    text-transform: uppercase;
+    margin-top: 25px;
+    margin-bottom: 0;
+    font-size: 1.42em;
+}
+
+li.person {
+    padding: 20px;
+    background-color: #f9f9f7;
+    border-bottom: 1px solid #e7e7e3;
+    margin-top: 2px;
+    page-break-inside: avoid;
+}
+
+li.person.first {
+    margin-top: 166px;
+}
+
+li.person h2 {
+    font-size: 1.42em;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    line-height: 1.15em;
+}
+
+li.person p {
+    padding: 0;
+    margin: 0;
+    font-size: 1.15em;
+    color: #959590;
+}
+.rowTitle {
+    float: left;
+    width: 8.5%;
+}
+
+ul.days {
+    float: right;
+    width: 90%;
+}
+
+li.day {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    width: 17%;
+    margin-right: 2%;
+}
+
+li.monday {
+   background: rgb(235, 235, 228);
+    border-radius: 5px;
+}
+
+li.two-weeks{
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    width: 7%;
+    margin-right: 1%;
+}
+
+li.four-weeks{
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    width: 4%;
+    margin-right: 0%;
+}
+
+li.day.fullWidth {
+    width: 85%;
+}
+
+li.day.fullWidth.error a {
+    text-decoration: underline;
+}
+
+.timeSlotBubble {
+    border-radius: 10px;
+    padding: 3px 10px 1px 10px;
+    display: block;
+    margin-bottom: 4px;
+    line-height: 1em;
+    height: 1.2em;
+    color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.timeSlotBubble.available {
+    background-color: #9cc02f;
+}
+.timeSlotBubble.busy {
+    background-color: #edb508;
+}
+.timeSlotBubble.off {
+    background-color: #cb6140;
+}
+
+.location {
+    margin-bottom: 10px;
+    margin-left:2px;
+    font-size:1.15em;
+}
+
+.locationIcon {
+    display: inline-block;
+    width: 30px;
+    height: 20px;
+}
+.locationIcon.available {
+    background: url('/img/locationIcon-available.png') no-repeat;
+}
+.locationIcon.busy {
+    background: url('/img/locationIcon-busy.png') no-repeat;
+}
+.locationIcon.off {
+    background: url('/img/locationIcon-off.png') no-repeat;
+}
+
+.events {
+    margin-top: 10px;
+}
+
+.events li { margin-bottom: 5px; }
+/* The attendee has accepted the invitation */
+li.accepted span {}
+/* The attendee has not responded to the invitation */
+li.needsAction span { font-style:italic; color: #999; background-color: none; }
+/* The attendee has tentatively accepted the invitation */
+li.tentative span { font-style:italic; color: #999; background-color: none; }
+/* The attendee has declined the invitation */
+li.declined span { text-decoration: line-through; }
+
+.events .time {
+    color: #848379;
+    background-color: #EBEBE4;
+    padding: 2px 4px 1px 8px;
+    border-radius: 10px;
+    margin-right: 5px;
+    line-height: 1.4em;
+}
+
+.events .summary {
+    line-height: 1.4em;
+}
+
+strong {
+    font-weight: bold;
+}
+
+/* Front
+-------------------------------------------------------------- */
+#centered {
+    font-size: 2em;
+    margin: 30px auto 0;
+    width: 600px;
+    padding: 20px 20px 150px 20px;
+}
+
+#centered h1 {
+    font-size: 2.5em;
+    border-bottom: 1px solid #616058;
+    padding-bottom: 40px;
+    margin-bottom: 60px;
+}
+
+#centered h2 {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid #616058;
+}
+#centered h3 {
+    font-weight: 100;
+    margin-top: 60px;
+}
+#centered h3 a.top {
+    float: right;
+    font-size: 0.6em;
+}
+
+#centered p {
+    font-weight: 100;
+}
+
+#centered li a {
+    display: inline-block;
+}
+
+#centered li {
+    list-style: square;
+    margin: 0.2em 0 0 1em;
+    font-weight: 100;
+}
+
+#centered .typeList a {
+    font-size: 1em;
+    font-weight: 100;
+}
+
+#centered footer {
+    border-top: 1px solid #616058;
+    margin-top: 60px;
+    padding-top: 20px;
+    font-size: 0.8em;
+    font-weight: 100;
+}
+
+/* Small screens
+-------------------------------------------------------------- */
+@media screen and (max-width: 900px) {
+
+    div.additionalInformation span.infoBubble {
+        font-size: 1.1em;
+    }
+    .events {
+        display: none;
+    }
+    .rowTitle .memberRole {
+        display: none;
+    }
+    li.person h2 {
+        font-size: 1.2em;
+    }
+    h3.daynumber {
+        font-size: 2em;
+    }
+}
+
+/* Print
+-------------------------------------------------------------- */
+@media print {
+
+    div.header {
+        padding: 0;
+        margin: 0 0 10px 0;
+    }
+
+    body {
+        font-size: 8px;
+    }
+
+    li.person {
+        background: none;
+    }
+
+    h1 {
+        font-size: 3em;
+    }
+
+    div.additionalInformation span.infoBubble {
+        font-size: 1.5em;
+    }
+
+    h3.dayNumber {
+        font-size: 3em;
+    }
+
+    .locationIcon {
+        -webkit-transform: scale(0.5);
+        margin-top: -5px;
+        margin-left: -8px;
+        margin-right: -5px;
+    }
+
+    .location {
+        margin-bottom: 0;
+    }
+
+    .timeslotbubble {
+        font-size: 1em;
+        height: 1em;
+    }
+
+    span.dayMonthYear, span.dayName {
+        font-size: 1.2em;
+    }
+
+    li.day hr {
+        margin-top: 0;
+    }
+
+    li.header h2 {
+        margin-top: 0;
+    }
+    li.header, li.person {
+        padding: 5px;
+    }
+
+    a.weekSwitch {
+        display: none;
+    }
+}

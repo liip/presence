@@ -1,0 +1,7 @@
+timezone: Europe/Zurich
+
+google:
+  clientId: 0000000000.apps.googleusercontent.com
+  serviceAccountName: 0000000000@developer.gserviceaccount.com
+  keyFile: ../config/privatekey.p12
+  cacheTtl: 1800

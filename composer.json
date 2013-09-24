@@ -1,0 +1,62 @@
+{
+    "name": "presenceapp/presence",
+    "description": "Repository for the availability calendar of the different teams",
+    "minimum-stability": "dev",
+
+    "authors": [
+        {
+            "name": "Patrick Zahnd",
+            "email": "patrick.zahnd@liip.ch",
+            "role": "maintainer"
+        },
+        {
+            "name": "Bastian Widmer",
+            "email": "bastian.widmer@liip.ch",
+            "role": "maintainer"
+        },
+        {
+            "name": "waldvogel",
+            "email": "waldvogel@liip.ch",
+            "role": "maintainer"
+        }
+     ],
+
+     "autoload": {
+         "psr-0": {
+             "Teamavailabilities": "src/"
+             },
+         "files": [
+             "vendor/google-api-php-client/src/Google_Client.php",
+             "vendor/google-api-php-client/src/contrib/Google_CalendarService.php"
+             ]
+     },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "google-api-php-client",
+                "version": "0.6.1",
+                "dist": {
+                    "url": "http://google-api-php-client.googlecode.com/files/google-api-php-client-0.6.1.tar.gz",
+                    "type": "tar"
+                }
+            }
+        }
+    ],
+    "require": {
+        "silex/silex": "1.0.*@dev",
+        "twig/twig": ">=1.8,<2.0-dev",
+        "google-api-php-client": "0.6.x",
+        "symfony/yaml": "v2.2.0",
+        "symfony/debug": "~2.3"
+    },
+
+    "require-dev": {
+        "lapistano/proxy-object": "2.*",
+        "squizlabs/php_codesniffer": "dev-master"
+    },
+
+    "config": {
+      "bin-dir": "bin"
+    }
+}

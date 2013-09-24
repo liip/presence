@@ -1,0 +1,172 @@
+{% extends "master.twig" %}
+
+{% block pagetitle %}Team {{ team.name }} availabilities{% endblock %}
+
+{% block content %}
+    <div class="header">
+      <ul class="title">
+        <li>
+          <h1><a href="{{ app.url_generator.generate('homepage') }}">&#x21F6;</a> {{ team.name }} <span>&#x25BC;</span></h1>
+          <ul class="teamList">
+            {% for teamId, teamData in teams %}
+              <li class=""><a href="{{ app.url_generator.generate('availabilities', {'teamId': teamId}) }}">{{ teamData.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+      </ul>
+
+      <div class="additionalInformation">
+
+        {% set thisWeekParam =  (days[0] | date('Y')) ~ '-' ~ (days[0] | date('W')) %}
+        {% set previousWeekParam =  (days[0] | date('Y')) ~ '-' ~ (days[0] | date('W')-1) %}
+        {% set nextWeekParam =  (days[0] | date('Y')) ~ '-' ~ (days[0] | date('W')+1) %}
+
+        <span class="infoBubble">
+            Week
+            <a class="weekSwitch" href="?week={{ previousWeekParam }}&view={{ weeks }}&details={{ showDetails }}">&#8592;</a>
+            <span class="number">{{ days[0] | date('W') }}</span>
+            <a class="weekSwitch" href="?week={{ nextWeekParam }}&view={{ weeks }}&details={{ showDetails }}">&#8594;</a>
+        </span>
+
+        <span class="infoBubble">
+            Show
+            <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=1&details={{ showDetails }}">
+                {% if weeks == 1 %} <span class="number">1</span> {% else %} 1 {% endif %}
+            </a>
+            <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=2&details={{ showDetails }}">
+                {% if weeks == 2 %} <span class="number">2</span> {% else %} 2 {% endif %}
+            </a>
+            <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=4&details={{ showDetails }}">
+                {% if weeks == 4 %} <span class="number">4</span> {% else %} 4 {% endif %}
+            </a>
+            week(s)
+        </span>
+
+        <span class="infoBubble">
+            Details
+            <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details=1">
+                {% if showDetails %}
+                    <span class="number">show</span>
+                {% else %}
+                    show
+                {% endif %}
+            </a>
+            /
+            <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details=0">
+                {% if showDetails %}
+                    hide
+                {% else %}
+                    <span class="number">hide</span>
+                {% endif %}
+            </a>
+        </span>
+
+        <span class="infoBubble">
+            <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}&refresh=all">Refresh</a>
+        </span>
+
+        <br class="hack" />
+
+      </div>
+      <div class="clearDiv"></div>
+
+    </div>
+    <ul id="calendar" class="fixed">
+      <li class="header fixed">
+        <div class="rowTitle">
+          <h2>Person</h2>
+        </div>
+        <ul class="days">
+            {% if (weeks == 2)  %}
+                {% set weekClass = 'two-weeks'  %}
+            {% endif %}
+            {% if (weeks == 4)  %}
+                {% set weekClass = 'four-weeks'  %}
+            {% endif %}
+          {% for day in days %}
+              {% if (day | date('l') == 'Monday') %}
+                {% set mondayClass = 'monday' %}
+              {% else %}
+                  {% set mondayClass = '' %}
+              {% endif %}
+            <li class="day fixed {{ weekClass }} {{ mondayClass }}">
+              <h3 class="dayNumber">{{ day | date('d') }}</h3>
+              <span class="dayMonthYear">{{ day | date('M. Y' )}}</span>
+              <hr/>
+              <span class="dayName">{{ day | date('l' )}}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% for member in team.members %}
+        <li class="person fixed{% if loop.first %} first{% endif %}">
+          <div class="rowTitle">
+            <h2>{{ member.name }}</h2>
+            {% if member.role %}
+              <p class="memberRole">{{ member.role }}</p>
+            {% endif %}
+            {% if member.role %}
+              <p class="memberPercentage">{{ member.percentage }}%</p>
+            {% endif %}
+          </div>
+          <ul class="days">
+            {% if member.hasError is sameas(false) %}
+              {% for day in days %}
+                  {% if (day | date('l') == 'Monday') %}
+                      {% set mondayClass = 'monday' %}
+                  {% else %}
+                      {% set mondayClass = '' %}
+                  {% endif %}
+                <li class="day {{ weekClass }} {{ mondayClass }}">
+                  <div class="location">
+                    <span class="locationIcon {{ member.locationAvailabilityClassByDate(day) }}"
+                          title="{{ member.locationAvailabilityClassByDate(day) }}"></span>
+                    {{ member.locationByDate(day) }}
+                  </div>
+
+                  <span class="timeSlotBubble morning {{ member.timeSlotByDate('morning', day).class }}"
+                          title="{{ member.timeSlotByDate('morning', day).class }}">
+                    {{ member.timeSlotByDate('morning', day).title }}
+                  </span>
+
+                  {% if not (member.timeSlotByDate('morning', day).class is sameas('off') and member.timeSlotByDate('afternoon', day).class is sameas('off')) %}
+                    <span class="timeSlotBubble afternoon {{ member.timeSlotByDate('afternoon', day).class }}"
+                            title="{{ member.timeSlotByDate('afternoon', day).class }}">
+                      {{ member.timeSlotByDate('afternoon', day).title }}
+                    </span>
+                  {% else %}
+                    <span class="timeSlotBubble afternoon hidden">
+
+                    </span>
+                  {% endif %}
+
+                  <ul class="events">
+                    {% if showDetails %}
+                      {% for event in member.eventListByDate(day) %}
+                        <li class="event {{ event.responseStatus(member) }}">
+                          {# todo: start and end time are not correct if it does not start/end on same day! #}
+                          <span class="time">{{ event.start | date('H:i') }}
+                            -
+                            {{ event.end | date('H:i') }}
+                          </span>
+                          <span class="summary">{{ event.summary }}</span>
+                        </li>
+                      {% endfor %}
+                    {% endif %}
+                  </ul>
+                </li>
+              {% endfor %}
+            {% else %}
+              <li class="day fullWidth error">
+                Unable to read the calendar <strong>{{ member.id }}</strong>. Please allow <strong>{{ serviceAccountEmail }}</strong> to view the events of this calendar.
+                <br /><br />
+                <a href="http://support.google.com/calendar/answer/143754?hl=en" target="_blank">Click here for instructions on doing that with Google Calendar</a> (Opens in new tab...)
+                <br /><br />
+                You can try again by pressing <a href="{{ app.url_generator.generate('availabilities', {'teamId': team.id, 'refresh': member.id }) }}">here</a>
+              </li>
+            {% endif %}
+          </ul>
+        </li>
+      {% endfor %}
+    </ul>
+{% endblock %}

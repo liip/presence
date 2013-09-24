@@ -1,0 +1,11 @@
+# Ignore OS typic stuff
+.DS_Store
+TAGS
+
+# Ignore composer
+bin/
+vendor/
+composer.phar
+
+#ignore IDE specific stuff
+.idea
