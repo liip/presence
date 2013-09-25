@@ -46,19 +46,19 @@ We strongly encourage you to contribute to the project. Please use the following
 Google Sources
 --------------
 
-PHP API Client: http://code.google.com/p/google-api-php-client
+  * PHP API Client: http://code.google.com/p/google-api-php-client
 
-Google Calendar OAuth 2.0: https://developers.google.com/google-apps/calendar/auth
+  * Google Calendar OAuth 2.0: https://developers.google.com/google-apps/calendar/auth
 
-Google Calendar Events List Documentation: https://developers.google.com/google-apps/calendar/v3/reference/events/list
+  * Google Calendar Events List Documentation: https://developers.google.com/google-apps/calendar/v3/reference/events/list
 
-Google Calendar API Explorer: https://developers.google.com/apis-explorer/#s/calendar/v3/calendar.events.list?calendarId=bombastic%2540example.com&_h=1&
+  * Google Calendar API Explorer: https://developers.google.com/apis-explorer/#s/calendar/v3/calendar.events.list?calendarId=bombastic%2540example.com&_h=1&
 
-Google API Console: https://code.google.com/apis/console
+  * Google API Console: https://code.google.com/apis/console
 
-Google Calendar API Reference: https://developers.google.com/google-apps/calendar/v2/reference
+  * Google Calendar API Reference: https://developers.google.com/google-apps/calendar/v2/reference
 
-Google Calendar API Event Fields https://developers.google.com/google-apps/calendar/v3/reference/events
+  * Google Calendar API Event Fields https://developers.google.com/google-apps/calendar/v3/reference/events
 
 Copyright
 ---------
