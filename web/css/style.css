@@ -55,11 +55,6 @@ h1 span {
 -------------------------------------------------------------- */
 div.header {
     padding: 15px 20px 20px 20px;
-    position: fixed;
-    top:0px;
-    background-color: #fff;
-    width: 100%;
-    z-index: 2;
 }
 
 div.header .title {
@@ -87,10 +82,6 @@ div.header .title:hover .teamList {
     display: block;
 }
 
-#calendar {
-    margin-top: 96px;
-}
-
 div.additionalInformation {
     display: block;
     float: left;
@@ -103,8 +94,7 @@ div.additionalInformation span.infoBubble {
     background-color: #ebebe4;
     border-radius: 25px;
     padding: 7px 10px 7px 16px;
-    margin: 0 10px 10px 0;
-    display: inline-block;
+    margin-right: 10px;
 }
 
 div.additionalInformation span.number {
@@ -144,12 +134,6 @@ li.day hr {
 li.header {
     padding: 10px 20px;
     border-bottom: 1px solid #e7e7e3;
-    position: fixed;
-    background-color: #fff;
-    width: 100%;
-    top: 0;
-    z-index: 1;
-
 }
 
 li.header h2 {
@@ -165,10 +149,6 @@ li.person {
     border-bottom: 1px solid #e7e7e3;
     margin-top: 2px;
     page-break-inside: avoid;
-}
-
-li.person.first {
-    margin-top: 166px;
 }
 
 li.person h2 {
@@ -244,13 +224,19 @@ li.day.fullWidth.error a {
     white-space: nowrap;
 }
 .timeSlotBubble.available {
-    background-color: #9cc02f;
+background: -webkit-repeating-linear-gradient(-45deg, white, white 4px, rgba(255,255,255,0.2) 4px, rgba(255,255,255,0.2) 8px);
+background: -moz-repeating-linear-gradient(-45deg, white, white 4px, rgba(255,255,255,0.2) 4px, rgba(255,255,255,0.2) 8px);
+background: -o-repeating-linear-gradient(-45deg, white, white 4px, rgba(255,255,255,0.2) 4px, rgba(255,255,255,0.2) 8px);
+background: -ms-repeating-linear-gradient(-45deg, white, white 4px, rgba(255,255,255,0.2) 4px, rgba(255,255,255,0.2) 8px);
+background: repeating-linear-gradient(-45deg, white, white 4px, rgba(255,255,255,0.2) 4px, rgba(255,255,255,0.2) 8px);
+background-color: #9cc02f;
 }
 .timeSlotBubble.busy {
     background-color: #edb508;
 }
 .timeSlotBubble.off {
     background-color: #cb6140;
+    border-radius: 0px !Important;
 }
 
 .location {
@@ -354,6 +340,14 @@ strong {
     font-weight: 100;
 }
 
+#centered .typeList a:hover {
+    color: white;
+}
+
+#centered .typeList .timeSlotBubble.available {
+    color:#616058;
+}
+
 #centered footer {
     border-top: 1px solid #616058;
     margin-top: 60px;
@@ -362,13 +356,15 @@ strong {
     font-weight: 100;
 }
 
+/* for chosen, we need a different list styling */
+#centered .chosen-results li {
+    list-style: none;
+    margin: 0pt;
+}
+
 /* Small screens
 -------------------------------------------------------------- */
-@media screen and (max-width: 900px) {
-
-    div.additionalInformation span.infoBubble {
-        font-size: 1.1em;
-    }
+@media screen and (max-width: 800px) {
     .events {
         display: none;
     }
