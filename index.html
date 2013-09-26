@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Presence by liip</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Presence</h1>
+        <h2></h2>
+
+        <section id="downloads">
+          <a href="https://github.com/liip/presence/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/liip/presence/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/liip/presence" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>
+<a name="team-availabilities" class="anchor" href="#team-availabilities"><span class="octicon octicon-link"></span></a>TEAM AVAILABILITIES</h1>
+
+<p>Team availabilities shows you the availabilities of your set up team by analyzing their Google Calendar entries.</p>
+
+<p>Features include:</p>
+
+<ul>
+<li>Set up teams</li>
+<li>Show availabilities of team</li>
+<li>Show details of single person in team</li>
+</ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<ul>
+<li>install <a href="http://getcomposer.org/">Composer</a>: <code>curl -s https://getcomposer.org/installer | php</code>
+</li>
+<li>run Composer to install the dependencies: <code>php composer.phar install</code>
+in case you want to help out and contribute to the project or just want to run the provided tests do:
+<code>php composer.phar install --dev</code>
+instead.</li>
+<li>copy <code>config/services.yaml.sample</code> file to <code>config/services.yaml</code>
+</li>
+<li>go to <a href="https://code.google.com/apis/console">https://code.google.com/apis/console</a>
+</li>
+<li>create a new SERVICE ACCOUNT</li>
+<li>download the privatekey.p12 and place it somewhere on your machine</li>
+<li>set <code>clientId</code>, <code>serviceAccountName</code> (Google dev e-mail address) and <code>keyFile</code> in <code>config/services.yaml</code> file</li>
+<li>copy <code>config/people.yaml.sample</code> file to <code>config/people.yaml</code> and configure the teams</li>
+<li>install the <code>pre-commit.sh</code> script as a pre-commit hook in your local repository <code>ln -s ../../pre-commit.sh .git/hooks/pre-commit</code>
+</li>
+</ul><h2>
+<a name="run-tests" class="anchor" href="#run-tests"><span class="octicon octicon-link"></span></a>Run tests</h2>
+
+<ul>
+<li>make sure you run <code>php composer.phar install --dev</code> (use <code>update --dev</code> to update dependencies) to fetch necessary dependencies.</li>
+<li>open a shell and change into the project root</li>
+<li>run <code>phpunit</code>
+(see <a href="http://www.phpunit.de/manual/current/en/index.html">PHPUnit documentation</a> to get to know PHPUnit.)</li>
+</ul><h2>
+<a name="contribute" class="anchor" href="#contribute"><span class="octicon octicon-link"></span></a>Contribute</h2>
+
+<p>We strongly encourage you to contribute to the project. Please use the following workflow to keep it easy for everyone merging the Pull Requests back to the upstream.</p>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (git checkout -b my-new-feature)</li>
+<li>Commit your changes (git commit -am 'Add some feature')</li>
+<li>Push to the branch (git push origin my-new-feature)</li>
+<li>Create new Pull Request</li>
+</ol><h2>
+<a name="google-sources" class="anchor" href="#google-sources"><span class="octicon octicon-link"></span></a>Google Sources</h2>
+
+<ul>
+<li><p>PHP API Client: <a href="http://code.google.com/p/google-api-php-client">http://code.google.com/p/google-api-php-client</a></p></li>
+<li><p>Google Calendar OAuth 2.0: <a href="https://developers.google.com/google-apps/calendar/auth">https://developers.google.com/google-apps/calendar/auth</a></p></li>
+<li><p>Google Calendar Events List Documentation: <a href="https://developers.google.com/google-apps/calendar/v3/reference/events/list">https://developers.google.com/google-apps/calendar/v3/reference/events/list</a></p></li>
+<li><p>Google Calendar API Explorer: <a href="https://developers.google.com/apis-explorer/#s/calendar/v3/calendar.events.list?calendarId=bombastic%2540example.com&amp;_h=1&amp;">https://developers.google.com/apis-explorer/#s/calendar/v3/calendar.events.list?calendarId=bombastic%2540example.com&amp;_h=1&amp;</a></p></li>
+<li><p>Google API Console: <a href="https://code.google.com/apis/console">https://code.google.com/apis/console</a></p></li>
+<li><p>Google Calendar API Reference: <a href="https://developers.google.com/google-apps/calendar/v2/reference">https://developers.google.com/google-apps/calendar/v2/reference</a></p></li>
+<li><p>Google Calendar API Event Fields <a href="https://developers.google.com/google-apps/calendar/v3/reference/events">https://developers.google.com/google-apps/calendar/v3/reference/events</a></p></li>
+</ul><h2>
+<a name="copyright" class="anchor" href="#copyright"><span class="octicon octicon-link"></span></a>Copyright</h2>
+
+<p>This software is licensed under the GNU GENERAL PUBLIC LICENSE Version 3. Please see the <code>LICENSE</code> file for detailed information.</p>
+
+<p>Copyright 2013 Bastian Widmer, Patrick Zahnd, Waldvogel</p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
