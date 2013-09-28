@@ -7,23 +7,11 @@ use lapistano\ProxyObject\ProxyBuilder;
 class PresenceTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Provides an easy access to the proxy-object builder.
-     *
-     * @param $class
-     *
-     * @return \lapistano\ProxyObject\ProxyBuilder
-     */
-    protected function getProxyBuilder($class)
-    {
-        return new ProxyBuilder($class);
-    }
-
-    /**
      * Provides a proxy object of the given class.
      *
-     * @param \stdClass      $class
-     * @param array          $methods
-     * @param array          $constructorArguments
+     * @param \stdClass $class
+     * @param array $methods
+     * @param array $constructorArguments
      *
      * @return object
      */
@@ -40,5 +28,51 @@ class PresenceTestCase extends \PHPUnit_Framework_TestCase
         }
 
         return $event->getProxy();
+    }
+
+    /**
+     * Provides an easy access to the proxy-object builder.
+     *
+     * @param $class
+     *
+     * @return \lapistano\ProxyObject\ProxyBuilder
+     */
+    protected function getProxyBuilder($class)
+    {
+        return new ProxyBuilder($class);
+    }
+
+    /**
+     * Provides a common configuration to be used to instantiate an Event.
+     *
+     * @return array
+     */
+    protected function getEventConfig()
+    {
+        $config = array();
+        $config['summary']   = 'Summary of an event';
+        $config['location']  = 'anywhere';
+        $config['organizer'] = 'Tux Linus';
+        $config['attendees'] = array('list', 'of', 'attendees');
+        $config['start']     = array('date' => '2013-01-21');
+        $config['end']       = array('date' => '2013-02-21');
+
+        return $config;
+    }
+
+    /**
+     * Provides a fake instance of the Event class.
+     *
+     * @param array $config
+     * @param array $methods
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject|Event
+     */
+    protected function getEventObject(array $config = array(), array $methods = array())
+    {
+        return $this->getMockBuilder('\Presence\Event')
+            ->setConstructorArgs(array($config))
+            ->setMethods($methods)
+            ->getMock();
     }
 }
