@@ -1,17 +1,17 @@
 <?php
 
-namespace Teamavailabilities\Tests;
+namespace Presence;
 
 use lapistano\ProxyObject\ProxyBuilder;
 
-class TeamAvailabilitiesTestCase extends \PHPUnit_Framework_TestCase
+class PresenceTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * Provides an easy access to the proxy-object builder.
      *
      * @param $class
      *
-     * @return lapistano\ProxyObject\ProxyBuilder
+     * @return \lapistano\ProxyObject\ProxyBuilder
      */
     protected function getProxyBuilder($class)
     {
