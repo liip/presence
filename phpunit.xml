@@ -16,7 +16,7 @@
         <const name="WATCHDOG_NOTICE" value="5"/>-->
     </php>
     <testsuites>
-        <testsuite name="Team availabilities Test Suite">
+        <testsuite name="Presence Test Suite">
 	    <directory>src/Teamavailabilites/Tests</directory>
         </testsuite>
     </testsuites>

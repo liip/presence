@@ -5,7 +5,7 @@ namespace Teamavailabilities;
 // we need APC for the caching
 if (! (extension_loaded('apc') && ini_get('apc.enabled'))) {
     throw new \Exception("Cannot find the PHP APC module. Please install or enable it for this app to work");
-}
+ }
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -30,10 +30,67 @@ $app['twig']->getExtension('core')->setTimezone(
 $app->get(
     '/',
     function () use ($app, $config) {
-        return $app['twig']->render('index.twig', array('teams' => $config->people['teams']));
+        ksort($config->people['persons']);
+
+        return $app['twig']->render(
+            'index.twig',
+            array(
+                'teams'   => $config->people['teams'],
+                'persons' => $config->people['persons'],
+            )
+        );
     }
 )
 ->bind('homepage');
+
+$app->get(
+    '/search/people',
+    function () use ($app, $config) {
+        $query = strtolower($app['request']->get('q'));
+        $result = array();
+        if (!empty($query)) {
+            $persons = $config->people['persons'];
+
+            $result = array_filter(
+                $persons,
+                function ($array) use ($query, &$persons) {
+                    $len = strlen($query);
+
+                    $name_spl = explode(" ", trim(strtolower($array['name'])));
+
+                    foreach ($name_spl as $name) {
+                        if (substr($name, 0, $len) == $query) {
+                            return true;
+                        }
+                    }
+
+                    $mail_spl = explode(".", trim(strtolower($array['mail'])));
+
+                    foreach ($name_spl as $name) {
+                        if (substr($name, 0, $len) == $query) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+            );
+        }
+        return $app->json($result);
+    }
+)
+->bind("peoplesearch");
+
+/**
+ * Instruction
+ */
+$app->get(
+    '/instruction',
+    function () use ($app) {
+        return $app['twig']->render('instruction.twig');
+    }
+)
+->bind('instruction');
 
 /**
  * Get team availabilities
@@ -52,12 +109,23 @@ $app->get(
             $showDetails = $app['request']->get('details', 1);
             $endDate     = $helper->getEndDate($weeks);
             $days        = $helper->getDays($startDate, $endDate);
+            $calendar = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
 
-            $team = new Team(
-                $teamId,
-                $config->people,
-                new GoogleCalendar($config->settings['google'], $startDate, $endDate)
-            );
+            if (!empty($config->people['teams'][$teamId])) {
+                $team = new Team(
+                    $teamId,
+                    $config->people,
+                    $calendar
+                );
+            } elseif (!empty($config->people['persons'][$teamId])) {
+                $team = new TeamOfOne(
+                    $teamId,
+                    $config->people,
+                    $calendar
+                );
+            } else {
+                $app->abort(404, 'No team or person found with ID ' . $teamId . ' does not exist');
+            }
 
         } catch (\Exception $e) {
             $app->abort(404, $e->getMessage());
@@ -70,7 +138,7 @@ $app->get(
                 'teams'               => $config->people['teams'],
                 'team'                => $team,
                 'days'                => $days,
-                'weeks'             => $weeks,
+                'weeks'               => $weeks,
                 'showDetails'         => $showDetails,
                 'serviceAccountEmail' => $config->settings['google']['serviceAccountName']
             )

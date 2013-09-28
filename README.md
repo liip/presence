@@ -1,13 +1,14 @@
-TEAM AVAILABILITIES
-===================
+Presence
+========
 
-Team availabilities shows you the availabilities of your set up team by analyzing their Google Calendar entries.
+Presence shows you the availabilities of your set up team by analyzing their Google Calendar entries.
 
 Features include:
 
 - Set up teams
 - Show availabilities of team
 - Show details of single person in team
+- Search and display availabilities for individual persons
 
 Installation
 ------------

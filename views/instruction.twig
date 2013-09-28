@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Presence</title>
+        <link rel="stylesheet" type="text/css" media="all" href="/css/style.css" />
+    </head>
+
+    <body>
+
+        <div id="centered">
+            <header>
+                <h1><a href="{{ app.url_generator.generate('homepage') }}">&#x21F6;</a> Presence</h1>
+            </header>
+
+            <article>
+
+                <p>This tool shows the availabilities of teams, generated from the Google calendar entries.</p>
+
+                <h2>How to use with Google calendar</h2>
+
+                <ul class="typeList">
+                    <li><a href="#entryHoliday" class="timeSlotBubble off">Holiday entry</a></li>
+                    <li><a href="#entryOff" class="timeSlotBubble off">Off entry</a></li>
+                    <li><a href="#entryLocation"  class="timeSlotBubble busy">Location entry</a></li>
+                    <li><a href="#entryNormal" class="timeSlotBubble busy">Event entry</a></li>
+                    <li><a class="timeSlotBubble available">Free</a></li>
+                </ul>
+
+                <h3 id="entryHoliday">&#x21F6; Holiday entry <a class="top" href="#centered">#top</a></h3>
+
+                <p>To display a day as on holiday, a <b>#holiday</b> tag has to be added to the event summary.</p>
+
+                <p>The holiday entries can be inserted as full-day (multiple as well) or time period calendar entries.</p>
+
+                <p>Example: Ibiza #holiday</p>
+
+                <h3 id="entryOff">&#x21F6; Off entry <a class="top" href="#centered">#top</a></h3>
+
+                <p>For days off which are not booked on holiday, use the <b>#off</b> tag.</p>
+
+                <p>The holiday entries can be inserted as full-day (multiple as well) or time period calendar entries.</p>
+
+                <p>Example: University #off</p>
+
+                <h3 id="entryLocation">&#x21F6; Location entry <a class="top" href="#centered">#top</a></h3>
+
+                <p>If you spend the day away from your default location, use the <b>@location</b> tag.</p>
+
+                <p>Location entries should only be inserted as full-day events.</p>
+
+                <p>Example: @LS</p>
+
+                <h3 id="entryNormal">&#x21F6; Event entry <a class="top" href="#centered">#top</a></h3>
+
+                <p>Every entry, having a period of more than 15 minutes, is displayed in the event list.</p>
+
+                <p>Moreover, the morning and afternoon periods are marked busy if event is inserted:</p>
+                <ul>
+                    <li>Entries beginning <b>before 12pm</b>, mark the morning period busy (orange).</li>
+                    <li>Entries ending <b>after 12pm</b>, mark the afternoon period busy (orange).</li>
+                </ul>
+
+                <h2>Printing tricks</h2>
+
+                <h3 class="printScale">&#x21F6; Fit on single page <a class="top" href="#centered">#top</a></h3>
+
+                <p>Sometimes it happens that there are too many members, so that the print page does not fit on one page. To make it fit you can scale the printing page:</p>
+
+                <h4>Using Google Chrome</h4>
+                <ul class="typeList">
+                    <li>Print using system dialog... ( &#x2325;&#x2318;P )</li>
+                    <li>Scale XX%</li>
+                </ul>
+
+            </article>
+
+            <footer>
+                <a href="#centered">#top</a>
+            </footer>
+        </div>
+
+    </body>
+</html>
