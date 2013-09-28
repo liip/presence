@@ -1,8 +1,11 @@
-{% extends "master.twig" %}
+<html>
+  <head>
 
-{% block pagetitle %}Team {{ team.name }} availabilities{% endblock %}
+    <title>Team {{ team.name }} availabilities</title>
+    <link rel="stylesheet" type="text/css" media="all" href="/css/style.css" />
 
-{% block content %}
+  </head>
+  <body>
     <div class="header">
       <ul class="title">
         <li>
@@ -99,7 +102,7 @@
         </ul>
       </li>
       {% for member in team.members %}
-        <li class="person fixed{% if loop.first %} first{% endif %}">
+        <li class="person fixed">
           <div class="rowTitle">
             <h2>{{ member.name }}</h2>
             {% if member.role %}
@@ -169,4 +172,5 @@
         </li>
       {% endfor %}
     </ul>
-{% endblock %}
+  </body>
+</html>
