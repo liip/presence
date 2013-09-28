@@ -106,12 +106,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Silex.git",
-                "reference": "b4bb327c3ebc7d61b5e5d797a6799c20f8f4823b"
+                "reference": "5ee043a6b5018a5862de4ef0ef89bf7e74eef230"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Silex/zipball/b4bb327c3ebc7d61b5e5d797a6799c20f8f4823b",
-                "reference": "b4bb327c3ebc7d61b5e5d797a6799c20f8f4823b",
+                "url": "https://api.github.com/repos/fabpot/Silex/zipball/5ee043a6b5018a5862de4ef0ef89bf7e74eef230",
+                "reference": "5ee043a6b5018a5862de4ef0ef89bf7e74eef230",
                 "shasum": ""
             },
             "require": {
@@ -182,7 +182,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2013-09-23 10:37:06"
+            "time": "2013-09-27 11:33:11"
         },
         {
             "name": "symfony/debug",
@@ -350,12 +350,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "86ccb16b3970cbec26cd327ee62bd481a5b10fb2"
+                "reference": "0ce2aa485573f2282b2f10724726280fdf588506"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/86ccb16b3970cbec26cd327ee62bd481a5b10fb2",
-                "reference": "86ccb16b3970cbec26cd327ee62bd481a5b10fb2",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/0ce2aa485573f2282b2f10724726280fdf588506",
+                "reference": "0ce2aa485573f2282b2f10724726280fdf588506",
                 "shasum": ""
             },
             "require": {
@@ -412,7 +412,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2013-09-25 15:47:12"
+            "time": "2013-09-27 15:49:58"
         },
         {
             "name": "symfony/routing",
@@ -526,12 +526,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "d827c601e3afea6535fede5e39c9f91c12fc2e66"
+                "reference": "5d67e0eaa42fa738ef47b9c6eb2f31bfe78435d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/d827c601e3afea6535fede5e39c9f91c12fc2e66",
-                "reference": "d827c601e3afea6535fede5e39c9f91c12fc2e66",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/5d67e0eaa42fa738ef47b9c6eb2f31bfe78435d0",
+                "reference": "5d67e0eaa42fa738ef47b9c6eb2f31bfe78435d0",
                 "shasum": ""
             },
             "require": {
@@ -567,7 +567,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-09-20 20:40:25"
+            "time": "2013-09-28 11:31:14"
         }
     ],
     "packages-dev": [
