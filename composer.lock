@@ -3,8 +3,49 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "dee99fb3632aa72c294ec2266ecc7244",
+    "hash": "559ebac9b79a79f9c012299797590447",
     "packages": [
+        {
+            "name": "beberlei/assert",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/beberlei/assert.git",
+                "reference": "0a3522cf54e71ac3709b3ac9e9339533fbdd431e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/0a3522cf54e71ac3709b3ac9e9339533fbdd431e",
+                "reference": "0a3522cf54e71ac3709b3ac9e9339533fbdd431e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Assert": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                }
+            ],
+            "description": "Thin assertion library for input validation in business models.",
+            "keywords": [
+                "assert",
+                "assertion",
+                "validation"
+            ],
+            "time": "2013-09-23 13:18:02"
+        },
         {
             "name": "google-api-php-client",
             "version": "0.6.1",
@@ -692,6 +733,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "silex/silex": 20,
+        "beberlei/assert": 20,
         "squizlabs/php_codesniffer": 20
     },
     "platform": [
