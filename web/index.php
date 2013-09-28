@@ -5,7 +5,7 @@ namespace Teamavailabilities;
 // we need APC for the caching
 if (! (extension_loaded('apc') && ini_get('apc.enabled'))) {
     throw new \Exception("Cannot find the PHP APC module. Please install or enable it for this app to work");
-}
+ }
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -45,34 +45,40 @@ $app->get(
 
 $app->get(
     '/search/people',
-    function () use ($app, $config){
+    function () use ($app, $config) {
         $query = strtolower($app['request']->get('q'));
         $result = array();
-        if(!empty($query)) {
+        if (!empty($query)) {
             $persons = $config->people['persons'];
 
-            $result = array_filter($persons, function($array) use ($query, &$persons) {
-                $len = strlen($query);
+            $result = array_filter(
+                $persons,
+                function ($array) use ($query, &$persons) {
+                    $len = strlen($query);
 
-                $name_spl = explode(" ", trim(strtolower($array['name'])));
-                foreach($name_spl as $name) {
-                    if(substr($name, 0, $len) == $query) {
-                        return true;
+                    $name_spl = explode(" ", trim(strtolower($array['name'])));
+
+                    foreach ($name_spl as $name) {
+                        if (substr($name, 0, $len) == $query) {
+                            return true;
+                        }
                     }
-                }
 
-                $mail_spl = explode(".", trim(strtolower($array['mail'])));
-                foreach($name_spl as $name) {
-                    if(substr($name, 0, $len) == $query) {
-                        return true;
+                    $mail_spl = explode(".", trim(strtolower($array['mail'])));
+
+                    foreach ($name_spl as $name) {
+                        if (substr($name, 0, $len) == $query) {
+                            return true;
+                        }
                     }
-                }
 
-                return false;
-            });
+                    return false;
+                }
+            );
         }
         return $app->json($result);
-    })
+    }
+)
 ->bind("peoplesearch");
 
 /**

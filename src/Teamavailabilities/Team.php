@@ -45,9 +45,9 @@ class Team
     /**
      * Assemble the team for this instance.
      *
-     * @param string            $id          The team id.
-     * @param array             $people      Configuration.
-     * @param CalendarInterface $calendar    Calendar object.
+     * @param string            $id       The team id.
+     * @param array             $people   Configuration.
+     * @param CalendarInterface $calendar Calendar object.
      */
     public function __construct($id, array $people, CalendarInterface $calendar)
     {
@@ -78,7 +78,7 @@ class Team
     /**
      * Find the team members and instantiate them.
      *
-     * @param array   $persons     All the existing persons.
+     * @param array $persons All the existing persons.
      *
      * @return array members that belong to this team
      */
@@ -99,8 +99,8 @@ class Team
     /**
      * Instantiate a Person (team member) from scratch or loads it from the cache.
      *
-     * @param string  $email       The email address of a person (used to identify a person).
-     * @param array   $person      Information about a person.
+     * @param string $email  The email address of a person (used to identify a person).
+     * @param array  $person Information about a person.
      *
      * @return Person a Person object
      */

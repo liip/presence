@@ -11,9 +11,9 @@ class TeamOfOne extends Team
     /**
      * Assemble the team for this instance.
      *
-     * @param string            $id          The team id.
-     * @param array             $people      Configuration.
-     * @param CalendarInterface $calendar    Calendar object.
+     * @param string            $id       The team id.
+     * @param array             $people   Configuration.
+     * @param CalendarInterface $calendar Calendar object.
      */
     public function __construct($id, array $people, CalendarInterface $calendar)
     {
