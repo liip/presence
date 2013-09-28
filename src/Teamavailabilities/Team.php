@@ -51,6 +51,7 @@ class Team
      */
     public function __construct($id, array $people, CalendarInterface $calendar)
     {
+        // TODO add validation
         $this->id       = $id;
         $this->calendar = $calendar;
         $this->refresh  = $people['refresh'];

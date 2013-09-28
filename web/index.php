@@ -111,13 +111,13 @@ $app->get(
             $days        = $helper->getDays($startDate, $endDate);
             $calendar = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
 
-            if (isset($config->people['teams'][$teamId])) {
+            if (!empty($config->people['teams'][$teamId])) {
                 $team = new Team(
                     $teamId,
                     $config->people,
                     $calendar
                 );
-            } elseif (isset($config->people['persons'][$teamId])) {
+            } elseif (!empty($config->people['persons'][$teamId])) {
                 $team = new TeamOfOne(
                     $teamId,
                     $config->people,
