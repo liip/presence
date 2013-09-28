@@ -275,6 +275,10 @@ class Person
                     'title' => $event->summary
                 );
             }
+
+            if ($event::TYPE_APPOINTMENT === $event->type) {
+                $class = 'busy';
+            }
         }
 
         return $this->timeSlots[$id] = array(
