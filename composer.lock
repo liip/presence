@@ -3,8 +3,59 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "49490dac4854a40740d10229e43edf87",
+    "hash": "4350dba9e4621c40050f68f680959da9",
     "packages": [
+        {
+            "name": "desarrolla2/cache",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/desarrolla2/Cache.git",
+                "reference": "33f38f7def83c77c6f9f2e43aad449463cd1e6fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/desarrolla2/Cache/zipball/33f38f7def83c77c6f9f2e43aad449463cd1e6fc",
+                "reference": "33f38f7def83c77c6f9f2e43aad449463cd1e6fc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "raulfraile/ladybug": "v0.7",
+                "symfony/yaml": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Desarrolla2\\Cache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel González",
+                    "homepage": "http://desarrolla2.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Provides an cache interface for several adapters (Apc, File, Mongo, Memcached, Mysql, ... )",
+            "homepage": "https://github.com/desarrolla2/Cache/blob/master/README.md",
+            "keywords": [
+                "apc",
+                "cache",
+                "file",
+                "memcached",
+                "mongo",
+                "mysql",
+                "redis"
+            ],
+            "time": "2013-09-25 14:12:53"
+        },
         {
             "name": "google-api-php-client",
             "version": "0.6.1",
@@ -183,6 +234,59 @@
                 "microframework"
             ],
             "time": "2013-09-27 11:33:11"
+        },
+        {
+            "name": "symfony/console",
+            "version": "dev-master",
+            "target-dir": "Symfony/Component/Console",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Console.git",
+                "reference": "e430d7416327a93be77b3c4844c191a10cc8c1c7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/e430d7416327a93be77b3c4844c191a10cc8c1c7",
+                "reference": "e430d7416327a93be77b3c4844c191a10cc8c1c7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/event-dispatcher": "~2.1"
+            },
+            "suggest": {
+                "symfony/event-dispatcher": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Console\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Console Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-09-25 06:04:58"
         },
         {
             "name": "symfony/debug",
@@ -526,12 +630,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "5d67e0eaa42fa738ef47b9c6eb2f31bfe78435d0"
+                "reference": "a0abed01eb4da79838d06db823d82a9c5cf6e6d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/5d67e0eaa42fa738ef47b9c6eb2f31bfe78435d0",
-                "reference": "5d67e0eaa42fa738ef47b9c6eb2f31bfe78435d0",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/a0abed01eb4da79838d06db823d82a9c5cf6e6d0",
+                "reference": "a0abed01eb4da79838d06db823d82a9c5cf6e6d0",
                 "shasum": ""
             },
             "require": {
@@ -567,7 +671,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-09-28 11:31:14"
+            "time": "2013-09-29 07:27:48"
         }
     ],
     "packages-dev": [
@@ -692,6 +796,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "silex/silex": 20,
+        "symfony/console": 20,
+        "desarrolla2/cache": 20,
         "squizlabs/php_codesniffer": 20
     },
     "platform": [
