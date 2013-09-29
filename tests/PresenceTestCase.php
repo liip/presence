@@ -45,17 +45,31 @@ class PresenceTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Provides a common configuration to be used to instantiate an Event.
      *
+     * A typeMarker might be:
+     *  - #off
+     *  - #holiday
+     *  - #ferien
+     *  - #frei
+     *  - #free day
+     *  - #daddy
+     *  - #daddy day
+     *  - @{location}
+     *  -
+     *
+     * @param string $typeMarker
+     *
      * @return array
      */
-    protected function getEventConfig()
+    protected function getEventConfig($typeMarker = '@anywhere')
     {
         $config = array();
-        $config['summary']   = 'Summary of an event';
+        $config['summary']   = 'Summary of an event with type ' . $typeMarker;
         $config['location']  = 'anywhere';
         $config['organizer'] = 'Tux Linus';
         $config['attendees'] = array('list', 'of', 'attendees');
         $config['start']     = array('date' => '2013-01-21');
         $config['end']       = array('date' => '2013-02-21');
+        $config['fullDay']   = false;
 
         return $config;
     }
