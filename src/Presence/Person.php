@@ -327,8 +327,6 @@ class Person
      */
     public function getLocationAvailabilityClassByDate(DateTime $date)
     {
-        $events     = $this->getEventsByDate($date);
-
         // get morning and afternoon stats
         $morning    = $this->getTimeSlotByDate('morning', $date);
         $afternoon  = $this->getTimeSlotByDate('afternoon', $date);

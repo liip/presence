@@ -4,10 +4,24 @@ namespace Presence;
 
 class PersonTest extends PresenceTestCase
 {
-    public function testEvents()
+    /**
+     * Provides a preset instance of the Person class.
+     *
+     * @param string $typeMarker
+     *
+     * @return Person
+     */
+    protected function getPerson($typeMarker = '@anywhere')
     {
         $person = new Person('Tux');
-        $person->setEvents(array($this->getEventConfig()));
+        $person->setEvents(array($this->getEventConfig($typeMarker)));
+
+        return $person;
+    }
+
+    public function testEvents()
+    {
+        $person = $this->getPerson();
 
         $this->assertContainsOnly('\Presence\Event', $person->getEvents());
     }
@@ -36,22 +50,18 @@ class PersonTest extends PresenceTestCase
         $this->assertAttributeEmpty('events', $person);
     }
 
-    public function testGetEventsByDate()
+    public function testGetEventsListByDate()
     {
-        $events = array($this->getEventObject($this->getEventConfig()));
-        $person = new Person('Tux');
-        $person->setEvents(array($this->getEventConfig()));
+        $events = array($this->getEventObject($this->getEventConfig('')));
+        $person = $this->getPerson('');
 
         $this->assertEquals($events, $person->getEventListByDate(new \DateTime('2013-01-21')));
     }
 
-    public function testGetEventsByDateFromCache()
+    public function testGetLocationByDate()
     {
-        $events = array($this->getEventObject($this->getEventConfig()));
-        $person = new Person('Tux');
-        $person->setEvents(array($this->getEventConfig()));
-        $person->getEventListByDate(new \DateTime('2013-01-21'));
+        $person = $this->getPerson();
 
-        $this->assertEquals($events, $person->getEventListByDate(new \DateTime('2013-01-21')));
+        $this->assertEquals('anywhere', $person->getLocationByDate(new \DateTime('2013-01-21')));
     }
 }
