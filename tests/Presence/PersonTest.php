@@ -4,12 +4,12 @@ namespace Presence;
 
 class PersonTest extends PresenceTestCase
 {
-    public function testSetEvents()
+    public function testEvents()
     {
         $person = new Person('Tux');
         $person->setEvents(array($this->getEventConfig()));
 
-        $this->assertAttributeContainsOnly('\Presence\Event', 'events',$person);
+        $this->assertContainsOnly('\Presence\Event', $person->getEvents());
     }
 
     public function testSetEventsWithEmptyEventListProvided()
@@ -34,5 +34,24 @@ class PersonTest extends PresenceTestCase
         $person->getSchedule($calendar);
 
         $this->assertAttributeEmpty('events', $person);
+    }
+
+    public function testGetEventsByDate()
+    {
+        $events = array($this->getEventObject($this->getEventConfig()));
+        $person = new Person('Tux');
+        $person->setEvents(array($this->getEventConfig()));
+
+        $this->assertEquals($events, $person->getEventListByDate(new \DateTime('2013-01-21')));
+    }
+
+    public function testGetEventsByDateFromCache()
+    {
+        $events = array($this->getEventObject($this->getEventConfig()));
+        $person = new Person('Tux');
+        $person->setEvents(array($this->getEventConfig()));
+        $person->getEventListByDate(new \DateTime('2013-01-21'));
+
+        $this->assertEquals($events, $person->getEventListByDate(new \DateTime('2013-01-21')));
     }
 }

@@ -61,18 +61,14 @@ class PresenceTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Provides a fake instance of the Event class.
+     * Provides an instance of the Event class.
      *
      * @param array $config
-     * @param array $methods
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|Event
+     * @return Event
      */
-    protected function getEventObject(array $config = array(), array $methods = array())
+    protected function getEventObject(array $config = array())
     {
-        return $this->getMockBuilder('\Presence\Event')
-            ->setConstructorArgs(array($config))
-            ->setMethods($methods)
-            ->getMock();
+        return new Event($config);
     }
 }
