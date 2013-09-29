@@ -1,6 +1,6 @@
 <?php
 
-namespace Teamavailabilities;
+namespace Presence;
 
 /**
  * Sets and loads configuration data.
@@ -9,7 +9,7 @@ class Config
 {
     /**
      * Get configuration property.
-     * 
+     *
      * @param string $name  The property name.
      * @param mixed  $value The property value.
      *
@@ -22,9 +22,9 @@ class Config
 
     /**
      * Get configuration  property.
-     * 
+     *
      * @param string $name The property name.
-     * 
+     *
      * @return mixed $data The property value.
      */
     public function __get($name)
