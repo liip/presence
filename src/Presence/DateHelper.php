@@ -119,12 +119,26 @@ class DateHelper
      */
     protected function setStartDateToNextOrLastMonday()
     {
-        $dayNr = $this->startDate->format('N');
+        $this->startDate = $this->getNextOrLastMonday($this->startDate);
+    }
+
+    /**
+     * Depending on where on the given date take the last or next Monday.
+     *
+     * @param DateTime $date The date to calculate the last/next monday from
+     *
+     * @return DateTime
+     */
+    public function getNextOrLastMonday(DateTime $date)
+    {
+        $dayNr = $date->format('N');
         if ($dayNr > 5) {
-            $this->startDate->add(new DateInterval('P' . (8 - $dayNr) . 'D'));
+            $date->add(new DateInterval('P' . (8 - $dayNr) . 'D'));
         } else {
-            $this->startDate->sub(new DateInterval('P' . ($dayNr - 1) . 'D'));
+            $date->sub(new DateInterval('P' . ($dayNr - 1) . 'D'));
         }
+
+        return $date;
     }
 
     /**
