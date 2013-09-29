@@ -1,11 +1,11 @@
 <?php
 
-namespace Teamavailabilities;
+namespace Presence;
 
 // we need APC for the caching
 if (! (extension_loaded('apc') && ini_get('apc.enabled'))) {
     throw new \Exception("Cannot find the PHP APC module. Please install or enable it for this app to work");
- }
+}
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

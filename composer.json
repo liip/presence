@@ -23,7 +23,7 @@
 
      "autoload": {
          "psr-0": {
-             "Teamavailabilities": "src/"
+             "Presence": "src/"
              },
          "files": [
              "vendor/google-api-php-client/src/Google_Client.php",
