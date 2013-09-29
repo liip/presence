@@ -83,7 +83,7 @@ class Person
      * Constructor of Person object.
      *
      * @param string $id   The Person's id.
-     * @param array  $data The proporties of this Person.
+     * @param array  $data The properties of this Person.
      */
     public function __construct($id, array $data = array())
     {
@@ -120,10 +120,8 @@ class Person
      */
     public function setEvents(array $events)
     {
-        if (is_array($events)) {
-            foreach ($events as $event) {
-                $this->events[] = new Event($event);
-            }
+        foreach ($events as $event) {
+            $this->events[] = new Event($event);
         }
     }
 
