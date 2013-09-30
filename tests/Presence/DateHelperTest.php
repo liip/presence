@@ -2,9 +2,6 @@
 
 namespace Presence;
 
-use \DateTime;
-use \DateInterval;
-
 class HelperTest extends PresenceTestCase
 {
     public function setup()
@@ -33,8 +30,8 @@ class HelperTest extends PresenceTestCase
     public function testGetNextOrLastMonday($currentDate, $monday)
     {
         $this->assertEquals(
-            $this->helper->getNextOrLastMonday(new DateTime($currentDate)),
-            new DateTime($monday)
+            $this->helper->getNextOrLastMonday(new \DateTime($currentDate)),
+            new \DateTime($monday)
         );
     }
 }
