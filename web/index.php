@@ -103,13 +103,14 @@ $app->get(
 
             $config->people['refresh'] = $app['request']->get('refresh');
 
-            $helper      = new DateHelper();
-            $startDate   = $helper->getStartDate($app['request']->get('week'));
-            $weeks       = $app['request']->get('view', 1);
-            $showDetails = $app['request']->get('details', 1);
-            $endDate     = $helper->getEndDate($weeks);
-            $days        = $helper->getDays($startDate, $endDate);
-            $calendar = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
+            $helper       = new DateHelper();
+            $projectsMode = ($app['request']->get('mode', 'normal') === 'projects');
+            $startDate    = $helper->getStartDate($app['request']->get('week'));
+            $weeks        = $app['request']->get('view', 1);
+            $showDetails  = $app['request']->get('details', 1);
+            $endDate      = $helper->getEndDate($weeks);
+            $days         = $helper->getDays($startDate, $endDate);
+            $calendar     = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
 
             if (!empty($config->people['teams'][$teamId])) {
                 $team = new Team(
@@ -133,13 +134,14 @@ $app->get(
 
         // render the twig template, the team object with the members and their events is passed
         return $app['twig']->render(
-            'availabilities.twig',
+          (($projectsMode) ? 'projects' : 'availabilities' ). '.twig',
             array(
                 'teams'               => $config->people['teams'],
                 'team'                => $team,
                 'days'                => $days,
                 'weeks'               => $weeks,
                 'showDetails'         => $showDetails,
+                'projectsMode'        => $projectsMode,
                 'serviceAccountEmail' => $config->settings['google']['serviceAccountName']
             )
         );

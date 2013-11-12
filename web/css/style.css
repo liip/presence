@@ -65,6 +65,7 @@ div.header .title {
 div.header .title .teamList {
     display: none;
     position: absolute;
+    z-index: 10;
     padding: 1em 0 0 3em;
 }
 div.header .title .teamList li {
@@ -143,6 +144,7 @@ li.header h2 {
     font-size: 1.42em;
 }
 
+li.summary,
 li.person {
     padding: 20px;
     background-color: #f9f9f7;
@@ -151,7 +153,8 @@ li.person {
     page-break-inside: avoid;
 }
 
-li.person h2 {
+li.person h2,
+li.summary h2{
     font-size: 1.42em;
     margin-top: 0px;
     margin-bottom: 10px;
