@@ -104,7 +104,7 @@ $app->get(
             $config->people['refresh'] = $app['request']->get('refresh');
 
             $helper       = new DateHelper();
-            $projectsMode = ($app['request']->get('mode', 'normal') === 'projects');
+            $projectsMode = ($app['request']->get('mode', 'availability') === 'projects');
             $startDate    = $helper->getStartDate($app['request']->get('week'));
             $weeks        = $app['request']->get('view', 1);
             $showDetails  = $app['request']->get('details', 1);

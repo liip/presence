@@ -27,8 +27,11 @@ $(function() {
             "#FF3D3D",
             "#FF8000",
             "#CDD400"
-
         ],
+
+        /**
+         * Extracts project information and adds it to the entries a data attribute
+         */
         calculate: function() {
             var projects = this.projects = [];
 
@@ -60,6 +63,10 @@ $(function() {
 
             this.render();
         },
+
+        /**
+         * Colorizes and counts the project information
+         */
         render: function() {
             var colours = this.colours,
                 stats = '', i = 0, l = 0;
@@ -71,7 +78,7 @@ $(function() {
                     .css({'background-color': colours[i]});
             }
 
-            // Rendering an html string once is fastest
+            // Adding an html string once to the dom is fastest to render
             stats += '<span class="timeSlotBubble available">Available '+
                         '<span class="number">'+ $('*[data-project="available"]').length / 2 +'</span>'+
                      '</span>';
