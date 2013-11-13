@@ -2,10 +2,6 @@ $(function() {
     var PlanningSummary = {
         projects: [],
         colours: [
-            "#850073",
-            "#D400B7",
-            "#FF24E2",
-
             "#008537",
             "#00C746",
             "#00FF59",
@@ -26,7 +22,11 @@ $(function() {
             "#FF0000",
             "#FF3D3D",
             "#FF8000",
-            "#CDD400"
+            "#CDD400",
+
+            "#850073",
+            "#D400B7",
+            "#FF24E2"
         ],
 
         /**
