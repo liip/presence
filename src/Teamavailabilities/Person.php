@@ -265,14 +265,14 @@ class Person
             if ($event::TYPE_OFF === $event->type) {
                 return $this->timeSlots[$id] = array(
                     'class' => 'off',
-                    'title' => $event->summary
+                    'title' => str_replace('#', '', $event->summary)
                 );
             }
 
             if ($event::TYPE_PROJECT === $event->type) {
                 return $this->timeSlots[$id] = array(
                     'class' => 'busy',
-                    'title' => $event->summary
+                    'title' => str_replace('#', '', $event->summary)
                 );
             }
 
