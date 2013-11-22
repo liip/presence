@@ -76,9 +76,7 @@
 }
 
 .projects .timeSlotBubble.available,
-.projects .timeSlotBubble.available .number,
-.projects .timeSlotBubble.other,
-.projects .timeSlotBubble.other .number {
+.projects .timeSlotBubble.other {
     color: black;
 }
 
@@ -87,14 +85,13 @@
     overflow: auto;
 }
 .projects .summary .result {
-    width: 21.5%;
+    width: 90.5%;
     float: left;
 }
 .projects .summary .timeSlotBubble {
-    padding: 3px;
-}
-.projects .summary .number {
-    color: white;
-    float: right;
+    display: inline-block;
+    min-width: 20px;
+    padding: 10px 10px 6px 10px;
+    margin: 0 10px 10px 0;
 }
 

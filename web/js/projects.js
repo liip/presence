@@ -79,20 +79,16 @@ $(function() {
             }
 
             // Adding an html string once to the dom is fastest to render
-            stats += '<span class="timeSlotBubble available">Available '+
-                        '<span class="number">'+ $('*[data-project="available"]').length / 2 +'</span>'+
-                     '</span>';
-            stats += '<span class="timeSlotBubble busy other">Busy '+
-                        '<span class="number">'+ $('*[data-project="other"]').length / 2 +'</span>'+
-                     '</span>';
+            stats += '<span class="timeSlotBubble available">AVAILABLE&nbsp;'+
+                        $('*[data-project="available"]').length / 2 +'</span>';
+            stats += '<span class="timeSlotBubble busy other">BUSY&nbsp;'+
+                        $('*[data-project="other"]').length / 2 +'</span>';
             stats += '<span class="timeSlotBubble hidden">&nbsp;</span>';
 
             for(i = 0, l = this.projects.length; i < l; i = i + 1) {
                 stats += '<span class="timeSlotBubble busy" style="background-color:'+ colours[i]+ ';"> '+
-                            this.projects[i].toUpperCase()+
-                            '<span class="number">'+
+                            this.projects[i].toUpperCase()+ '&nbsp;&nbsp;'+
                                 $('*[data-project="'+ this.projects[i] +'"]').length / 2 +
-                            '</span>'+
                          '</span>';
             }
 
