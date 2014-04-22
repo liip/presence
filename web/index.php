@@ -72,6 +72,14 @@ $app->before(function (\Symfony\Component\HttpFoundation\Request $request) use (
     if ($token && !$app['security.trust_resolver']->isAnonymous($token)) {
         $app['user'] = $token->getUser();
     }
+
+    if (empty($app['user'])) {
+        return $app->redirect(
+            $app['url_generator']->generate('_auth_service', array(
+                'service' => 'google',
+                '_csrf_token' => $app['form.csrf_provider']->generateCsrfToken('oauth')
+            )));
+    }
 });
 
 $app->get('/login', function () use ($app) {
