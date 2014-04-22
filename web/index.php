@@ -2,6 +2,8 @@
 
 namespace Presence;
 
+use Symfony\Component\Yaml\Dumper;
+
 // we need APC for the caching
 if (! (extension_loaded('apc') && ini_get('apc.enabled'))) {
     throw new \Exception("Cannot find the PHP APC module. Please install or enable it for this app to work");
@@ -111,6 +113,7 @@ $app->get(
             $endDate      = $helper->getEndDate($weeks);
             $days         = $helper->getDays($startDate, $endDate);
             $calendar     = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
+            $persons      = $config->people['persons'];
 
             if (!empty($config->people['teams'][$teamId])) {
                 $team = new Team(
@@ -127,6 +130,14 @@ $app->get(
             } else {
                 $app->abort(404, 'No team or person found with ID ' . $teamId . ' does not exist');
             }
+            
+            $nonteam = array();
+            
+            foreach ($persons as $id=>$person) {
+                if (!in_array($teamId, array_keys($person['teams']))) {
+                    $nonteam[$id] = $person;
+                }
+            }
 
         } catch (\Exception $e) {
             $app->abort(404, $e->getMessage());
@@ -142,11 +153,68 @@ $app->get(
                 'weeks'               => $weeks,
                 'showDetails'         => $showDetails,
                 'projectsMode'        => $projectsMode,
-                'serviceAccountEmail' => $config->settings['google']['serviceAccountName']
+                'serviceAccountEmail' => $config->settings['google']['serviceAccountName'],
+                'nonteam'             => $nonteam
             )
         );
     }
 )
 ->bind('availabilities');
+
+/**
+ * Add member to team
+ */
+$app->get(
+    '/{teamId}/{personId}/add',
+    function($teamId, $personId) use ($app, $config) {
+        if (!empty($config->people['teams'][$teamId])) {
+            if (!empty($config->people['persons'][$personId])) {
+                // Add team to person
+                $config->people['persons'][$personId]['teams'][$teamId] = null;
+                
+                // Save config file
+                $dumper = new Dumper();
+                $yaml = $dumper->dump($config->people, 4);
+                file_put_contents('../config/people.yaml', $yaml);
+            } else {
+                $app->abort(404, 'No person found with ID ' . $personId . ' does not exist');
+            }
+        } else {
+            $app->abort(404, 'No team or person found with ID ' . $teamId . ' does not exist');
+        }
+                
+        return $app->redirect('/' . $teamId);
+    }
+)
+->bind('add');
+ 
+/**
+ * Delete member from team
+ */
+$app->get(
+    '/{teamId}/{personId}/delete',
+    function($teamId, $personId) use ($app, $config) {
+        if (!empty($config->people['teams'][$teamId])) {
+            if (!empty($config->people['persons'][$personId])) {
+                if (array_key_exists($teamId, $config->people['persons'][$personId]['teams'])) {
+                    // Delete team from person
+                    unset($config->people['persons'][$personId]['teams'][$teamId]);
+                    
+                    // Save config file
+                    $dumper = new Dumper();
+                    $yaml = $dumper->dump($config->people, 4);
+                    file_put_contents('../config/people.yaml', $yaml);
+                }
+            } else {
+                $app->abort(404, 'No person found with ID ' . $personId . ' does not exist');
+            }
+        } else {
+            $app->abort(404, 'No team found with ID ' . $teamId . ' does not exist');
+        }
+                
+        return $app->redirect('/' . $teamId);
+    }
+)
+->bind('delete');
 
 $app->run();
