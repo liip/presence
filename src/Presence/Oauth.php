@@ -21,7 +21,7 @@ class Oauth
         self::registerHandler($app);
     }
 
-    public static function registerSessionProvider($app, $path)
+    private static function registerSessionProvider($app, $path)
     {
         $app->register(
             new \Silex\Provider\SessionServiceProvider(),
@@ -31,7 +31,7 @@ class Oauth
         );
     }
 
-    public static function registerOauthProvider($app, $config)
+    private static function registerOauthProvider($app, $config)
     {
         $app->register(
             new \Gigablah\Silex\OAuth\OAuthServiceProvider(),
