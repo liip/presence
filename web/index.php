@@ -14,92 +14,17 @@ $yaml             = new \Symfony\Component\Yaml\Parser();
 $config           = new Config();
 $config->settings = $yaml->parse(file_get_contents('../config/settings.yaml'));
 $config->people   = $yaml->parse(file_get_contents('../config/people.yaml'));
-$oauth = $config->settings['oauth'];
 
 // load Silex and register providers
 $app = new \Silex\Application();
 $app->register(new \Silex\Provider\TwigServiceProvider(), array('twig.path' => __DIR__.'/../views',));
 $app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
-$app->register(new \Gigablah\Silex\OAuth\OAuthServiceProvider(), array(
-    'oauth.services' => array(
-        'google' => array(
-            'key' => $oauth['key'],
-            'secret' => $oauth['secret'],
-            'scope' => $oauth['scope'],
-            'user_endpoint' => $oauth['user_endpoint']
-        ),
-    )
-));
-
-$app->register(new \Silex\Provider\FormServiceProvider());
-$app->register(new \Silex\Provider\SessionServiceProvider(), array(
-    'session.storage.save_path' => __DIR__ . '/../sessions'
-));
-
 
 $app['twig']->getExtension('core')->setTimezone(
     isset($settings['timezone']) ? $settings['timezone']:'Europe/Zurich'
 );
 
-$app->register(new \Silex\Provider\SecurityServiceProvider(), array(
-    'security.firewalls' => array(
-        'default' => array(
-            'pattern' => '^/',
-            'anonymous' => true,
-            'oauth' => array(
-                //'login_path' => '/auth/{service}',
-                //'callback_path' => '/auth/{service}/callback',
-                //'check_path' => '/auth/{service}/check',
-                'failure_path' => '/login',
-                'with_csrf' => true
-            ),
-            'logout' => array(
-                'logout_path' => '/logout',
-                'with_csrf' => true
-            ),
-            'users' => new \Gigablah\Silex\OAuth\Security\User\Provider\OAuthInMemoryUserProvider()
-        )
-    ),
-    'security.access_rules' => array(
-        array('^/auth', 'ROLE_USER')
-    )
-));
-
-$app->before(function (\Symfony\Component\HttpFoundation\Request $request) use ($app) {
-    $token = $app['security']->getToken();
-    $app['user'] = null;
-
-    if ($token && !$app['security.trust_resolver']->isAnonymous($token)) {
-        $app['user'] = $token->getUser();
-    }
-
-    if (empty($app['user'])) {
-        return $app->redirect(
-            $app['url_generator']->generate('_auth_service', array(
-                'service' => 'google',
-                '_csrf_token' => $app['form.csrf_provider']->generateCsrfToken('oauth')
-            )));
-    }
-});
-
-$app->get('/login', function () use ($app) {
-    $services = array_keys($app['oauth.services']);
-
-    return $app['twig']->render('login.twig', array(
-        'login_paths' => array_map(function ($service) use ($app) {
-            return $app['url_generator']->generate('_auth_service', array(
-                'service' => $service,
-                '_csrf_token' => $app['form.csrf_provider']->generateCsrfToken('oauth')
-            ));
-        }, array_combine($services, $services)),
-        'logout_path' => $app['url_generator']->generate('logout', array(
-            '_csrf_token' => $app['form.csrf_provider']->generateCsrfToken('logout')
-        ))
-    ));
-});
-
-$app->match('/logout', function () {})->bind('logout');
-$app['debug'] = true;
+Oauth::register($app, $config->settings);
 
 /**
  * List with all teams
