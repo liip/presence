@@ -18,17 +18,17 @@ class Oauth
 
         $app->register(new FormServiceProvider());
         self::registerOauthProvider($app, $config['oauth']);
-        self::registerSessionProvider($app, $config['sessionsPath']);
+        self::registerSessionProvider($app);
         self::registerSecurityProvider($app);
         self::registerHandler($app);
     }
 
-    private static function registerSessionProvider($app, $path)
+    private static function registerSessionProvider($app)
     {
         $app->register(
             new \Silex\Provider\SessionServiceProvider(),
             array(
-                'session.storage.save_path' => $path
+                'session.storage.save_path' => __DIR__ . '/../../cache/sessions'
             )
         );
     }
