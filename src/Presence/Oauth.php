@@ -6,6 +6,7 @@ use \Silex\Provider\SecurityServiceProvider;
 use \Gigablah\Silex\OAuth\Security\User\Provider\OAuthInMemoryUserProvider;
 use \Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\Request;
+use \Silex\Provider\FormServiceProvider;
 
 /**
  * Registers Oauth provider and handler
@@ -15,6 +16,7 @@ class Oauth
     public static function register($app, $config)
     {
 
+        $app->register(new FormServiceProvider());
         self::registerOauthProvider($app, $config['oauth']);
         self::registerSessionProvider($app, $config['sessionsPath']);
         self::registerSecurityProvider($app);
