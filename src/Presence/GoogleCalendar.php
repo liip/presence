@@ -93,12 +93,11 @@ class GoogleCalendar implements CalendarInterface
             $this->client = new \Google_Client();
         }
         $this->client->setApplicationName("presence.dev.liip.ch");
-        $token = $_SESSION['_sf2_attributes']['lusitanian_oauth_token']['Google'];
         $accesstoken = json_encode(
             array(
                 'token_type' => 'Bearer',
-                'access_token' => $token->getAccessToken(),
-                'refresh_token' => $token->getRefreshToken(),
+                'access_token' => $_SESSION['_sf2_attributes']['accessToken'],
+                'refresh_token' => $_SESSION['_sf2_attributes']['refreshToken'],
             )
         );
         $this->client->setClientId($this->config['key']);

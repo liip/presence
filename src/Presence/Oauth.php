@@ -86,6 +86,16 @@ class Oauth
 
                 if ($token && !$app['security.trust_resolver']->isAnonymous($token)) {
                     $app['user'] = $token->getUser();
+
+                    $session = $request->getSession();
+                    $refreshToken = $token->getAccessToken()->getRefreshToken();
+                    if ($refreshToken) {
+                        $session->set('refreshToken', $refreshToken);
+                    }
+                    $accessToken = $token->getAccessToken()->getAccessToken();
+                    if ($accessToken) {
+                        $session->set('accessToken', $accessToken);
+                    }
                 }
 
                 if (empty($app['user'])) {
