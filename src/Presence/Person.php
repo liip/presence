@@ -120,10 +120,8 @@ class Person
      */
     public function setEvents(array $events)
     {
-        if (is_array($events)) {
-            foreach ($events as $event) {
-                $this->events[] = new Event($event);
-            }
+        foreach ($events as $event) {
+            $this->events[] = new Event($event);
         }
     }
 
