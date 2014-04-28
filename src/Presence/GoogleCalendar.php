@@ -98,7 +98,7 @@ class GoogleCalendar implements CalendarInterface
             array(
                 'token_type' => 'Bearer',
                 'access_token' => $token->getAccessToken(),
-                'refresh_token' => $token->getAccessToken(),
+                'refresh_token' => $token->getRefreshToken(),
             )
         );
         $this->client->setClientId($this->config['key']);
