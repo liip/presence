@@ -24,7 +24,17 @@ $app['twig']->getExtension('core')->setTimezone(
     isset($settings['timezone']) ? $settings['timezone']:'Europe/Zurich'
 );
 
-Oauth::register($app, $config->settings);
+//Oauth::register($app, $config->settings);
+
+// Get email address and user name here, as Oauth has just checked the user has an @liip.ch email address. 
+// add them to db if not there already
+
+Sqlite::register($app, $config->settings);
+if (!file_exists($config->settings['dbPath'])) {
+    Sqlite::create($app, $config);
+    Sqlite::populate($app, $config);
+}
+
 
 /**
  * List with all teams

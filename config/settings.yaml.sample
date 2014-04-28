@@ -1,5 +1,6 @@
 timezone: Europe/Zurich
 sessionsPath: /fullpath/sessions
+dbPath: /fullpath/app.db
 
 google:
   clientId: 0000000000.apps.googleusercontent.com

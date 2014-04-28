@@ -50,7 +50,8 @@
         "symfony/yaml": "v2.2.0",
         "symfony/security": "~2.3",
         "gigablah/silex-oauth": "~0.1",
-        "symfony/form": "~2.3"
+        "symfony/form": "~2.3",
+        "doctrine/dbal":"2.2.*"
     },
 
     "require-dev": {
