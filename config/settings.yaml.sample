@@ -1,14 +1,10 @@
 timezone: Europe/Zurich
 
 google:
-  clientId: 0000000000.apps.googleusercontent.com
-  serviceAccountName: 0000000000@developer.gserviceaccount.com
-  keyFile: ../config/privatekey.p12
-  cacheTtl: 1800
-
-oauth:
   key: ************.apps.googleusercontent.com
   secret: ************************
   scope:
     - email
+    - https://www.googleapis.com/auth/calendar.readonly
   user_endpoint: https://www.googleapis.com/oauth2/v1/userinfo
+  cacheTtl: 1800
