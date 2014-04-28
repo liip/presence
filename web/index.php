@@ -26,9 +26,6 @@ $app['twig']->getExtension('core')->setTimezone(
 
 //Oauth::register($app, $config->settings);
 
-// Get email address and user name here, as Oauth has just checked the user has an @liip.ch email address. 
-// add them to db if not there already
-
 Sqlite::register($app, $config->settings);
 if (!file_exists($config->settings['dbPath'])) {
     Sqlite::create($app, $config);
@@ -36,6 +33,8 @@ if (!file_exists($config->settings['dbPath'])) {
     $teams = $yaml->parse(file_get_contents('../config/people.yaml'))['teams'];
     Sqlite::populate($app, $persons, $teams);
 }
+
+// Get email address and user name here, as Oauth has just checked the user has an @liip.ch email address. 
 
 
 /**
