@@ -84,9 +84,9 @@ class Event
     /**
      * Parse the raw data.
      *
-     * @param array $raw The raw data.
+     * @param \Google_Service_Calendar_Event $raw The raw data.
      */
-    public function __construct(array $raw)
+    public function __construct(\Google_Service_Calendar_Event $raw)
     {
         $this->raw = $raw;
 

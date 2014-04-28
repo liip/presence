@@ -67,7 +67,7 @@
         <span class="infoBubble">
             Mode
             <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}">
-                {% if projectMode %}
+                {% if projectsMode %}
                     availability
                 {% else %}
                     <span class="number">availability</span>
@@ -75,7 +75,7 @@
             </a>
             /
             <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}&mode=projects">
-                {% if projectMode %}
+                {% if projectsMode %}
                     <span class="number">projects</span>
                 {% else %}
                     projects
@@ -99,6 +99,7 @@
           <h2>Person</h2>
         </div>
         <ul class="days">
+            {% set weekClass = 1 %}
             {% if (weeks == 2)  %}
                 {% set weekClass = 'two-weeks'  %}
             {% endif %}
@@ -180,11 +181,7 @@
               {% endfor %}
             {% else %}
               <li class="day fullWidth error">
-                Unable to read the calendar <strong>{{ member.id }}</strong>. Please allow <strong>{{ serviceAccountEmail }}</strong> to view the events of this calendar.
-                <br /><br />
-                <a href="http://support.google.com/calendar/answer/143754?hl=en" target="_blank">Click here for instructions on doing that with Google Calendar</a> (Opens in new tab...)
-                <br /><br />
-                You can try again by pressing <a href="{{ app.url_generator.generate('availabilities', {'teamId': team.id, 'refresh': member.id }) }}">here</a>
+                Unable to read the calendar <strong>{{ member.id }}</strong>. User must visit Presence and allow access to the calendar.
               </li>
             {% endif %}
           </ul>

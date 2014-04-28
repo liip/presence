@@ -78,7 +78,6 @@ class GoogleCalendar implements CalendarInterface
         $this->config    = $config;
         $this->startDate = $startDate->format(DateTime::ATOM);
         $this->endDate   = $endDate->format(DateTime::ATOM);
-        $this->key       = file_get_contents($config['keyFile']);
         $this->cacheTtl  = $config['cacheTtl'];
         $this->api       = $this->initializeApi();
     }
@@ -93,18 +92,19 @@ class GoogleCalendar implements CalendarInterface
         if (is_null($this->client)) {
             $this->client = new \Google_Client();
         }
-
-        $this->client->setApplicationName("Availabilities");
-        $this->client->setAssertionCredentials(
-            new \Google_AssertionCredentials(
-                $this->config['serviceAccountName'],
-                $this->scopes,
-                $this->key
+        $this->client->setApplicationName("presence.dev.liip.ch");
+        $token = $_SESSION['_sf2_attributes']['lusitanian_oauth_token']['Google'];
+        $accesstoken = json_encode(
+            array(
+                'token_type' => 'Bearer',
+                'access_token' => $token->getAccessToken(),
+                'refresh_token' => $token->getAccessToken(),
             )
         );
-        $this->client->setClientId($this->config['clientId']);
-
-        return new \Google_CalendarService($this->client);
+        $this->client->setClientId($this->config['key']);
+        $this->client->setClientSecret($this->config['secret']);
+        $this->client->setAccessToken($accesstoken);
+        return new \Google_Service_Calendar($this->client);
     }
 
     /**

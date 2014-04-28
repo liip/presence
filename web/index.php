@@ -136,7 +136,7 @@ $app->get(
 
         // render the twig template, the team object with the members and their events is passed
         return $app['twig']->render(
-          (($projectsMode) ? 'projects' : 'availabilities' ). '.twig',
+            (($projectsMode) ? 'projects' : 'availabilities' ). '.twig',
             array(
                 'teams'               => $config->people['teams'],
                 'team'                => $team,
@@ -144,7 +144,6 @@ $app->get(
                 'weeks'               => $weeks,
                 'showDetails'         => $showDetails,
                 'projectsMode'        => $projectsMode,
-                'serviceAccountEmail' => $config->settings['google']['serviceAccountName']
             )
         );
     }

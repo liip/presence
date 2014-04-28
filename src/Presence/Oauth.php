@@ -17,7 +17,7 @@ class Oauth
     {
 
         $app->register(new FormServiceProvider());
-        self::registerOauthProvider($app, $config['oauth']);
+        self::registerOauthProvider($app, $config['google']);
         self::registerSessionProvider($app);
         self::registerSecurityProvider($app);
         self::registerHandler($app);
