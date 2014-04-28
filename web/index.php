@@ -32,7 +32,9 @@ $app['twig']->getExtension('core')->setTimezone(
 Sqlite::register($app, $config->settings);
 if (!file_exists($config->settings['dbPath'])) {
     Sqlite::create($app, $config);
-    Sqlite::populate($app, $config);
+    $persons = $yaml->parse(file_get_contents('../config/people.yaml'))['persons'];
+    $teams = $yaml->parse(file_get_contents('../config/people.yaml'))['teams'];
+    Sqlite::populate($app, $persons, $teams);
 }
 
 

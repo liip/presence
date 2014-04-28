@@ -19,7 +19,7 @@ class Sqlite {
         ));
     }
     
-    public static function create($app, $config) {
+    public static function create($app) {
         // Create tables and populate from people.yaml.
         $setup = $app['db']->prepare(
             'PRAGMA foreign_keys = ON;'
@@ -52,8 +52,7 @@ class Sqlite {
         
     }
 
-    public static function populate($app, $config) {        
-        $persons = $config->people['persons'];
+    public static function populate($app, $persons, $teams) {
         foreach ($persons as $id=>$person) {
             $app['db']->insert(
                 'persons',
@@ -61,7 +60,6 @@ class Sqlite {
             );
         }
         
-        $teams = $config->people['teams'];
         foreach ($teams as $id=>$team) {
             $app['db']->insert(
                 'teams',
