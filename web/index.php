@@ -24,7 +24,7 @@ $app['twig']->getExtension('core')->setTimezone(
     isset($settings['timezone']) ? $settings['timezone']:'Europe/Zurich'
 );
 
-//Oauth::register($app, $config->settings);
+// Oauth::register($app, $config->settings);
 
 Sqlite::register($app, $config->settings);
 if (!file_exists($config->settings['dbPath'])) {
@@ -43,13 +43,12 @@ if (!file_exists($config->settings['dbPath'])) {
 $app->get(
     '/',
     function () use ($app, $config) {
-        ksort($config->people['persons']);
-
+    
         return $app['twig']->render(
             'index.twig',
             array(
-                'teams'   => $config->people['teams'],
-                'persons' => $config->people['persons'],
+                'teams'   => Sqlite::allTeams($app),
+                'persons' => Sqlite::allPersons($app),
             )
         );
     }

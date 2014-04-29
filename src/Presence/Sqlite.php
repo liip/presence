@@ -87,6 +87,20 @@ class Sqlite {
         }
     }
     
+    public static function allPersons($app) {
+        $sql = "SELECT p.name, p.email FROM persons p";
+        $stmt = $app['db']->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    
+    public static function allTeams($app) {
+        $sql = "SELECT t.name, t.slug FROM teams t";
+        $stmt = $app['db']->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    
     public static function teamMembers($app, $team) {
         $sql = "SELECT * FROM persons p 
                 JOIN teams_to_persons tp 
@@ -97,7 +111,7 @@ class Sqlite {
         $stmt->execute();
         return $stmt->fetchAll()[0];
     }
-    
+
 }
 
 
