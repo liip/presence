@@ -90,9 +90,6 @@ class Person
         $this->id = $id;
 
         $this->setDataKey($data, 'name');
-        $this->setDataKey($data, 'role');
-        $this->setDataKey($data, 'percentage');
-        $this->setDataKey($data, 'location');
         $this->setDataKey($data, 'teams');
     }
 
