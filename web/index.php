@@ -63,7 +63,7 @@ $app->get(
         $query = strtolower($app['request']->get('q'));
         $result = array();
         if (!empty($query)) {
-            $persons = $config->people['persons'];
+            $persons = Sqlite::allPersons($app);
 
             $result = array_filter(
                 $persons,
