@@ -18,7 +18,7 @@ class Sqlite {
             )
         ));
     }
-    
+
     public static function create($app) {
         // Create tables and populate from people.yaml.
         $setup = $app['db']->prepare(
@@ -50,7 +50,7 @@ class Sqlite {
             );'
         );
         $setup->execute();
-        
+
     }
 
     public static function populate($app, $persons, $teams) {
@@ -60,20 +60,21 @@ class Sqlite {
                 array('email' => $id, 'name' => $person['name'])
             );
         }
-        
+
         foreach ($teams as $id=>$team) {
             $app['db']->insert(
                 'teams',
                 array('slug' => $id, 'name' => $team['name'])
             );
         }
-        
+
         foreach ($persons as $id=>$person) {
             $sql = "SELECT * FROM persons WHERE email = ?";
             $stmt = $app['db']->prepare($sql);
             $stmt->bindValue(1, $id);
             $stmt->execute();
-            $persons_id = $stmt->fetchAll()[0]['id'];
+            $results = $stmt->fetchAll();
+            $persons_id = $results[0]['id'];
             foreach ($persons[$id]['teams'] as $team=>$null) {
                 $sql = "SELECT * FROM teams WHERE slug = ?";
                 $stmt = $app['db']->prepare($sql);
@@ -87,25 +88,25 @@ class Sqlite {
             }
         }
     }
-    
+
     public static function allPersons($app) {
         $sql = "SELECT p.name, p.email FROM persons p";
         $stmt = $app['db']->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
     }
-    
+
     public static function allTeams($app) {
         $sql = "SELECT t.name, t.slug FROM teams t";
         $stmt = $app['db']->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
     }
-    
+
     public static function teamMembers($app, $team) {
-        $sql = "SELECT * FROM persons p 
-                JOIN teams_to_persons tp 
-                ON tp.persons_id = p.id 
+        $sql = "SELECT * FROM persons p
+                JOIN teams_to_persons tp
+                ON tp.persons_id = p.id
                 AND tp.teams_id = ?";
         $stmt = $app['db']->prepare($sql);
         $stmt->bindValue(1, $team);
@@ -114,6 +115,3 @@ class Sqlite {
     }
 
 }
-
-
-
