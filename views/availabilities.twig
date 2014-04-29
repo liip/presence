@@ -181,7 +181,7 @@
               {% endfor %}
             {% else %}
               <li class="day fullWidth error">
-                Unable to read the calendar <strong>{{ member.id }}</strong>. User must visit Presence and allow access to the calendar.
+                You are not allowed to view the calendar of <strong>{{ member.id }}</strong> and therefore Presence cannot show you the nasty details. Please ask the owner of {{ member.id }} to give you viewing permissions on the calendar.
               </li>
             {% endif %}
           </ul>

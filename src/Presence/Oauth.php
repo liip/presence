@@ -92,8 +92,9 @@ class Oauth
                     }
                     $refreshToken = $token->getAccessToken()->getRefreshToken();
                     $username = $app['user']->getUsername();
-                    if ($email && $username)
+                    if ($email && $username) {
                         $persons = $app['db']->fetchAll('SELECT * FROM persons WHERE email = ?', array($email));
+                    }
                     if (empty($persons)) {
                         $app['db']->insert(
                             'persons',
