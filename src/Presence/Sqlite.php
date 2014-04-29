@@ -87,6 +87,17 @@ class Sqlite {
         }
     }
     
+    public static function teamMembers($app, $team) {
+        $sql = "SELECT * FROM persons p 
+                JOIN teams_to_persons tp 
+                ON tp.persons_id = p.id 
+                AND tp.teams_id = ?";
+        $stmt = $app['db']->prepare($sql);
+        $stmt->bindValue(1, $team);
+        $stmt->execute();
+        return $stmt->fetchAll()[0];
+    }
+    
 }
 
 
