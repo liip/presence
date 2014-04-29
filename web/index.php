@@ -24,7 +24,18 @@ $app['twig']->getExtension('core')->setTimezone(
     isset($settings['timezone']) ? $settings['timezone']:'Europe/Zurich'
 );
 
-Oauth::register($app, $config->settings);
+// Oauth::register($app, $config->settings);
+
+Sqlite::register($app, $config->settings);
+if (!file_exists($config->settings['dbPath'])) {
+    Sqlite::create($app, $config);
+    $persons = $yaml->parse(file_get_contents('../config/people.yaml'))['persons'];
+    $teams = $yaml->parse(file_get_contents('../config/people.yaml'))['teams'];
+    Sqlite::populate($app, $persons, $teams);
+}
+
+// Get email address and user name here, as Oauth has just checked the user has an @liip.ch email address.
+
 
 /**
  * List with all teams
@@ -32,13 +43,12 @@ Oauth::register($app, $config->settings);
 $app->get(
     '/',
     function () use ($app, $config) {
-        ksort($config->people['persons']);
 
         return $app['twig']->render(
             'index.twig',
             array(
-                'teams'   => $config->people['teams'],
-                'persons' => $config->people['persons'],
+                'teams'   => Sqlite::allTeams($app),
+                'persons' => Sqlite::allPersons($app),
             )
         );
     }
