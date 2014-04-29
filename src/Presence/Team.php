@@ -106,7 +106,7 @@ class Team
      *
      * @return Person a Person object
      */
-    protected function getPerson($email, array $person, CalendarInterface $calendar)
+    protected function getPerson($email, array $person)
     {
         if ($calendar) {
             $cacheIdParts = array(

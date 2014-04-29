@@ -22,6 +22,6 @@ class TeamOfOne extends Team
         $this->calendar = $calendar;
         $this->refresh  = $people['refresh'];
         $this->name     = $people['persons'][$id]['name'];
-        $this->members  = array($this->getPerson($id, $people['persons'][$id], $calendar));
+        $this->members  = array($this->getPerson($id, $people['persons'][$id]));
     }
 }
