@@ -1,0 +1,19 @@
+<html>
+  <head>
+
+    <title>Presence login</title>
+    <link rel="stylesheet" type="text/css" media="all" href="/css/style.css" />
+
+  </head>
+  <body>
+    <div>
+      {% if app.user %}
+      <a href="{{ logoutPath }}">Logout</a>
+      {% else %}
+      <ul>
+        <li><a href="{{ loginPath }}">Login with Google</a></li>
+      </ul>
+      {% endif %}
+    </div>
+  </body>
+</html>

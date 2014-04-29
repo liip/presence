@@ -24,7 +24,7 @@ $app['twig']->getExtension('core')->setTimezone(
     isset($settings['timezone']) ? $settings['timezone']:'Europe/Zurich'
 );
 
-// Oauth::register($app, $config->settings);
+Oauth::register($app, $config->settings);
 
 Sqlite::register($app, $config->settings);
 if (!file_exists($config->settings['dbPath'])) {
@@ -36,6 +36,35 @@ if (!file_exists($config->settings['dbPath'])) {
 
 // Get email address and user name here, as Oauth has just checked the user has an @liip.ch email address.
 
+
+$app['debug'] = true;
+$app->get(
+    '/login',
+    function () use ($app) {
+        return $app['twig']->render(
+            'login.twig',
+            array(
+                'loginPath' => $app['url_generator']->generate(
+                    '_auth_service',
+                    array(
+                        'service' => 'google',
+                        '_csrf_token' => $app['form.csrf_provider']->generateCsrfToken('oauth')
+                    )
+                ),
+                'logoutPath'  => $app['url_generator']->generate(
+                    'logout',
+                    array('_csrf_token' => $app['form.csrf_provider']->generateCsrfToken('logout'))
+                )
+            )
+        );
+    }
+);
+
+$app->match(
+    '/logout',
+    function () {
+    }
+)->bind('logout');
 
 /**
  * List with all teams
@@ -122,7 +151,7 @@ $app->get(
             $showDetails  = $app['request']->get('details', 1);
             $endDate      = $helper->getEndDate($weeks);
             $days         = $helper->getDays($startDate, $endDate);
-            $calendar     = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
+            $calendar     = new GoogleCalendar($app, $config->settings['google'], $startDate, $endDate);
 
             if (!empty($config->people['teams'][$teamId])) {
                 $team = new Team(

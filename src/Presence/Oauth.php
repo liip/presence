@@ -71,7 +71,7 @@ class Oauth
                     )
                 ),
                 'security.access_rules' => array(
-                    array('^/auth', 'ROLE_USER')
+                    array('^/(?!login).*$', 'ROLE_USER'),
                 )
             )
         );
@@ -86,31 +86,26 @@ class Oauth
 
                 if ($token && !$app['security.trust_resolver']->isAnonymous($token)) {
                     $app['user'] = $token->getUser();
-
-                    $session = $request->getSession();
                     $refreshToken = $token->getAccessToken()->getRefreshToken();
-                    if ($refreshToken) {
-                        $session->set('refreshToken', $refreshToken);
-                    }
-                    $accessToken = $token->getAccessToken()->getAccessToken();
-                    if ($accessToken) {
-                        $session->set('accessToken', $accessToken);
-                    }
-                }
-
-                if (empty($app['user'])) {
-                    return $app->redirect(
-                        $app['url_generator']->generate(
-                            '_auth_service',
+                    $email = $app['user']->getEmail();
+                    $username = $app['user']->getUsername();
+                    if ($refreshToken && $email && $username)
+                        $persons = $app['db']->fetchAll('SELECT * FROM persons WHERE email = ?', array($email));
+                    if (empty($persons)) {
+                        $app['db']->insert(
+                            'persons',
                             array(
-                                'service' => 'google',
-                                '_csrf_token' => $app['form.csrf_provider']->generateCsrfToken('oauth')
+                                'name' => $username,
+                                'email' => $email,
+                                'refreshtoken' => $refreshToken,
                             )
-                        )
-                    );
-                } else {
-                    if (!preg_match('/@liip.ch$/', $app['user']->getEmail())) {
-                        return new Response('Access denied.', 403);
+                        );
+                    } else {
+                        $app['db']->update(
+                            'persons',
+                            array('refreshtoken' => $refreshToken),
+                            array('email' => $email)
+                        );
                     }
                 }
             }

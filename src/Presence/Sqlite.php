@@ -37,7 +37,8 @@ class Sqlite {
             'CREATE TABLE persons (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT UNIQUE NOT NULL,
-                name TEXT NOT NULL
+                name TEXT NOT NULL,
+                refreshtoken TEXT
             );'
         );
         $setup->execute();

@@ -69,12 +69,14 @@ class GoogleCalendar implements CalendarInterface
     /**
      * Assign variable and intialize the API.
      *
-     * @param array    $config    The configuration array.
-     * @param DateTime $startDate The start of the date range for which the schedule should be returned.
-     * @param DateTime $endDate   The end of the date range for which the schedule should be returned.
+     * @param \Silex\Application $app       The Silex app
+     * @param array              $config    The configuration array.
+     * @param DateTime           $startDate The start of the date range for which the schedule should be returned.
+     * @param DateTime           $endDate   The end of the date range for which the schedule should be returned.
      */
-    public function __construct(array $config, DateTime $startDate, DateTime $endDate)
+    public function __construct(\Silex\Application $app, array $config, DateTime $startDate, DateTime $endDate)
     {
+        $this->app       = $app;
         $this->config    = $config;
         $this->startDate = $startDate->format(DateTime::ATOM);
         $this->endDate   = $endDate->format(DateTime::ATOM);
@@ -93,17 +95,42 @@ class GoogleCalendar implements CalendarInterface
             $this->client = new \Google_Client();
         }
         $this->client->setApplicationName("presence.dev.liip.ch");
-        $accesstoken = json_encode(
-            array(
-                'token_type' => 'Bearer',
-                'access_token' => $_SESSION['_sf2_attributes']['accessToken'],
-                'refresh_token' => $_SESSION['_sf2_attributes']['refreshToken'],
-            )
-        );
         $this->client->setClientId($this->config['key']);
         $this->client->setClientSecret($this->config['secret']);
-        $this->client->setAccessToken($accesstoken);
+        $this->client->setAccessToken($this->getAccessToken());
         return new \Google_Service_Calendar($this->client);
+    }
+
+    /**
+     * Build the access token from user and token info.
+     *
+     * @return string The access token the Google Client expects.
+     */
+    protected function getAccessToken()
+    {
+        $email = $this->app['user']->getEmail();
+        $accessToken = $this->app['security']->getToken()->getAccessToken()->getAccessToken();
+        $refreshToken = $this->app['db']->fetchColumn(
+            'SELECT refreshtoken FROM persons WHERE email = ?',
+            array($email),
+            0
+        );
+        if (empty($email) || empty($accessToken) || empty($refreshToken)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Cannot get calendar, invalid parameters supplied: %s',
+                    print_r(array($email, $accessToken, $refreshToken), true)
+                )
+            );
+        }
+
+        return json_encode(
+            array(
+                'token_type' => 'Bearer',
+                'access_token' => $accessToken,
+                'refresh_token' => $refreshToken,
+            )
+        );
     }
 
     /**
