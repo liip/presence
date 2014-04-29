@@ -80,7 +80,8 @@ class Sqlite {
                 $stmt = $app['db']->prepare($sql);
                 $stmt->bindValue(1, $team);
                 $stmt->execute();
-                $teams_id = $stmt->fetchAll()[0]['id'];
+                $results = $stmt->fetchAll();
+                $teams_id = $results[0]['id'];
                 $app['db']->insert(
                     'teams_to_persons',
                     $a = array('teams_id' => $teams_id, 'persons_id' => $persons_id)
@@ -111,7 +112,8 @@ class Sqlite {
         $stmt = $app['db']->prepare($sql);
         $stmt->bindValue(1, $team);
         $stmt->execute();
-        return $stmt->fetchAll()[0];
+        $results = $stmt->fetchAll();
+        return $results[0];
     }
 
 }
