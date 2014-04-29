@@ -86,8 +86,11 @@ class Oauth
 
                 if ($token && !$app['security.trust_resolver']->isAnonymous($token)) {
                     $app['user'] = $token->getUser();
-                    $refreshToken = $token->getAccessToken()->getRefreshToken();
                     $email = $app['user']->getEmail();
+                    if (!preg_match('/@liip.ch$/', $email) {
+                        return new Response('Access denied.', 403);
+                    }
+                    $refreshToken = $token->getAccessToken()->getRefreshToken();
                     $username = $app['user']->getUsername();
                     if ($email && $username)
                         $persons = $app['db']->fetchAll('SELECT * FROM persons WHERE email = ?', array($email));
