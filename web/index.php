@@ -29,8 +29,9 @@ Oauth::register($app, $config->settings);
 Sqlite::register($app, $config->settings);
 if (!file_exists($config->settings['dbPath'])) {
     Sqlite::create($app, $config);
-    $persons = $yaml->parse(file_get_contents('../config/people.yaml'))['persons'];
-    $teams = $yaml->parse(file_get_contents('../config/people.yaml'))['teams'];
+    $people = $yaml->parse(file_get_contents('../config/people.yaml'));
+    $persons = $people['persons'];
+    $teams = $people['teams'];
     Sqlite::populate($app, $persons, $teams);
 }
 
