@@ -117,7 +117,7 @@ $app->get(
 
         try {
 
-            $config->people['refresh'] = $app['request']->get('refresh');
+            $refresh = $app['request']->get('refresh');
 
             $helper       = new DateHelper();
             $projectsMode = ($app['request']->get('mode', 'availability') === 'projects');
@@ -127,9 +127,10 @@ $app->get(
             $endDate      = $helper->getEndDate($weeks);
             $days         = $helper->getDays($startDate, $endDate);
             $calendar     = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
-            $persons      = $config->people['persons'];
+            $persons      = Sqlite::allPersons($app);
+            $getTeam      = Sqlite::getTeam($app, $teamId);
 
-            if (!empty($config->people['teams'][$teamId])) {
+            if ($getTeam) {
                 $team = new Team(
                     $teamId,
                     $config->people,
@@ -147,8 +148,9 @@ $app->get(
             
             $nonteam = array();
             
-            foreach ($persons as $id=>$person) {
-                if (!in_array($teamId, array_keys($person['teams']))) {
+            // update this
+            foreach ($persons as $person) {
+                if (!in_array($teamId, array_keys($person->teams))) {
                     $nonteam[$id] = $person;
                 }
             }
