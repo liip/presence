@@ -12,3 +12,4 @@ composer.phar
 
 .vagrant*
 cache/sessions/
+*privatekey.p12
