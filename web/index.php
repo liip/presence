@@ -26,7 +26,9 @@ $app['twig']->getExtension('core')->setTimezone(
     isset($settings['timezone']) ? $settings['timezone']:'Europe/Zurich'
 );
 
-// Oauth::register($app, $config->settings);
+$app['debug'] = true; 
+
+Oauth::register($app, $config->settings);
 
 Sqlite::register($app, $config->settings);
 if (!file_exists($config->settings['dbPath'])) {
