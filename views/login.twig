@@ -1,19 +1,32 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-
-    <title>Presence login</title>
+    <title>Presence</title>
     <link rel="stylesheet" type="text/css" media="all" href="/css/style.css" />
-
   </head>
+
   <body>
-    <div>
-      {% if app.user %}
-      <a href="{{ logoutPath }}">Logout</a>
-      {% else %}
-      <ul>
-        <li><a href="{{ loginPath }}">Login with Google</a></li>
-      </ul>
-      {% endif %}
+
+    <div id="centered">
+
+      <header>
+        <h1><a href="{{ app.url_generator.generate('homepage') }}">&#x21F6;</a> Presence</h1>
+      </header>
+
+      <article>
+        <section>
+          {% if app.user %}
+            <p>Dear {{ app.user.username }}, you are already logged into <b>Presence</b>. You probably don't want to do it anyway but you you can click below to log yourself out:
+            </p>
+            <p><a href="{{ logoutPath }}">Logout</a></p>
+          {% else %}
+            <p>You are not yet logged in, Anonymous. To see calendar information, please authenticate below:</p>
+            <p><a href="{{ loginPath }}">Login with Google</a></p>
+          {% endif %}
+        </section>
+      </article>
+
     </div>
+
   </body>
 </html>

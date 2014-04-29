@@ -89,7 +89,7 @@ class Oauth
                     $refreshToken = $token->getAccessToken()->getRefreshToken();
                     $email = $app['user']->getEmail();
                     $username = $app['user']->getUsername();
-                    if ($refreshToken && $email && $username)
+                    if ($email && $username)
                         $persons = $app['db']->fetchAll('SELECT * FROM persons WHERE email = ?', array($email));
                     if (empty($persons)) {
                         $app['db']->insert(
@@ -100,7 +100,7 @@ class Oauth
                                 'refreshtoken' => $refreshToken,
                             )
                         );
-                    } else {
+                    } elseif (!empty($refreshToken)) {
                         $app['db']->update(
                             'persons',
                             array('refreshtoken' => $refreshToken),
