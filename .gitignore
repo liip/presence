@@ -11,3 +11,4 @@ composer.phar
 .idea
 
 .vagrant*
+cache/sessions/

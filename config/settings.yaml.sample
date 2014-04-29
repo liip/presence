@@ -1,4 +1,5 @@
 timezone: Europe/Zurich
+dbPath: /fullpath/app.db
 
 google:
   key: ************.apps.googleusercontent.com

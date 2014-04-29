@@ -3,8 +3,132 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "12b42b8e34f8c26f2debedada5606bc1",
+    "hash": "57ad3124f6fe6e3574f3f843eba5c994",
     "packages": [
+        {
+            "name": "doctrine/common",
+            "version": "2.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/common.git",
+                "reference": "9e13facbacb001d324d71a0f6d25d8d7f12346b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/9e13facbacb001d324d71a0f6d25d8d7f12346b6",
+                "reference": "9e13facbacb001d324d71a0f6d25d8d7f12346b6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Doctrine\\Common": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com",
+                    "homepage": "http://www.jwage.com/",
+                    "role": "Creator"
+                },
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com",
+                    "homepage": "http://www.instaclick.com"
+                },
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com",
+                    "homepage": "http://jmsyst.com",
+                    "role": "Developer of wrapped JMSSerializerBundle"
+                }
+            ],
+            "description": "Common Library for Doctrine projects",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "annotations",
+                "collections",
+                "eventmanager",
+                "persistence",
+                "spl"
+            ],
+            "time": "2012-08-29 08:04:14"
+        },
+        {
+            "name": "doctrine/dbal",
+            "version": "2.2.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/dbal.git",
+                "reference": "7331fdbf662a3c8f541100017e3a1db9e10507fe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/7331fdbf662a3c8f541100017e3a1db9e10507fe",
+                "reference": "7331fdbf662a3c8f541100017e3a1db9e10507fe",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/common": ">=2.2.0,<=2.2.99",
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Doctrine\\DBAL": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com",
+                    "homepage": "http://www.jwage.com/",
+                    "role": "Creator"
+                },
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com",
+                    "homepage": "http://www.instaclick.com"
+                },
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                }
+            ],
+            "description": "Database Abstraction Layer",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "database",
+                "dbal",
+                "persistence",
+                "queryobject"
+            ],
+            "time": "2012-11-25 18:06:51"
+        },
         {
             "name": "gigablah/silex-oauth",
             "version": "0.1.x-dev",
@@ -337,12 +461,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "79bb38a3607d8a4fe17497881b71aca54b9ca58c"
+                "reference": "e5edd3ae9186940ce2c332cc02fe78147233c4a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/79bb38a3607d8a4fe17497881b71aca54b9ca58c",
-                "reference": "79bb38a3607d8a4fe17497881b71aca54b9ca58c",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/e5edd3ae9186940ce2c332cc02fe78147233c4a3",
+                "reference": "e5edd3ae9186940ce2c332cc02fe78147233c4a3",
                 "shasum": ""
             },
             "require": {
@@ -385,7 +509,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2014-04-24 15:48:28"
+            "time": "2014-04-29 06:56:05"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -516,12 +640,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "566e2bf9ecfe4ee0b08f78a57399749482eb6a2b"
+                "reference": "8fa350478681c3ee707106afbe04be80add2b3ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/566e2bf9ecfe4ee0b08f78a57399749482eb6a2b",
-                "reference": "566e2bf9ecfe4ee0b08f78a57399749482eb6a2b",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/8fa350478681c3ee707106afbe04be80add2b3ff",
+                "reference": "8fa350478681c3ee707106afbe04be80add2b3ff",
                 "shasum": ""
             },
             "require": {
@@ -562,7 +686,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-04-18 21:02:40"
+            "time": "2014-04-28 17:44:51"
         },
         {
             "name": "symfony/http-kernel",
@@ -571,12 +695,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "c3cc3cac49aa27519bc3d683a8d09dd3883280ed"
+                "reference": "3c8f3c1b18b43e6eba4607201c86608953b8d929"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/c3cc3cac49aa27519bc3d683a8d09dd3883280ed",
-                "reference": "c3cc3cac49aa27519bc3d683a8d09dd3883280ed",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/3c8f3c1b18b43e6eba4607201c86608953b8d929",
+                "reference": "3c8f3c1b18b43e6eba4607201c86608953b8d929",
                 "shasum": ""
             },
             "require": {
@@ -635,7 +759,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2014-04-19 08:12:20"
+            "time": "2014-04-29 07:08:19"
         },
         {
             "name": "symfony/icu",
@@ -951,12 +1075,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Security.git",
-                "reference": "bf15ba6fe71ae1040e209cee8a769672eb2e03bb"
+                "reference": "8ed00906f2841b145735c9a01a4905baa57be310"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Security/zipball/bf15ba6fe71ae1040e209cee8a769672eb2e03bb",
-                "reference": "bf15ba6fe71ae1040e209cee8a769672eb2e03bb",
+                "url": "https://api.github.com/repos/symfony/Security/zipball/8ed00906f2841b145735c9a01a4905baa57be310",
+                "reference": "8ed00906f2841b145735c9a01a4905baa57be310",
                 "shasum": ""
             },
             "require": {
@@ -1018,7 +1142,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "http://symfony.com",
-            "time": "2014-04-23 14:08:54"
+            "time": "2014-04-28 05:15:04"
         },
         {
             "name": "symfony/yaml",
@@ -1175,12 +1299,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "339b91cd73c9930c792d54092dc6e1cd376b7a8d"
+                "reference": "ee165e7f10b300d343f66b0163859ad05d9fd30a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/339b91cd73c9930c792d54092dc6e1cd376b7a8d",
-                "reference": "339b91cd73c9930c792d54092dc6e1cd376b7a8d",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/ee165e7f10b300d343f66b0163859ad05d9fd30a",
+                "reference": "ee165e7f10b300d343f66b0163859ad05d9fd30a",
                 "shasum": ""
             },
             "require": {
@@ -1242,7 +1366,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2014-04-02 00:29:17"
+            "time": "2014-04-29 05:27:44"
         }
     ],
     "aliases": [
