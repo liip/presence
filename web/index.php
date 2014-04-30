@@ -142,7 +142,7 @@ $app->get(
 
         try {
 
-            $refresh = $app['request']->get('refresh');
+            $config->people['refresh'] = $app['request']->get('refresh');
 
             $helper       = new DateHelper();
             $projectsMode = ($app['request']->get('mode', 'availability') === 'projects');
