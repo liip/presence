@@ -38,7 +38,6 @@ if (!file_exists($config->settings['dbPath'])) {
 }
 
 // Get email address and user name here, as Oauth has just checked the user has an @liip.ch email address.
-
 $app->get(
     '/login',
     function () use ($app) {
@@ -195,7 +194,6 @@ $app->get(
                 'weeks'               => $weeks,
                 'showDetails'         => $showDetails,
                 'projectsMode'        => $projectsMode,
-                'serviceAccountEmail' => $config->settings['google']['serviceAccountName'],
                 'nonteam'             => $nonteam
             )
         );
