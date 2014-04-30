@@ -108,7 +108,7 @@ class Team
      */
     protected function getPerson($email, array $person)
     {
-        if ($calendar) {
+        if ($this->calendar) {
             $cacheIdParts = array(
                 $email,
                 $this->calendar->getStartDate(),
