@@ -24,6 +24,7 @@
                                 <li><a href="{{ app.url_generator.generate('availabilities', {'teamId': team.slug}) }}">{{ team.name }}</a></li>
                             {% endfor %}
                         </ul>
+                        
                     </section>
 
                     <section class="quickhelp">
@@ -80,7 +81,7 @@
 
                     <ul class="personList">
                         {% for person in persons %}
-                            <li><a href="{{ app.url_generator.generate('availabilities', {'teamId': person.email}) }}">{{ person.name }}</a></li>
+                            <li><a href="{{ app.url_generator.generate('availabilities', {'teamId': person.id}) }}">{{ person.name }}</a></li>
                         {% endfor %}
                     </ul>
 

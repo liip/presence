@@ -49,7 +49,7 @@ class Team
      * @param array             $people   Configuration.
      * @param CalendarInterface $calendar Calendar object.
      */
-    public function __construct($id, array $people, CalendarInterface $calendar)
+    public function __construct($id, array $people, CalendarInterface $calendar = null)
     {
         // TODO add validation
         $this->id       = $id;
@@ -90,7 +90,7 @@ class Team
         foreach ($persons as $email => $person) {
 
             if (in_array($this->id, array_keys($person['teams']))) {
-                $members[] = $this->getPerson($email, $person);
+                $members[] = $this->getPerson($email, $person, $this->calendar);
             }
         }
 
@@ -100,27 +100,32 @@ class Team
     /**
      * Instantiate a Person (team member) from scratch or loads it from the cache.
      *
-     * @param string $email  The email address of a person (used to identify a person).
-     * @param array  $person Information about a person.
+     * @param string            $email    The email address of a person (used to identify a person).
+     * @param array             $person   Information about a person.
+     * @param CalendarInterface $calendar Calendar object.
      *
      * @return Person a Person object
      */
     protected function getPerson($email, array $person)
     {
-        $cacheIdParts = array(
-            $email,
-            $this->calendar->getStartDate(),
-            $this->calendar->getEndDate()
-        );
-        $cacheId = implode('_', $cacheIdParts);
+        if ($calendar) {
+            $cacheIdParts = array(
+                $email,
+                $this->calendar->getStartDate(),
+                $this->calendar->getEndDate()
+            );
+            $cacheId = implode('_', $cacheIdParts);
 
-        $this->refresh === 'all' || $this->refresh === $email ?
-            $member = false : $member = apc_fetch($cacheId);
+            $this->refresh === 'all' || $this->refresh === $email ?
+                $member = false : $member = apc_fetch($cacheId);
 
-        if (!$member) {
+            if (!$member) {
+                $member = new Person($email, $person);
+                $member->getSchedule($this->calendar);
+                apc_store($cacheId, $member, $this->calendar->getCacheTtl());
+            }
+        } else {
             $member = new Person($email, $person);
-            $member->getSchedule($this->calendar);
-            apc_store($cacheId, $member, $this->calendar->getCacheTtl());
         }
 
         return $member;

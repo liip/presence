@@ -90,21 +90,64 @@ class Sqlite {
         }
     }
 
+    // Returns array of Person objects for all rows in persons db table.
     public static function allPersons($app) {
-        $sql = "SELECT p.name, p.email FROM persons p";
+        $sql = "SELECT * FROM persons p";
         $stmt = $app['db']->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll();
+        $results = $stmt->fetchAll();
+        $persons = array();
+        foreach ($results as $result) {
+            $id = $result['email'];
+            $data = array(
+                'name' => $result['name'],
+                'teams' => Sqlite::getPersonsTeams($app, $result['id'])
+            );
+            $person = new Person($id, $data);
+            array_push($persons, $person);
+        }
+        return $persons;
     }
 
+    //Returns array of Team objects for all rows in teams db table.
     public static function allTeams($app) {
-        $sql = "SELECT t.name, t.slug FROM teams t";
+        $sql = "SELECT * FROM teams t";
         $stmt = $app['db']->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $teams = array();
+        foreach ($results as $result) {
+            $id = $result['slug'];
+            $data = array(
+                'name' => $result['name'],
+                'members' => Sqlite::getTeamsMembers($app, $result['id'])
+            );
+            $person = new Person($id, $data);
+            array_push($persons, $person);
+        }
+        return $persons;
+    }
+
+    public static function getTeam($app, $slug) {
+        $sql = "SELECT * FROM teams
+                WHERE slug = ?";
+        $stmt = $app['db']->prepare($sql);
+        $stmt->bindValue(1, $slug);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public static function teamMembers($app, $team) {
+    public static function getPersonsTeams($app, $persons_id) {
+        $sql = "SELECT * FROM teams t
+                JOIN teams_to_persons tp
+                ON tp.teams_id = t.id
+                AND tp.persons_id = ?";
+        $stmt = $app['db']->prepare($sql);
+        $stmt->bindValue(1, $persons_id);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    public static function getTeamsMembers($app, $teams_id) {
         $sql = "SELECT * FROM persons p
                 JOIN teams_to_persons tp
                 ON tp.persons_id = p.id
