@@ -143,7 +143,7 @@ $app->get(
                     $calendar
                 );
             } else {
-                $app->abort(404, 'No team or person found with ID ' . $teamId . ' does not exist');
+                $app->abort(404, 'No team or person found with ID ' . $teamId . '.');
             }
             
             $nonteam = array();
