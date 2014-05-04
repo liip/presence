@@ -202,7 +202,7 @@
         <select data-placeholder="Search..." id="chosen_teamofone" class="personsearch">
             <option value=""></option>
             {% for id, person in nonteam %}
-                <option value="{{ app.url_generator.generate('add', {'teamId': team.id, 'personId': id}) }}">{{ person.name }}</option>
+                <option value="{{ app.url_generator.generate('add', {'teamId': team.id, 'personId': person.email}) }}">{{ person.name }}</option>
             {% endfor %}
         </select>
 

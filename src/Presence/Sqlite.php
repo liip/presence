@@ -134,6 +134,15 @@ class Sqlite {
         return $stmt->fetchAll();
     }
     
+    public static function getPerson($app, $email) {
+        $sql = "SELECT * FROM persons
+                WHERE email = ?";
+        $stmt = $app['db']->prepare($sql);
+        $stmt->bindValue(1, $email);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    
     public static function getPersonsTeams($app, $persons_id) {
         $sql = "SELECT * FROM teams t 
                 JOIN teams_to_persons tp 
@@ -145,15 +154,57 @@ class Sqlite {
         return $stmt->fetchAll();
     }
     
-    public static function getTeamsMembers($app, $teams_id) {
+    public static function getTeamsMembers($app, $slug) {
         $sql = "SELECT * FROM persons p 
                 JOIN teams_to_persons tp 
                 ON tp.persons_id = p.id 
-                AND tp.teams_id = ?";
+                AND tp.teams_id = (SELECT id FROM teams WHERE slug = ?)";
         $stmt = $app['db']->prepare($sql);
-        $stmt->bindValue(1, $team);
+        $stmt->bindValue(1, $slug);
         $stmt->execute();
-        return $stmt->fetchAll()[0];
+        return $stmt->fetchAll();
+    }
+    
+    public static function getTeamsNonMembers($app, $slug) {
+        $sql = "SELECT * FROM persons p 
+                WHERE NOT EXISTS (
+                    SELECT * FROM teams_to_persons
+                    WHERE persons_id = p.id
+                    AND teams_id = (SELECT id FROM teams WHERE slug = ?)
+                )";
+        $stmt = $app['db']->prepare($sql);
+        $stmt->bindValue(1, $slug);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    
+    public static function addToTeam($app, $team, $person) {
+        $sql = "INSERT INTO teams_to_persons (teams_id, persons_id) VALUES (?, ?)";
+        $stmt = $app['db']->prepare($sql);
+        $stmt->bindValue(1, $team[0]['id']);
+        $stmt->bindValue(2, $person[0]['id']);
+        $stmt->execute();
+    }
+    
+    public static function personInTeam($app, $team, $person) {
+        $sql = "SELECT * FROM teams_to_persons 
+                WHERE teams_id = ? 
+                AND persons_id = ?";
+        $stmt = $app['db']->prepare($sql);
+        $stmt->bindValue(1, $team[0]['id']);
+        $stmt->bindValue(2, $person[0]['id']);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    
+    public static function removeFromTeam($app, $team, $person) {
+        $sql = "DELETE FROM teams_to_persons (teams_id, persons_id) 
+                WHERE teams_id = ? 
+                AND persons_id = ?";
+        $stmt = $app['db']->prepare($sql);
+        $stmt->bindValue(1, $team[0]['id']);
+        $stmt->bindValue(2, $person[0]['id']);
+        $stmt->execute();
     }
 
 }

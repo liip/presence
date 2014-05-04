@@ -49,14 +49,14 @@ class Team
      * @param array             $people   Configuration.
      * @param CalendarInterface $calendar Calendar object.
      */
-    public function __construct($id, array $people, CalendarInterface $calendar = null)
+    public function __construct($app, $id, CalendarInterface $calendar)
     {
         // TODO add validation
         $this->id       = $id;
         $this->calendar = $calendar;
-        $this->refresh  = $people['refresh'];
-        $this->name     = $this->getTeamName($people['teams']);
-        $this->members  = $this->getTeamMembers($people['persons']);
+        $this->refresh  = $app['request']->get('refresh');
+        $this->name     = Sqlite::getTeam($app, $id)[0]['name'];
+        $this->members  = Sqlite::getTeamsMembers($app, $id);
     }
 
     /**
