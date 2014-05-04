@@ -194,7 +194,7 @@ class Sqlite {
     }
     
     public static function removeFromTeam($app, $team, $person) {
-        $sql = "DELETE FROM teams_to_persons (teams_id, persons_id) 
+        $sql = "DELETE FROM teams_to_persons 
                 WHERE teams_id = ? 
                 AND persons_id = ?";
         $stmt = $app['db']->prepare($sql);
