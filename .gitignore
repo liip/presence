@@ -11,3 +11,5 @@ composer.phar
 .idea
 
 .vagrant*
+
+*privatekey.p12
