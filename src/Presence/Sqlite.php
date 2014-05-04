@@ -203,6 +203,28 @@ class Sqlite {
         $stmt->execute();
     }
 
+    public static function createTeam($app, $name) {
+        $pattern = '/[^a-z0-9]/';
+        $replacement = '';
+        $subject = strtolower($name);
+        $slug = preg_replace($pattern, $replacement, $subject);
+        $sql = "SELECT * FROM teams WHERE slug = ?";
+        $stmt = $app['db']->prepare($sql);
+        $stmt->bindValue(1, $slug);
+        $stmt->execute();
+        var_dump($stmt->fetchAll());
+        if (!$result) {
+            $sql = "INSERT INTO teams (slug, name) VALUES (?, ?)";
+            $stmt = $app['db']->prepare($sql);
+            $stmt->bindValue(1, $slug);
+            $stmt->bindValue(2, $name);
+            $stmt->execute();
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
 }
 
 

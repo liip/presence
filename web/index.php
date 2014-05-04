@@ -200,7 +200,7 @@ $app->get(
  */
 $app->get(
     '/{teamId}/{personId}/delete',
-    function($teamId, $personId) use ($app, $config) {
+    function($teamId, $personId) use ($app) {
         try {
         
             $getTeam    = Sqlite::getTeam($app, $teamId);
@@ -225,5 +225,22 @@ $app->get(
     }
 )
 ->bind('delete');
+
+/**
+ * Create team
+ */
+$app->get(
+    '/{teamId}/create',
+    function($teamId) use ($app) {
+        try {
+            $teamCreated = (Sqlite::createTeam($app, $teamId));
+            var_dump($teamCreated);
+            die;
+        } catch (\Exception $e) {
+            $app->abort(404, $e->getMessage());
+        }
+    }
+)
+->bind('create');
 
 $app->run();
