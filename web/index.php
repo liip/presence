@@ -48,10 +48,17 @@ $app->get(
     '/',
     function () use ($app, $config) {
     
+        $helper       = new DateHelper();
+        $startDate    = $helper->getStartDate($app['request']->get('week'));
+        $weeks        = $app['request']->get('view', 1);
+        $endDate      = $helper->getEndDate($weeks);
+        $days         = $helper->getDays($startDate, $endDate);
+        $calendar     = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
+    
         return $app['twig']->render(
             'index.twig',
             array(
-                'teams'   => Sqlite::allTeams($app),
+                'teams'   => Sqlite::allTeams($app, $calendar),
                 'persons' => Sqlite::allPersons($app),
             )
         );
