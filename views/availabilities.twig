@@ -12,8 +12,8 @@
         <li>
           <h1><a href="{{ app.url_generator.generate('homepage') }}">&#x21F6;</a> {{ team.name }} <span>&#x25BC;</span></h1>
           <ul class="teamList">
-            {% for teamId, teamData in teams %}
-              <li class=""><a href="{{ app.url_generator.generate('availabilities', {'teamId': teamId, 'view': weeks, 'details': showDetails }) }}">{{ teamData.name }}</a></li>
+            {% for team in teams %}
+              <li class=""><a href="{{ app.url_generator.generate('availabilities', {'teamId': team.id, 'view': weeks, 'details': showDetails }) }}">{{ team.name }}</a></li>
             {% endfor %}
           </ul>
         </li>

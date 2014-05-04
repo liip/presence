@@ -107,22 +107,18 @@ class Sqlite {
     }
     
     //Returns array of Team objects for all rows in teams db table.
-    public static function allTeams($app) {
+    public static function allTeams($app, $calendar) {
         $sql = "SELECT * FROM teams t";
         $stmt = $app['db']->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll();
+        $results = $stmt->fetchAll();
         $teams = array();
         foreach ($results as $result) {
             $id = $result['slug'];
-            $data = array(
-                'name' => $result['name'],
-                'members' => Sqlite::getTeamsMembers($app, $result['id'])
-            );
-            $person = new Person($id, $data);
-            array_push($persons, $person);
+            $team = new Team($app, $id, $calendar);
+            array_push($teams, $team);
         }
-        return $persons;
+        return $teams;
     }
     
     public static function getTeam($app, $slug) {

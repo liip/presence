@@ -153,7 +153,7 @@ $app->get(
         return $app['twig']->render(
             (($projectsMode) ? 'projects' : 'availabilities' ). '.twig',
             array(
-                'teams'               => Sqlite::allTeams($app),
+                'teams'               => Sqlite::allTeams($app, $calendar),
                 'team'                => $team,
                 'days'                => $days,
                 'weeks'               => $weeks,
