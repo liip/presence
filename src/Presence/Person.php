@@ -1,6 +1,6 @@
 <?php
 
-namespace Teamavailabilities;
+namespace Presence;
 
 use \DateTime;
 
@@ -90,9 +90,6 @@ class Person
         $this->id = $id;
 
         $this->setDataKey($data, 'name');
-        $this->setDataKey($data, 'role');
-        $this->setDataKey($data, 'percentage');
-        $this->setDataKey($data, 'location');
         $this->setDataKey($data, 'teams');
     }
 
@@ -114,23 +111,21 @@ class Person
     /**
      * Sets the events and initializes each as Event().
      *
-     * @param array   $events      Contains the data from the calendar service.
+     * @param array $events Contains the data from the calendar service.
      *
-     * @return mixed // this is to fix the code sniffer error, should be void
+     * @return void
      */
     public function setEvents(array $events)
     {
-        if (is_array($events)) {
-            foreach ($events as $event) {
-                $this->events[] = new Event($event);
-            }
+        foreach ($events as $event) {
+            $this->events[] = new Event($event);
         }
     }
 
     /**
      * Gets the schedule for this Person.
      *
-     * @param CalendarInterface $calendar    Calendar object.
+     * @param CalendarInterface $calendar Calendar object.
      *
      * @return void
      */
@@ -265,15 +260,19 @@ class Person
             if ($event::TYPE_OFF === $event->type) {
                 return $this->timeSlots[$id] = array(
                     'class' => 'off',
-                    'title' => $event->summary
+                    'title' => str_replace('#', '', $event->summary)
                 );
             }
 
             if ($event::TYPE_PROJECT === $event->type) {
                 return $this->timeSlots[$id] = array(
                     'class' => 'busy',
-                    'title' => $event->summary
+                    'title' => str_replace('#', '', $event->summary)
                 );
+            }
+
+            if ($event::TYPE_APPOINTMENT === $event->type) {
+                $class = 'busy';
             }
         }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Teamavailabilities;
+namespace Presence;
 
 /**
  * Team that the calendar will be displayed for.
@@ -45,17 +45,18 @@ class Team
     /**
      * Assemble the team for this instance.
      *
-     * @param string            $id          The team id.
-     * @param array             $people      Configuration.
-     * @param CalendarInterface $calendar    Calendar object.
+     * @param string            $id       The team id.
+     * @param array             $people   Configuration.
+     * @param CalendarInterface $calendar Calendar object.
      */
-    public function __construct($id, array $people, CalendarInterface $calendar)
+    public function __construct($app, $id, CalendarInterface $calendar)
     {
+        // TODO add validation
         $this->id       = $id;
         $this->calendar = $calendar;
-        $this->refresh  = $people['refresh'];
-        $this->name     = $this->getTeamName($people['teams']);
-        $this->members  = $this->getTeamMembers($people['persons']);
+        $this->refresh  = $app['request']->get('refresh');
+        $this->name     = Sqlite::getTeam($app, $id)[0]['name'];
+        $this->members  = Sqlite::getTeamsMembers($app, $id);
     }
 
     /**
@@ -78,7 +79,7 @@ class Team
     /**
      * Find the team members and instantiate them.
      *
-     * @param array   $persons     All the existing persons.
+     * @param array $persons All the existing persons.
      *
      * @return array members that belong to this team
      */
@@ -89,7 +90,7 @@ class Team
         foreach ($persons as $email => $person) {
 
             if (in_array($this->id, array_keys($person['teams']))) {
-                $members[] = $this->getPerson($email, $person);
+                $members[] = $this->getPerson($email, $person, $this->calendar);
             }
         }
 
@@ -99,27 +100,32 @@ class Team
     /**
      * Instantiate a Person (team member) from scratch or loads it from the cache.
      *
-     * @param string  $email       The email address of a person (used to identify a person).
-     * @param array   $person      Information about a person.
+     * @param string            $email    The email address of a person (used to identify a person).
+     * @param array             $person   Information about a person.
+     * @param CalendarInterface $calendar Calendar object.
      *
      * @return Person a Person object
      */
     protected function getPerson($email, array $person)
     {
-        $cacheIdParts = array(
-            $email,
-            $this->calendar->getStartDate(),
-            $this->calendar->getEndDate()
-        );
-        $cacheId = implode('_', $cacheIdParts);
+        if ($calendar) {
+            $cacheIdParts = array(
+                $email,
+                $this->calendar->getStartDate(),
+                $this->calendar->getEndDate()
+            );
+            $cacheId = implode('_', $cacheIdParts);
 
-        $this->refresh === 'all' || $this->refresh === $email ?
-            $member = false : $member = apc_fetch($cacheId);
+            $this->refresh === 'all' || $this->refresh === $email ?
+                $member = false : $member = apc_fetch($cacheId);
 
-        if (!$member) {
+            if (!$member) {
+                $member = new Person($email, $person);
+                $member->getSchedule($this->calendar);
+                apc_store($cacheId, $member, $this->calendar->getCacheTtl());
+            }
+        } else {
             $member = new Person($email, $person);
-            $member->getSchedule($this->calendar);
-            apc_store($cacheId, $member, $this->calendar->getCacheTtl());
         }
 
         return $member;
