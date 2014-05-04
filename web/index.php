@@ -241,13 +241,29 @@ $app->get(
     function($teamId) use ($app) {
         try {
             $teamCreated = (Sqlite::createTeam($app, $teamId));
-            var_dump($teamCreated);
-            die;
+            if ($teamCreated) {
+                return $app->redirect('/{teamId}');
+            } else {
+                return $app->abort(404, 'A team with the slug ' . $teamId . ' already exists.');
+            }
         } catch (\Exception $e) {
             $app->abort(404, $e->getMessage());
         }
     }
 )
-->bind('create');
+->bind('createTeam');
+
+$app->get(
+    '/{teamId}/delete',
+    function($teamId) use ($app) {
+        try {
+            $teamDeleted = (Sqlite::deleteTeam($app, $teamId));
+            return $app->redirect('/');
+        } catch (\Exception $e) {
+            $app->abort(404, $e->getMessage());
+        }
+    }
+)
+->bind('deleteTeam');
 
 $app->run();

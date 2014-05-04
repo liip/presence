@@ -212,7 +212,7 @@ class Sqlite {
         $stmt = $app['db']->prepare($sql);
         $stmt->bindValue(1, $slug);
         $stmt->execute();
-        var_dump($stmt->fetchAll());
+        $result = $stmt->fetchAll();
         if (!$result) {
             $sql = "INSERT INTO teams (slug, name) VALUES (?, ?)";
             $stmt = $app['db']->prepare($sql);
@@ -223,6 +223,14 @@ class Sqlite {
         } else {
             return 0;
         }
+    }
+
+    public static function deleteTeam($app, $slug) {
+        $sql = "DELETE FROM teams
+                WHERE slug = ?";
+        $stmt = $app['db']->prepare($sql);
+        $stmt->bindValue(1, $slug);
+        $stmt->execute();
     }
 
 }
