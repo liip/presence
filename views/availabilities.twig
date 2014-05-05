@@ -12,8 +12,8 @@
         <li>
           <h1><a href="{{ app.url_generator.generate('homepage') }}">&#x21F6;</a> {{ team.name }} <span>&#x25BC;</span></h1>
           <ul class="teamList">
-            {% for teamId, teamData in teams %}
-              <li class=""><a href="{{ app.url_generator.generate('availabilities', {'teamId': teamId, 'view': weeks, 'details': showDetails }) }}">{{ teamData.name }}</a></li>
+            {% for team in teams %}
+              <li class=""><a href="{{ app.url_generator.generate('availabilities', {'teamId': team.id, 'view': weeks, 'details': showDetails }) }}">{{ team.name }}</a></li>
             {% endfor %}
           </ul>
         </li>
@@ -68,7 +68,7 @@
         <span class="infoBubble">
             Mode
             <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}">
-                {% if projectMode %}
+                {% if projectsMode %}
                     availability
                 {% else %}
                     <span class="number">availability</span>
@@ -76,7 +76,7 @@
             </a>
             /
             <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}&mode=projects">
-                {% if projectMode %}
+                {% if projectsMode %}
                     <span class="number">projects</span>
                 {% else %}
                     projects
@@ -100,6 +100,7 @@
           <h2>Person</h2>
         </div>
         <ul class="days">
+            {% set weekClass = 1 %}
             {% if (weeks == 2)  %}
                 {% set weekClass = 'two-weeks'  %}
             {% endif %}
@@ -181,41 +182,36 @@
               {% endfor %}
             {% else %}
               <li class="day fullWidth error">
-                Unable to read the calendar <strong>{{ member.id }}</strong>. Please allow <strong>{{ serviceAccountEmail }}</strong> to view the events of this calendar.
-                <br /><br />
-                <a href="http://support.google.com/calendar/answer/143754?hl=en" target="_blank">Click here for instructions on doing that with Google Calendar</a> (Opens in new tab...)
-                <br /><br />
-                You can try again by pressing <a href="{{ app.url_generator.generate('availabilities', {'teamId': team.id, 'refresh': member.id }) }}">here</a>
+                You are not allowed to view the calendar of <strong>{{ member.email }}</strong> and therefore Presence cannot show you the nasty details. Please ask the owner of {{ member.email }} to give you viewing permissions on the calendar.
               </li>
             {% endif %}
             <li>
-                <a href="/{{ team.id }}/{{ member.id }}/delete">Delete</a>
+                <a href="/{{ team.id }}/{{ member.id }}/delete">Remove from team</a>
             </li>
           </ul>
         </li>
       {% endfor %}
     </ul>
-    
     <section class="persons">
 
-        <h2>Persons not on this team</h2>
-        
-        <p>Select to add a person to this team</p>
+      <h2>Persons not on this team</h2>
 
-        <select data-placeholder="Search..." id="chosen_teamofone" class="personsearch">
-            <option value=""></option>
-            {% for id, person in nonteam %}
-                <option value="{{ app.url_generator.generate('add', {'teamId': team.id, 'personId': id}) }}">{{ person.name }}</option>
-            {% endfor %}
-        </select>
+      <p>Select to add a person to this team</p>
+
+      <select data-placeholder="Search..." id="chosen_teamofone" class="personsearch">
+          <option value=""></option>
+          {% for id, person in nonteam %}
+          <option value="{{ app.url_generator.generate('add', {'teamId': team.id, 'personId': person.email}) }}">{{ person.name }}</option>
+          {% endfor %}
+      </select>
 
     </section>
-        <script src="js/jquery.js" type="text/javascript"></script>
-        <script src="js/chosen.jquery.js" type="text/javascript"></script>
-        <script>
-            $('#chosen_teamofone').chosen().change(function() {
-            window.location = window.location.protocol + '//' + window.location.hostname + $(this).val();
-            });
-        </script>
+    <script src="js/jquery.js" type="text/javascript"></script>
+    <script src="js/chosen.jquery.js" type="text/javascript"></script>
+    <script>
+     $('#chosen_teamofone').chosen().change(function() {
+       window.location = window.location.protocol + '//' + window.location.hostname + $(this).val();
+     });
+    </script>
   </body>
 </html>

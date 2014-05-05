@@ -18,6 +18,7 @@ php5-cli
 php5-curl
 php5-intl
 php5-dev
+php5-sqlite
 php-apc
 php-pear
 ).each { | pkg | package pkg }

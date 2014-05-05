@@ -26,28 +26,18 @@
              "Presence": "src/"
              },
          "files": [
-             "vendor/google-api-php-client/src/Google_Client.php",
-             "vendor/google-api-php-client/src/contrib/Google_CalendarService.php"
+             "vendor/google/apiclient/src/Google/Service/Calendar.php"
              ]
      },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "google-api-php-client",
-                "version": "0.6.1",
-                "dist": {
-                    "url": "http://google-api-php-client.googlecode.com/files/google-api-php-client-0.6.1.tar.gz",
-                    "type": "tar"
-                }
-            }
-        }
-    ],
     "require": {
-        "silex/silex": "1.1.*@dev",
+        "silex/silex": "1.2.*@dev",
         "twig/twig": ">=1.8,<2.0-dev",
-        "google-api-php-client": "0.6.x",
-        "symfony/yaml": "v2.2.0"
+        "google/apiclient": "dev-master",
+        "symfony/yaml": "v2.2.0",
+        "symfony/security": "~2.3",
+        "gigablah/silex-oauth": "~0.1",
+        "symfony/form": "~2.3",
+        "doctrine/dbal":"2.2.*"
     },
 
     "require-dev": {

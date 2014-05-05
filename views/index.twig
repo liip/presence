@@ -20,8 +20,8 @@
                         <h2>Teams</h2>
 
                         <ul class="teamList">
-                            {% for teamId,team in teams %}
-                                <li><a href="{{ app.url_generator.generate('availabilities', {'teamId': teamId}) }}">{{ team.name }}</a></li>
+                            {% for team in teams %}
+                                <li><a href="{{ app.url_generator.generate('availabilities', {'teamId': team.id}) }}">{{ team.name }}</a></li>
                             {% endfor %}
                         </ul>
                         
@@ -74,14 +74,14 @@
 
                     <select data-placeholder="Search..." id="chosen_teamofone" class="personsearch">
                         <option value=""></option>
-                        {% for email, person in persons %}
-                            <option value="{{ email }}">{{ person.name }}</option>
+                        {% for person in persons %}
+                            <option value="{{ person.email }}">{{ person.name }}</option>
                         {% endfor %}
                     </select>
 
                     <ul class="personList">
-                        {% for email, person in persons %}
-                            <li><a href="{{ app.url_generator.generate('availabilities', {'teamId': email}) }}">{{ person.name }}</a></li>
+                        {% for person in persons %}
+                            <li><a href="{{ app.url_generator.generate('availabilities', {'teamId': person.email}) }}">{{ person.name }}</a></li>
                         {% endfor %}
                     </ul>
 

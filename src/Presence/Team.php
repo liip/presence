@@ -49,14 +49,15 @@ class Team
      * @param array             $people   Configuration.
      * @param CalendarInterface $calendar Calendar object.
      */
-    public function __construct($id, array $people, CalendarInterface $calendar = null)
+    public function __construct($app, $id, CalendarInterface $calendar)
     {
         // TODO add validation
+
         $this->id       = $id;
         $this->calendar = $calendar;
-        $this->refresh  = $people['refresh'];
-        $this->name     = $this->getTeamName($people['teams']);
-        $this->members  = $this->getTeamMembers($people['persons']);
+        $this->refresh  = $app['request']->get('refresh');
+        $this->name     = Sqlite::getTeam($app, $id)[0]['name'];
+        $this->members  = $this->getTeamMembers(Sqlite::getTeamsMembers($app, $id));
     }
 
     /**
@@ -87,11 +88,8 @@ class Team
     {
         $members = array();
 
-        foreach ($persons as $email => $person) {
-
-            if (in_array($this->id, array_keys($person['teams']))) {
-                $members[] = $this->getPerson($email, $person, $this->calendar);
-            }
+        foreach ($persons as $person) {
+            $members[] = $this->getPerson($person['email'], $person['name']);
         }
 
         return $members;
@@ -106,9 +104,9 @@ class Team
      *
      * @return Person a Person object
      */
-    protected function getPerson($email, array $person, CalendarInterface $calendar)
+    protected function getPerson($email, $name)
     {
-        if ($calendar) {
+        if ($this->calendar) {
             $cacheIdParts = array(
                 $email,
                 $this->calendar->getStartDate(),
@@ -120,12 +118,12 @@ class Team
                 $member = false : $member = apc_fetch($cacheId);
 
             if (!$member) {
-                $member = new Person($email, $person);
+                $member = new Person($email, $name);
                 $member->getSchedule($this->calendar);
                 apc_store($cacheId, $member, $this->calendar->getCacheTtl());
             }
         } else {
-            $member = new Person($email, $person);
+            $member = new Person($email, $name);
         }
 
         return $member;
