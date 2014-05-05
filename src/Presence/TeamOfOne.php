@@ -21,7 +21,8 @@ class TeamOfOne extends Team
         $this->id       = $id;
         $this->calendar = $calendar;
         $this->refresh  = $app['request']->get('refresh');
-        $this->name     = Sqlite::getPerson($app, $id)[0]['name'];
+        $person = Sqlite::getPerson($app, $id);
+        $this->name     = $person[0]['name'];
         $this->members  = array($this->getPerson($id, $this->name));
     }
 }

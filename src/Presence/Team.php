@@ -56,7 +56,8 @@ class Team
         $this->id       = $id;
         $this->calendar = $calendar;
         $this->refresh  = $app['request']->get('refresh');
-        $this->name     = Sqlite::getTeam($app, $id)[0]['name'];
+        $team = Sqlite::getTeam($app, $id);
+        $this->name     = $team[0]['name'];
         $this->members  = $this->getTeamMembers(Sqlite::getTeamsMembers($app, $id));
     }
 
