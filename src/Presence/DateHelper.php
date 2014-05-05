@@ -2,64 +2,47 @@
 
 namespace Presence;
 
-use \DateTime;
-use \DateInterval;
-
 /**
  * Helper to assist with start and enddate parsing/handling.
  */
 class DateHelper
 {
     /**
-     * Start date from when to get events.
-     *
-     * @var DateTime
-     */
-    protected $startDate = null;
-
-    /**
-     * Intialize the $startDate.
-     */
-    public function __construct()
-    {
-        $this->startDate = new DateTime();
-    }
-
-    /**
      * Gets the starting date (Monday).
      *
      * @param string $weekString The week GET parameter.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getStartDate($weekString = '')
     {
         if (!empty($weekString)) {
-            $this->parseWeekString($weekString);
+            $startDate = $this->getWeekDateTime($weekString);
         } else {
-            $this->setStartDateToNextOrLastMonday();
+            $startDate = $this->getNextOrLastMonday(new \DateTime());
         }
 
         // get the date at the time "00:00:00"
-        $this->startDate = DateTime::createFromFormat('Y-m-d H:i:s', $this->startDate->format('Y-m-d') . ' 00:00:00');
+        $startDate = \DateTime::createFromFormat('Y-m-d H:i:s', $startDate->format('Y-m-d') . ' 00:00:00');
 
-        return $this->startDate;
+        return $startDate;
     }
 
     /**
      * Gets the end date.
      *
-     * @param integer $weeks Number of weeks.
-     * @param integer $days  Number of days.
+     * @param \DateTime $startDate The start date to base the end date on.
+     * @param integer  $weeks     Number of weeks.
+     * @param integer  $days      Number of days.
      *
-     * @return DateTime
+     * @return \DateTime
      */
-    public function getEndDate($weeks = 1, $days = 0)
+    public function getEndDate(\DateTime $startDate, $weeks = 1, $days = 0)
     {
-        $endDate = clone $this->startDate;
+        $endDate = clone $startDate;
 
-        $endDate->add(new DateInterval("P{$weeks}W"));
-        $endDate->add(new DateInterval("P{$days}D"));
+        $endDate->add(new \DateInterval("P{$weeks}W"));
+        $endDate->add(new \DateInterval("P{$days}D"));
 
         return $endDate;
     }
@@ -67,16 +50,16 @@ class DateHelper
     /**
      * Gets the days.
      *
-     * @param DateTime $start Start date.
-     * @param DateTime $end   End date.
+     * @param \DateTime $start Start date.
+     * @param \DateTime $end   End date.
      *
      * @return array $days
      */
-    public function getDays(DateTime $start, DateTime $end)
+    public function getDays(\DateTime $start, \DateTime $end)
     {
         $days = array();
 
-        $period = new \DatePeriod($start, new DateInterval('P1D'), $end);
+        $period = new \DatePeriod($start, new \DateInterval('P1D'), $end);
 
         foreach ($period as $day) {
             // skip saturdays and sundays
@@ -89,42 +72,50 @@ class DateHelper
     }
 
     /**
-     * Parse the passed parameter and convert it do DateTime.
+     * Parse the passed week parameter and convert it to DateTime.
      *
      * @param string $weekString The week GET parameter.
      *
      * @throws InvalidWeekStringException Exception thrown on error.
      *
-     * @return void
+     * @return \DateTime
      */
-    protected function parseWeekString($weekString)
+    protected function getWeekDateTime($weekString)
     {
+        $date = new \DateTime();
+
         preg_match('/^([0-9]{4,4})\-([0-9]{1,2})$/i', $weekString, $matches);
 
         $weekTimeStamp =  $this->getWeekTimeStamp($matches);
 
         if (empty($matches)
             || !$weekTimeStamp
-            || !$this->startDate->setTimestamp($weekTimeStamp)) {
+            || !$date->setTimestamp($weekTimeStamp)) {
             throw new InvalidWeekStringException(
                 'You have to set the GET parameter "week" in the format Y-w (2012-44)'
             );
         }
+
+        return $date;
     }
 
     /**
-     * Depending on where we stand in the week take the last or next Monday.
+     * Depending on where on the given date take the last or next Monday.
      *
-     * @return void
+     * @param \DateTime $date The date to calculate the last/next monday from
+     *
+     * @return \DateTime
      */
-    protected function setStartDateToNextOrLastMonday()
+    public function getNextOrLastMonday(\DateTime $date)
     {
-        $dayNr = $this->startDate->format('N');
+        $dayNr = $date->format('N');
         if ($dayNr > 5) {
-            $this->startDate->add(new DateInterval('P' . (8 - $dayNr) . 'D'));
+            $date->add(new \DateInterval('P' . (8 - $dayNr) . 'D'));
         } else {
-            $this->startDate->sub(new DateInterval('P' . ($dayNr - 1) . 'D'));
+            $date->sub(new \DateInterval('P' . ($dayNr - 1) . 'D'));
         }
+
+        return $date;
     }
 
     /**
