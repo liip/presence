@@ -15,13 +15,13 @@ class TeamOfOne extends Team
      * @param array             $people   Configuration.
      * @param CalendarInterface $calendar Calendar object.
      */
-    public function __construct($app, $id, CalendarInterface $calendar)
+    public function __construct($sqlite, $id, CalendarInterface $calendar)
     {
         // TODO add validation
         $this->id       = $id;
         $this->calendar = $calendar;
-        $this->refresh  = $app['request']->get('refresh');
-        $person = Sqlite::getPerson($app, $id);
+        $this->refresh  = $sqlite->app['request']->get('refresh');
+        $person         = $sqlite->getPerson($id);
         $this->name     = $person[0]['name'];
         $this->members  = array($this->getPerson($id, $this->name));
     }

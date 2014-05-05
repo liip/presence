@@ -28,16 +28,16 @@ $app['twig']->getExtension('core')->setTimezone(
 
 Oauth::register($app, $config->settings);
 
-Sqlite::register($app, $config->settings);
+$sqlite = new Sqlite($app);
+$sqlite->register($config->settings);
 if (!file_exists($config->settings['dbPath'])) {
-    Sqlite::create($app, $config);
+    $sqlite->create($app, $config);
     $people = $yaml->parse(file_get_contents('../config/people.yaml'));
     $persons = $people['persons'];
     $teams = $people['teams'];
-    Sqlite::populate($app, $persons, $teams);
+    $sqlite->populate($app, $persons, $teams);
 }
 
-// Get email address and user name here, as Oauth has just checked the user has an @liip.ch email address.
 $app->get(
     '/login',
     function () use ($app) {
@@ -71,7 +71,7 @@ $app->match(
  */
 $app->get(
     '/',
-    function () use ($app, $config) {
+    function () use ($app, $config, $sqlite) {
 
         $helper       = new DateHelper();
         $startDate    = $helper->getStartDate($app['request']->get('week'));
@@ -83,8 +83,8 @@ $app->get(
         return $app['twig']->render(
             'index.twig',
             array(
-                'teams'   => Sqlite::allTeams($app, $calendar),
-                'persons' => Sqlite::allPersons($app),
+                'teams'   => $sqlite->allTeams($app, $calendar),
+                'persons' => $sqlite->allPersons($app),
             )
         );
     }
@@ -97,7 +97,7 @@ $app->get(
         $query = strtolower($app['request']->get('q'));
         $result = array();
         if (!empty($query)) {
-            $persons = Sqlite::allPersons($app);
+            $persons = $sqlite->allPersons($app);
 
             $result = array_filter(
                 $persons,
@@ -145,7 +145,7 @@ $app->get(
  */
 $app->get(
     '/{teamId}',
-    function ($teamId) use ($app, $config) {
+    function ($teamId) use ($app, $config, $sqlite) {
 
         try {
 
@@ -157,18 +157,18 @@ $app->get(
             $endDate      = $helper->getEndDate($weeks);
             $days         = $helper->getDays($startDate, $endDate);
             $calendar     = new GoogleCalendar($app, $config->settings['google'], $startDate, $endDate);
-            $getTeam      = Sqlite::getTeam($app, $teamId);
-            $nonTeam      = Sqlite::getTeamsNonMembers($app, $teamId);
+            $getTeam      = $sqlite->getTeam($teamId);
+            $nonTeam      = $sqlite->getTeamsNonMembers($teamId);
 
             if ($getTeam) {
                 $team = new Team(
-                    $app,
+                    $sqlite,
                     $teamId,
                     $calendar
                 );
-            } elseif (Sqlite::getPerson($app, $teamId)) {
+            } elseif ($sqlite->getPerson($teamId)) {
                 $team = new TeamOfOne(
-                    $app,
+                    $sqlite,
                     $teamId,
                     $calendar
                 );
@@ -184,7 +184,7 @@ $app->get(
         return $app['twig']->render(
             (($projectsMode) ? 'projects' : 'availabilities' ). '.twig',
             array(
-                'teams'               => Sqlite::allTeams($app, $calendar),
+                'teams'               => $sqlite->allTeams($calendar),
                 'team'                => $team,
                 'days'                => $days,
                 'weeks'               => $weeks,
@@ -202,16 +202,16 @@ $app->get(
  */
 $app->get(
     '/{teamId}/{personId}/add',
-    function($teamId, $personId) use ($app) {
+    function($teamId, $personId) use ($app, $sqlite) {
         try {
 
-            $getTeam    = Sqlite::getTeam($app, $teamId);
-            $getPerson  = Sqlite::getPerson($app, $personId);
+            $getTeam    = $sqlite->getTeam($teamId);
+            $getPerson  = $sqlite->getPerson($personId);
 
             if ($getTeam) {
                 if ($getPerson) {
                     // Add person to team
-                    Sqlite::addToTeam($app, $getTeam, $getPerson);
+                    $sqlite->addToTeam($getTeam, $getPerson);
                 } else {
                     $app->abort(404, 'No person found with ID ' . $personId . '.');
                 }
@@ -231,17 +231,17 @@ $app->get(
  */
 $app->get(
     '/{teamId}/{personId}/delete',
-    function($teamId, $personId) use ($app) {
+    function($teamId, $personId) use ($app, $sqlite) {
         try {
 
-            $getTeam    = Sqlite::getTeam($app, $teamId);
-            $getPerson  = Sqlite::getPerson($app, $personId);
+            $getTeam    = $sqlite->getTeam($teamId);
+            $getPerson  = $sqlite->getPerson($personId);
 
             if ($getTeam) {
                 if ($getPerson) {
-                    if (Sqlite::personInTeam($app, $getTeam, $getPerson)) {
+                    if ($sqlite->personInTeam($getTeam, $getPerson)) {
                         // Delete person from team
-                        Sqlite::removeFromTeam($app, $getTeam, $getPerson);
+                        $sqlite->removeFromTeam($getTeam, $getPerson);
                     }
                 } else {
                     $app->abort(404, 'No person found with ID ' . $personId . '.');
@@ -263,11 +263,11 @@ $app->get(
  */
 $app->get(
     '/{teamId}/create',
-    function($teamId) use ($app) {
+    function($teamId) use ($app, $sqlite) {
         try {
-            $teamCreated = (Sqlite::createTeam($app, $teamId));
+            $teamCreated = ($sqlite->createTeam($teamId));
             if ($teamCreated) {
-                return $app->redirect('/{teamId}');
+                return $app->redirect('/' . $teamId);
             } else {
                 return $app->abort(404, 'A team with the slug ' . $teamId . ' already exists.');
             }
@@ -280,9 +280,9 @@ $app->get(
 
 $app->get(
     '/{teamId}/delete',
-    function($teamId) use ($app) {
+    function($teamId) use ($app, $sqlite) {
         try {
-            $teamDeleted = (Sqlite::deleteTeam($app, $teamId));
+            $teamDeleted = ($sqlite->deleteTeam($teamId));
             return $app->redirect('/');
         } catch (\Exception $e) {
             $app->abort(404, $e->getMessage());
