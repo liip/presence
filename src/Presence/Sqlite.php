@@ -95,18 +95,7 @@ class Sqlite {
         $sql = "SELECT * FROM persons p";
         $stmt = $app['db']->prepare($sql);
         $stmt->execute();
-        $results = $stmt->fetchAll();
-        $persons = array();
-        foreach ($results as $result) {
-            $id = $result['email'];
-            $data = array(
-                'name' => $result['name'],
-                'teams' => Sqlite::getPersonsTeams($app, $result['id'])
-            );
-            $person = new Person($id, $data);
-            array_push($persons, $person);
-        }
-        return $persons;
+        return $stmt->fetchAll();
     }
 
     //Returns array of Team objects for all rows in teams db table.

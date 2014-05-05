@@ -78,7 +78,7 @@ $app->get(
         $weeks        = $app['request']->get('view', 1);
         $endDate      = $helper->getEndDate($weeks);
         $days         = $helper->getDays($startDate, $endDate);
-        $calendar     = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
+        $calendar     = new GoogleCalendar($app, $config->settings['google'], $startDate, $endDate);
 
         return $app['twig']->render(
             'index.twig',
@@ -112,7 +112,7 @@ $app->get(
                         }
                     }
 
-                    $mail_spl = explode(".", trim(strtolower($array['mail'])));
+                    $mail_spl = explode(".", trim(strtolower($array['email'])));
 
                     foreach ($name_spl as $name) {
                         if (substr($name, 0, $len) == $query) {
@@ -157,7 +157,6 @@ $app->get(
             $endDate      = $helper->getEndDate($weeks);
             $days         = $helper->getDays($startDate, $endDate);
             $calendar     = new GoogleCalendar($app, $config->settings['google'], $startDate, $endDate);
-            $persons      = Sqlite::allPersons($app);
             $getTeam      = Sqlite::getTeam($app, $teamId);
             $nonTeam      = Sqlite::getTeamsNonMembers($app, $teamId);
 
