@@ -12,8 +12,8 @@
         <li>
           <h1><a href="{{ app.url_generator.generate('homepage') }}">&#x21F6;</a> {{ team.name }} <span>&#x25BC;</span></h1>
           <ul class="teamList">
-            {% for teamId, teamData in teams %}
-              <li class=""><a href="{{ app.url_generator.generate('availabilities', {'teamId': teamId, 'view': weeks, 'details': showDetails }) }}">{{ teamData.name }}</a></li>
+            {% for team in teams %}
+              <li class=""><a href="{{ app.url_generator.generate('availabilities', {'teamId': team.id, 'view': weeks, 'details': showDetails }) }}">{{ team.name }}</a></li>
             {% endfor %}
           </ul>
         </li>
@@ -186,7 +186,7 @@
               </li>
             {% endif %}
             <li>
-                <a href="/{{ team.id }}/{{ member.id }}/delete">Delete</a>
+                <a href="/{{ team.id }}/{{ member.email }}/delete">Remove from team</a>
             </li>
           </ul>
         </li>
@@ -199,12 +199,10 @@
       <p>Select to add a person to this team</p>
 
       <select data-placeholder="Search..." id="chosen_teamofone" class="personsearch">
-        <option value=""></option>
-        {% for id, person in nonteam %}
-          {% if id %}
-            <option value="{{ app.url_generator.generate('add', {'teamId': team.id, 'personId': id}) }}">{{ person.name }}</option>
-          {% endif %}
-        {% endfor %}
+          <option value=""></option>
+          {% for id, person in nonteam %}
+          <option value="{{ app.url_generator.generate('add', {'teamId': team.id, 'personId': person.email}) }}">{{ person.name }}</option>
+          {% endfor %}
       </select>
 
     </section>

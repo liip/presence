@@ -73,10 +73,17 @@ $app->get(
     '/',
     function () use ($app, $config) {
 
+        $helper       = new DateHelper();
+        $startDate    = $helper->getStartDate($app['request']->get('week'));
+        $weeks        = $app['request']->get('view', 1);
+        $endDate      = $helper->getEndDate($weeks);
+        $days         = $helper->getDays($startDate, $endDate);
+        $calendar     = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
+
         return $app['twig']->render(
             'index.twig',
             array(
-                'teams'   => Sqlite::allTeams($app),
+                'teams'   => Sqlite::allTeams($app, $calendar),
                 'persons' => Sqlite::allPersons($app),
             )
         );
@@ -142,8 +149,6 @@ $app->get(
 
         try {
 
-            $config->people['refresh'] = $app['request']->get('refresh');
-
             $helper       = new DateHelper();
             $projectsMode = ($app['request']->get('mode', 'availability') === 'projects');
             $startDate    = $helper->getStartDate($app['request']->get('week'));
@@ -154,30 +159,22 @@ $app->get(
             $calendar     = new GoogleCalendar($app, $config->settings['google'], $startDate, $endDate);
             $persons      = Sqlite::allPersons($app);
             $getTeam      = Sqlite::getTeam($app, $teamId);
+            $nonTeam      = Sqlite::getTeamsNonMembers($app, $teamId);
 
             if ($getTeam) {
                 $team = new Team(
+                    $app,
                     $teamId,
-                    $config->people,
                     $calendar
                 );
-            } elseif (!empty($config->people['persons'][$teamId])) {
+            } elseif (Sqlite::getPerson($app, $teamId)) {
                 $team = new TeamOfOne(
+                    $app,
                     $teamId,
-                    $config->people,
                     $calendar
                 );
             } else {
-                $app->abort(404, 'No team or person found with ID ' . $teamId . ' does not exist');
-            }
-
-            $nonteam = array();
-
-            // update this
-            foreach ($persons as $person) {
-                if (!in_array($teamId, array_keys($person->teams))) {
-                    $nonteam[$id] = $person;
-                }
+                $app->abort(404, 'No team or person found with ID ' . $teamId . '.');
             }
 
         } catch (\Exception $e) {
@@ -188,13 +185,13 @@ $app->get(
         return $app['twig']->render(
             (($projectsMode) ? 'projects' : 'availabilities' ). '.twig',
             array(
-                'teams'               => $config->people['teams'],
+                'teams'               => Sqlite::allTeams($app, $calendar),
                 'team'                => $team,
                 'days'                => $days,
                 'weeks'               => $weeks,
                 'showDetails'         => $showDetails,
                 'projectsMode'        => $projectsMode,
-                'nonteam'             => $nonteam
+                'nonteam'             => $nonTeam
             )
         );
     }
@@ -206,24 +203,26 @@ $app->get(
  */
 $app->get(
     '/{teamId}/{personId}/add',
-    function($teamId, $personId) use ($app, $config) {
-        if (!empty($config->people['teams'][$teamId])) {
-            if (!empty($config->people['persons'][$personId])) {
-                // Add team to person
-                $config->people['persons'][$personId]['teams'][$teamId] = null;
+    function($teamId, $personId) use ($app) {
+        try {
 
-                // Save config file
-                $dumper = new Dumper();
-                $yaml = $dumper->dump($config->people, 4);
-                file_put_contents('../config/people.yaml', $yaml);
+            $getTeam    = Sqlite::getTeam($app, $teamId);
+            $getPerson  = Sqlite::getPerson($app, $personId);
+
+            if ($getTeam) {
+                if ($getPerson) {
+                    // Add person to team
+                    Sqlite::addToTeam($app, $getTeam, $getPerson);
+                } else {
+                    $app->abort(404, 'No person found with ID ' . $personId . '.');
+                }
             } else {
-                $app->abort(404, 'No person found with ID ' . $personId . ' does not exist');
+                $app->abort(404, 'No team or person found with ID ' . $teamId . '.');
             }
-        } else {
-            $app->abort(404, 'No team or person found with ID ' . $teamId . ' does not exist');
+            return $app->redirect('/' . $teamId);
+        } catch (\Exception $e) {
+            $app->abort(404, $e->getMessage());
         }
-
-        return $app->redirect('/' . $teamId);
     }
 )
 ->bind('add');
@@ -233,28 +232,64 @@ $app->get(
  */
 $app->get(
     '/{teamId}/{personId}/delete',
-    function($teamId, $personId) use ($app, $config) {
-        if (!empty($config->people['teams'][$teamId])) {
-            if (!empty($config->people['persons'][$personId])) {
-                if (array_key_exists($teamId, $config->people['persons'][$personId]['teams'])) {
-                    // Delete team from person
-                    unset($config->people['persons'][$personId]['teams'][$teamId]);
+    function($teamId, $personId) use ($app) {
+        try {
 
-                    // Save config file
-                    $dumper = new Dumper();
-                    $yaml = $dumper->dump($config->people, 4);
-                    file_put_contents('../config/people.yaml', $yaml);
+            $getTeam    = Sqlite::getTeam($app, $teamId);
+            $getPerson  = Sqlite::getPerson($app, $personId);
+
+            if ($getTeam) {
+                if ($getPerson) {
+                    if (Sqlite::personInTeam($app, $getTeam, $getPerson)) {
+                        // Delete person from team
+                        Sqlite::removeFromTeam($app, $getTeam, $getPerson);
+                    }
+                } else {
+                    $app->abort(404, 'No person found with ID ' . $personId . '.');
+
                 }
             } else {
-                $app->abort(404, 'No person found with ID ' . $personId . ' does not exist');
+                $app->abort(404, 'No team found with ID ' . $teamId . '.');
             }
-        } else {
-            $app->abort(404, 'No team found with ID ' . $teamId . ' does not exist');
+            return $app->redirect('/' . $teamId);
+        } catch (\Exception $e) {
+            $app->abort(404, $e->getMessage());
         }
-
-        return $app->redirect('/' . $teamId);
     }
 )
 ->bind('delete');
+
+/**
+ * Create team
+ */
+$app->get(
+    '/{teamId}/create',
+    function($teamId) use ($app) {
+        try {
+            $teamCreated = (Sqlite::createTeam($app, $teamId));
+            if ($teamCreated) {
+                return $app->redirect('/{teamId}');
+            } else {
+                return $app->abort(404, 'A team with the slug ' . $teamId . ' already exists.');
+            }
+        } catch (\Exception $e) {
+            $app->abort(404, $e->getMessage());
+        }
+    }
+)
+->bind('createTeam');
+
+$app->get(
+    '/{teamId}/delete',
+    function($teamId) use ($app) {
+        try {
+            $teamDeleted = (Sqlite::deleteTeam($app, $teamId));
+            return $app->redirect('/');
+        } catch (\Exception $e) {
+            $app->abort(404, $e->getMessage());
+        }
+    }
+)
+->bind('deleteTeam');
 
 $app->run();
