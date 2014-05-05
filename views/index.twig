@@ -21,7 +21,7 @@
 
                         <ul class="teamList">
                             {% for team in teams %}
-                                <li><a href="{{ app.url_generator.generate('availabilities', {'teamId': team.id}) }}">{{ team.name }}</a></li>
+                                <li><a href="{{ app.url_generator.generate('availabilities', {'teamId': team.slug}) }}">{{ team.name }}</a></li>
                             {% endfor %}
                         </ul>
                         

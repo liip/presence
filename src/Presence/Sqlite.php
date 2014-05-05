@@ -103,14 +103,7 @@ class Sqlite {
         $sql = "SELECT * FROM teams t";
         $stmt = $app['db']->prepare($sql);
         $stmt->execute();
-        $results = $stmt->fetchAll();
-        $teams = array();
-        foreach ($results as $result) {
-            $id = $result['slug'];
-            $team = new Team($app, $id, $calendar);
-            array_push($teams, $team);
-        }
-        return $teams;
+        return $stmt->fetchAll();
     }
 
     public static function getTeam($app, $slug) {
