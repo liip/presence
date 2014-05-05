@@ -9,9 +9,21 @@
     <body>
 
         <div id="centered">
-            <header>
-                <h1>&#x21F6; Presence</h1>
-            </header>
+            <div class="header">
+              <ul class="title">
+                  <h1><a href="{{ app.url_generator.generate('homepage') }}">&#x21F6; Presence</a></h1>
+              </ul>
+                
+                <div class="additionalInformation">
+                    <span class="infoBubble">
+                        <a class="weekSwitch" href="{{ app.url_generator.generate("instruction") }}">Instructions</a>
+                    </span>
+
+                    <br class="hack" />
+
+                </div>
+                <div class="clearDiv"></div>
+            </div>
 
             <article>
 
@@ -27,45 +39,6 @@
                         
                     </section>
 
-                    <section class="quickhelp">
-
-                        <h2>Quick Help</h2>
-
-                        Example calendar entry tags and their results:
-
-                        <p>
-                            #party
-                            <span class="timeSlotBubble busy">#party</span>
-                        </p>
-
-                        <p>
-                            University #off
-                            <span class="timeSlotBubble off">University</span>
-                        </p>
-
-                        <p>
-                            @Miami<br>
-                            <span style="vertical-align: baseline" class="locationIcon busy">&nbsp;&nbsp;&nbsp;&nbsp;</span>Miami
-                        </p>
-
-                        <p>
-                            Hawaii #holiday
-                            <span class="timeSlotBubble off">Hawaii</span>
-                        </p>
-
-                            Calendar entries that last longer than 15 minutes appear in the event list and make the morning/afternoon bubble yellow:
-                        <p>
-                            <span class="timeSlotBubble busy"></span>
-                        </p>
-
-                        Everything else means that the person is available and the bubble gets green:
-                        <p>
-                            <span class="timeSlotBubble available"></span>
-                        </p>
-
-                        <p>Read the detailed instructions <a href="{{ app.url_generator.generate("instruction") }}">here</a></p>
-
-                    </section>
                 </div>
 
                 <section class="persons">
