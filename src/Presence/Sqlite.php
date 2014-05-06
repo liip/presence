@@ -10,8 +10,12 @@ use Silex\Provider\DoctrineServiceProvider;
 
 class Sqlite {
 
-    public static function register($app, $config) {
-        $app->register(new DoctrineServiceProvider(), array(
+    public function __construct($app) {
+        $this->app = $app;
+    }
+
+    public function register($config) {
+        $this->app->register(new DoctrineServiceProvider(), array(
             'db.options' => array(
                 'driver' => 'pdo_sqlite',
                 'path' => $config['dbPath']
@@ -19,13 +23,13 @@ class Sqlite {
         ));
     }
 
-    public static function create($app) {
+    public function create() {
         // Create tables and populate from people.yaml.
-        $setup = $app['db']->prepare(
+        $setup = $this->app['db']->prepare(
             'PRAGMA foreign_keys = ON;'
         );
         $setup->execute();
-        $setup = $app['db']->prepare(
+        $setup = $this->app['db']->prepare(
             'CREATE TABLE teams (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 slug TEXT UNIQUE NOT NULL,
@@ -33,7 +37,7 @@ class Sqlite {
             );'
         );
         $setup->execute();
-        $setup = $app['db']->prepare(
+        $setup = $this->app['db']->prepare(
             'CREATE TABLE persons (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT UNIQUE NOT NULL,
@@ -42,7 +46,7 @@ class Sqlite {
             );'
         );
         $setup->execute();
-        $setup = $app['db']->prepare(
+        $setup = $this->app['db']->prepare(
             'CREATE TABLE teams_to_persons (
                 teams_id INT REFERENCES teams (id) ON DELETE CASCADE,
                 persons_id INT REFERENCES persons (id) ON DELETE CASCADE,
@@ -53,16 +57,16 @@ class Sqlite {
 
     }
 
-    public static function populate($app, $persons, $teams) {
+    public function populate($persons, $teams) {
         foreach ($persons as $id=>$person) {
-            $app['db']->insert(
+            $this->app['db']->insert(
                 'persons',
                 array('email' => $id, 'name' => $person['name'])
             );
         }
 
         foreach ($teams as $id=>$team) {
-            $app['db']->insert(
+            $this->app['db']->insert(
                 'teams',
                 array('slug' => $id, 'name' => $team['name'])
             );
@@ -70,19 +74,19 @@ class Sqlite {
 
         foreach ($persons as $id=>$person) {
             $sql = "SELECT * FROM persons WHERE email = ?";
-            $stmt = $app['db']->prepare($sql);
+            $stmt = $this->app['db']->prepare($sql);
             $stmt->bindValue(1, $id);
             $stmt->execute();
             $results = $stmt->fetchAll();
             $persons_id = $results[0]['id'];
             foreach ($persons[$id]['teams'] as $team=>$null) {
                 $sql = "SELECT * FROM teams WHERE slug = ?";
-                $stmt = $app['db']->prepare($sql);
+                $stmt = $this->app['db']->prepare($sql);
                 $stmt->bindValue(1, $team);
                 $stmt->execute();
                 $results = $stmt->fetchAll();
                 $teams_id = $results[0]['id'];
-                $app['db']->insert(
+                $this->app['db']->insert(
                     'teams_to_persons',
                     $a = array('teams_id' => $teams_id, 'persons_id' => $persons_id)
                 );
@@ -91,117 +95,117 @@ class Sqlite {
     }
 
     // Returns array of Person objects for all rows in persons db table.
-    public static function allPersons($app) {
+    public function allPersons() {
         $sql = "SELECT * FROM persons p";
-        $stmt = $app['db']->prepare($sql);
+        $stmt = $this->app['db']->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
     //Returns array of Team objects for all rows in teams db table.
-    public static function allTeams($app, $calendar) {
+    public function allTeams($calendar) {
         $sql = "SELECT * FROM teams t";
-        $stmt = $app['db']->prepare($sql);
+        $stmt = $this->app['db']->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public static function getTeam($app, $slug) {
+    public function getTeam($slug) {
         $sql = "SELECT * FROM teams
                 WHERE slug = ?";
-        $stmt = $app['db']->prepare($sql);
+        $stmt = $this->app['db']->prepare($sql);
         $stmt->bindValue(1, $slug);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public static function getPerson($app, $email) {
+    public function getPerson($email) {
         $sql = "SELECT * FROM persons
                 WHERE email = ?";
-        $stmt = $app['db']->prepare($sql);
+        $stmt = $this->app['db']->prepare($sql);
         $stmt->bindValue(1, $email);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public static function getPersonsTeams($app, $persons_id) {
+    public function getPersonsTeams($persons_id) {
         $sql = "SELECT * FROM teams t
                 JOIN teams_to_persons tp
                 ON tp.teams_id = t.id
                 AND tp.persons_id = ?";
-        $stmt = $app['db']->prepare($sql);
+        $stmt = $this->app['db']->prepare($sql);
         $stmt->bindValue(1, $persons_id);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public static function getTeamsMembers($app, $slug) {
+    public function getTeamsMembers($slug) {
         $sql = "SELECT * FROM persons p
                 JOIN teams_to_persons tp
                 ON tp.persons_id = p.id
                 AND tp.teams_id = (SELECT id FROM teams WHERE slug = ?)";
 
-        $stmt = $app['db']->prepare($sql);
+        $stmt = $this->app['db']->prepare($sql);
         $stmt->bindValue(1, $slug);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public static function getTeamsNonMembers($app, $slug) {
+    public function getTeamsNonMembers($slug) {
         $sql = "SELECT * FROM persons p
                 WHERE NOT EXISTS (
                     SELECT * FROM teams_to_persons
                     WHERE persons_id = p.id
                     AND teams_id = (SELECT id FROM teams WHERE slug = ?)
                 )";
-        $stmt = $app['db']->prepare($sql);
+        $stmt = $this->app['db']->prepare($sql);
         $stmt->bindValue(1, $slug);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public static function addToTeam($app, $team, $person) {
+    public function addToTeam($team, $person) {
         $sql = "INSERT INTO teams_to_persons (teams_id, persons_id) VALUES (?, ?)";
-        $stmt = $app['db']->prepare($sql);
+        $stmt = $this->app['db']->prepare($sql);
         $stmt->bindValue(1, $team[0]['id']);
         $stmt->bindValue(2, $person[0]['id']);
         $stmt->execute();
     }
 
-    public static function personInTeam($app, $team, $person) {
+    public function personInTeam($team, $person) {
         $sql = "SELECT * FROM teams_to_persons
                 WHERE teams_id = ?
                 AND persons_id = ?";
-        $stmt = $app['db']->prepare($sql);
+        $stmt = $this->app['db']->prepare($sql);
         $stmt->bindValue(1, $team[0]['id']);
         $stmt->bindValue(2, $person[0]['id']);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public static function removeFromTeam($app, $team, $person) {
+    public function removeFromTeam($team, $person) {
         $sql = "DELETE FROM teams_to_persons
                 WHERE teams_id = ?
                 AND persons_id = ?";
-        $stmt = $app['db']->prepare($sql);
+        $stmt = $this->app['db']->prepare($sql);
         $stmt->bindValue(1, $team[0]['id']);
         $stmt->bindValue(2, $person[0]['id']);
         $stmt->execute();
     }
 
-    public static function createTeam($app, $name) {
+    public function createTeam($name) {
         $pattern = '/[^a-z0-9]/';
         $replacement = '';
         $subject = strtolower($name);
         $slug = preg_replace($pattern, $replacement, $subject);
         $sql = "SELECT * FROM teams WHERE slug = ?";
-        $stmt = $app['db']->prepare($sql);
+        $stmt = $this->app['db']->prepare($sql);
         $stmt->bindValue(1, $slug);
         $stmt->execute();
         $result = $stmt->fetchAll();
         if (!$result) {
             $sql = "INSERT INTO teams (slug, name) VALUES (?, ?)";
-            $stmt = $app['db']->prepare($sql);
+            $stmt = $this->app['db']->prepare($sql);
             $stmt->bindValue(1, $slug);
             $stmt->bindValue(2, $name);
             $stmt->execute();
@@ -211,10 +215,10 @@ class Sqlite {
         }
     }
 
-    public static function deleteTeam($app, $slug) {
+    public function deleteTeam($slug) {
         $sql = "DELETE FROM teams
                 WHERE slug = ?";
-        $stmt = $app['db']->prepare($sql);
+        $stmt = $this->app['db']->prepare($sql);
         $stmt->bindValue(1, $slug);
         $stmt->execute();
     }
