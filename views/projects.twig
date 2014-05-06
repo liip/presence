@@ -67,6 +67,10 @@
         </span>
 
         <span class="infoBubble">
+          <a class="weekSwitch" href="{{ app.url_generator.generate('deleteTeam', {'teamId': team.id}) }}" method="post">Delete team</a>
+        </span>
+
+        <span class="infoBubble">
             <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}&mode=projects&refresh=all">Refresh</a>
         </span>
 

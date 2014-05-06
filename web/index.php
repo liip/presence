@@ -284,7 +284,7 @@ $app->post(
 )
 ->bind('createTeam');
 
-$app->get(
+$app->match(
     '/{teamId}/delete',
     function($teamId) use ($app, $sqlite) {
         try {
@@ -295,6 +295,7 @@ $app->get(
         }
     }
 )
+->method('GET|POST')
 ->bind('deleteTeam');
 
 $app->run();
