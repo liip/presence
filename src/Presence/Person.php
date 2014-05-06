@@ -31,6 +31,13 @@ class Person
     public $name            = '';
 
     /**
+     * The Person's location, e.g. Zurich.
+     *
+     * @var string
+     */
+    public $location        = '';
+
+    /**
      * Contains thhe Event objects for this Person.
      *
      * @var array
