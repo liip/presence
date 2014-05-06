@@ -45,8 +45,8 @@ class Team
     /**
      * Assemble the team for this instance.
      *
+     * @param Sqlite            $sqlite   Sqlite object.
      * @param string            $id       The team id.
-     * @param array             $people   Configuration.
      * @param CalendarInterface $calendar Calendar object.
      */
     public function __construct($sqlite, $id, CalendarInterface $calendar)

@@ -31,11 +31,11 @@ Oauth::register($app, $config->settings);
 $sqlite = new Sqlite($app);
 $sqlite->register($config->settings);
 if (!file_exists($config->settings['dbPath'])) {
-    $sqlite->create($app, $config);
+    $sqlite->create();
     $people = $yaml->parse(file_get_contents('../config/people.yaml'));
     $persons = $people['persons'];
     $teams = $people['teams'];
-    $sqlite->populate($app, $persons, $teams);
+    $sqlite->populate($persons, $teams);
 }
 
 $app->get(
@@ -83,8 +83,8 @@ $app->get(
         return $app['twig']->render(
             'index.twig',
             array(
-                'teams'   => $sqlite->allTeams($app, $calendar),
-                'persons' => $sqlite->allPersons($app),
+                'teams'   => $sqlite->allTeams($calendar),
+                'persons' => $sqlite->allPersons(),
             )
         );
     }
@@ -97,7 +97,7 @@ $app->get(
         $query = strtolower($app['request']->get('q'));
         $result = array();
         if (!empty($query)) {
-            $persons = $sqlite->allPersons($app);
+            $persons = $sqlite->allPersons();
 
             $result = array_filter(
                 $persons,
