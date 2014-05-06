@@ -194,7 +194,7 @@
         </li>
       {% endfor %}
     </ul>
-    {% if team.members[0] and team.members[0].id != team.id %}
+    {% if not team.members or team.members[0] and team.members[0].id != team.id %}
       <section class="persons">
 
         <h2>Persons not on this team</h2>
