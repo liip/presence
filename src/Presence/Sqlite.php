@@ -209,7 +209,7 @@ class Sqlite {
             $stmt->bindValue(1, $slug);
             $stmt->bindValue(2, $name);
             $stmt->execute();
-            return 1;
+            return $slug;
         } else {
             return 0;
         }

@@ -3,6 +3,8 @@
 namespace Presence;
 
 use Symfony\Component\Yaml\Dumper;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 // we need APC for the caching
 if (! (extension_loaded('apc') && ini_get('apc.enabled'))) {
@@ -25,6 +27,8 @@ $app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
 $app['twig']->getExtension('core')->setTimezone(
     isset($settings['timezone']) ? $settings['timezone']:'Europe/Zurich'
 );
+
+$app['debug'] = true;
 
 Oauth::register($app, $config->settings);
 
@@ -261,15 +265,17 @@ $app->get(
 /**
  * Create team
  */
-$app->get(
-    '/{teamId}/create',
-    function($teamId) use ($app, $sqlite) {
+$app->post(
+    '/create',
+    function(Request $request) use ($app, $sqlite) {
         try {
-            $teamCreated = ($sqlite->createTeam($teamId));
-            if ($teamCreated) {
-                return $app->redirect('/' . $teamId);
+            $name = $request->request->get('teamName');
+            
+            $slug = ($sqlite->createTeam($name));
+            if ($slug) {
+                return $app->redirect('/' . $slug);
             } else {
-                return $app->abort(404, 'A team with the slug ' . $teamId . ' already exists.');
+                return $app->abort(404, 'A team with the name ' . $name . ' already exists.');
             }
         } catch (\Exception $e) {
             $app->abort(404, $e->getMessage());
