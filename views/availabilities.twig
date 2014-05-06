@@ -26,66 +26,66 @@
         {% set nextWeekParam =  (days[0] | date('Y')) ~ '-' ~ (days[0] | date('W')+1) %}
 
         <span class="infoBubble">
-            Week
-            <a class="weekSwitch" href="?week={{ previousWeekParam }}&view={{ weeks }}&details={{ showDetails }}">&#8592;</a>
-            <span class="number">{{ days[0] | date('W') }}</span>
-            <a class="weekSwitch" href="?week={{ nextWeekParam }}&view={{ weeks }}&details={{ showDetails }}">&#8594;</a>
+          Week
+          <a class="weekSwitch" href="?week={{ previousWeekParam }}&view={{ weeks }}&details={{ showDetails }}">&#8592;</a>
+          <span class="number">{{ days[0] | date('W') }}</span>
+          <a class="weekSwitch" href="?week={{ nextWeekParam }}&view={{ weeks }}&details={{ showDetails }}">&#8594;</a>
         </span>
 
         <span class="infoBubble">
-            Show
-            <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=1&details={{ showDetails }}">
-                {% if weeks == 1 %} <span class="number">1</span> {% else %} 1 {% endif %}
-            </a>
-            <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=2&details={{ showDetails }}">
-                {% if weeks == 2 %} <span class="number">2</span> {% else %} 2 {% endif %}
-            </a>
-            <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=4&details={{ showDetails }}">
-                {% if weeks == 4 %} <span class="number">4</span> {% else %} 4 {% endif %}
-            </a>
-            week(s)
+          Show
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=1&details={{ showDetails }}">
+            {% if weeks == 1 %} <span class="number">1</span> {% else %} 1 {% endif %}
+          </a>
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=2&details={{ showDetails }}">
+            {% if weeks == 2 %} <span class="number">2</span> {% else %} 2 {% endif %}
+          </a>
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=4&details={{ showDetails }}">
+            {% if weeks == 4 %} <span class="number">4</span> {% else %} 4 {% endif %}
+          </a>
+          week(s)
         </span>
 
         <span class="infoBubble">
-            Details
-            <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details=1">
-                {% if showDetails %}
-                    <span class="number">show</span>
-                {% else %}
-                    show
-                {% endif %}
-            </a>
-            /
-            <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details=0">
-                {% if showDetails %}
-                    hide
-                {% else %}
-                    <span class="number">hide</span>
-                {% endif %}
-            </a>
+          Details
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details=1">
+            {% if showDetails %}
+              <span class="number">show</span>
+            {% else %}
+              show
+            {% endif %}
+          </a>
+          /
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details=0">
+            {% if showDetails %}
+              hide
+            {% else %}
+              <span class="number">hide</span>
+            {% endif %}
+          </a>
         </span>
 
         <span class="infoBubble">
-            Mode
-            <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}">
-                {% if projectsMode %}
-                    availability
-                {% else %}
-                    <span class="number">availability</span>
-                {% endif %}
-            </a>
-            /
-            <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}&mode=projects">
-                {% if projectsMode %}
-                    <span class="number">projects</span>
-                {% else %}
-                    projects
-                {% endif %}
-            </a>
+          Mode
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}">
+            {% if projectsMode %}
+              availability
+            {% else %}
+              <span class="number">availability</span>
+            {% endif %}
+          </a>
+          /
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}&mode=projects">
+            {% if projectsMode %}
+              <span class="number">projects</span>
+            {% else %}
+              projects
+            {% endif %}
+          </a>
         </span>
 
         <span class="infoBubble">
-            <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}&refresh=all">Refresh</a>
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}&refresh=all">Refresh</a>
         </span>
 
         <br class="hack" />
@@ -100,19 +100,19 @@
           <h2>Person</h2>
         </div>
         <ul class="days">
-            {% set weekClass = 1 %}
-            {% if (weeks == 2)  %}
-                {% set weekClass = 'two-weeks'  %}
-            {% endif %}
-            {% if (weeks == 4)  %}
-                {% set weekClass = 'four-weeks'  %}
-            {% endif %}
+          {% set weekClass = 1 %}
+          {% if (weeks == 2)  %}
+            {% set weekClass = 'two-weeks'  %}
+          {% endif %}
+          {% if (weeks == 4)  %}
+            {% set weekClass = 'four-weeks'  %}
+          {% endif %}
           {% for day in days %}
-              {% if (day | date('l') == 'Monday') %}
-                {% set mondayClass = 'monday' %}
-              {% else %}
-                  {% set mondayClass = '' %}
-              {% endif %}
+            {% if (day | date('l') == 'Monday') %}
+              {% set mondayClass = 'monday' %}
+            {% else %}
+              {% set mondayClass = '' %}
+            {% endif %}
             <li class="day fixed {{ weekClass }} {{ mondayClass }}">
               <h3 class="dayNumber">{{ day | date('d') }}</h3>
               <span class="dayMonthYear">{{ day | date('M. Y' )}}</span>
@@ -136,11 +136,11 @@
           <ul class="days">
             {% if member.hasError is sameas(false) %}
               {% for day in days %}
-                  {% if (day | date('l') == 'Monday') %}
-                      {% set mondayClass = 'monday' %}
-                  {% else %}
-                      {% set mondayClass = '' %}
-                  {% endif %}
+                {% if (day | date('l') == 'Monday') %}
+                  {% set mondayClass = 'monday' %}
+                {% else %}
+                  {% set mondayClass = '' %}
+                {% endif %}
                 <li class="day {{ weekClass }} {{ mondayClass }}">
                   <div class="location">
                     <span class="locationIcon {{ member.locationAvailabilityClassByDate(day) }}"
@@ -149,13 +149,13 @@
                   </div>
 
                   <span class="timeSlotBubble morning {{ member.timeSlotByDate('morning', day).class }}"
-                          title="{{ member.timeSlotByDate('morning', day).class }}">
+                        title="{{ member.timeSlotByDate('morning', day).class }}">
                     {{ member.timeSlotByDate('morning', day).title }}
                   </span>
 
                   {% if not (member.timeSlotByDate('morning', day).class is sameas('off') and member.timeSlotByDate('afternoon', day).class is sameas('off')) %}
                     <span class="timeSlotBubble afternoon {{ member.timeSlotByDate('afternoon', day).class }}"
-                            title="{{ member.timeSlotByDate('afternoon', day).class }}">
+                          title="{{ member.timeSlotByDate('afternoon', day).class }}">
                       {{ member.timeSlotByDate('afternoon', day).title }}
                     </span>
                   {% else %}
@@ -185,27 +185,31 @@
                 You are not allowed to view the calendar of <strong>{{ member.email }}</strong> and therefore Presence cannot show you the nasty details. Please ask the owner of {{ member.email }} to give you viewing permissions on the calendar.
               </li>
             {% endif %}
-            <li>
+            {% if team.id != member.id %}
+              <li>
                 <a href="/{{ team.id }}/{{ member.id }}/delete">Remove from team</a>
-            </li>
+              </li>
+            {% endif %}
           </ul>
         </li>
       {% endfor %}
     </ul>
-    <section class="persons">
+    {% if team.members[0] and team.members[0].id != team.id %}
+      <section class="persons">
 
-      <h2>Persons not on this team</h2>
+        <h2>Persons not on this team</h2>
 
-      <p>Select to add a person to this team</p>
+        <p>Select to add a person to this team</p>
 
-      <select data-placeholder="Search..." id="chosen_teamofone" class="personsearch">
+        <select data-placeholder="Search..." id="chosen_teamofone" class="personsearch">
           <option value=""></option>
           {% for id, person in nonteam %}
-          <option value="{{ app.url_generator.generate('add', {'teamId': team.id, 'personId': person.email}) }}">{{ person.name }}</option>
+            <option value="{{ app.url_generator.generate('add', {'teamId': team.id, 'personId': person.email}) }}">{{ person.name }}</option>
           {% endfor %}
-      </select>
+        </select>
 
-    </section>
+      </section>
+    {% endif %}
     <script src="js/jquery.js" type="text/javascript"></script>
     <script src="js/chosen.jquery.js" type="text/javascript"></script>
     <script>

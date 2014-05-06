@@ -12,8 +12,8 @@
         <li>
           <h1><a href="{{ app.url_generator.generate('homepage') }}">&#x21F6;</a> {{ team.name }} <span>&#x25BC;</span></h1>
           <ul class="teamList">
-            {% for teamId, teamData in teams %}
-              <li class=""><a href="{{ app.url_generator.generate('availabilities', {'teamId': teamId, 'view': weeks, 'details': showDetails, 'mode': 'projects' }) }}">{{ teamData.name }}</a></li>
+            {% for team in teams %}
+              <li class=""><a href="{{ app.url_generator.generate('availabilities', {'teamId': team.slug, 'view': weeks, 'details': showDetails, 'mode': 'projects' }) }}">{{ team.name }}</a></li>
             {% endfor %}
           </ul>
         </li>
@@ -136,13 +136,12 @@
               {% endfor %}
             {% else %}
               <li class="day fullWidth error">
-                Unable to read the calendar <strong>{{ member.id }}</strong>. Please allow <strong>{{ serviceAccountEmail }}</strong> to view the events of this calendar.
-                <br /><br />
-                <a href="http://support.google.com/calendar/answer/143754?hl=en" target="_blank">Click here for instructions on doing that with Google Calendar</a> (Opens in new tab...)
-                <br /><br />
-                You can try again by pressing <a href="{{ app.url_generator.generate('availabilities', {'teamId': team.id, 'refresh': member.id }) }}">here</a>
+                You are not allowed to view the calendar of <strong>{{ member.email }}</strong> and therefore Presence cannot show you the nasty details. Please ask the owner of {{ member.email }} to give you viewing permissions on the calendar.
               </li>
             {% endif %}
+            <li>
+                <a href="/{{ team.id }}/{{ member.id }}/delete">Remove from team</a>
+            </li>
           </ul>
         </li>
       {% endfor %}
