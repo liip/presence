@@ -1,6 +1,6 @@
 <?php
 
-namespace Teamavailabilities;
+namespace Presence;
 
 /**
  * Exception used in Helper Class.

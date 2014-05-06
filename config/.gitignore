@@ -1,2 +1,2 @@
 *.yaml
-privatekey.p12
+*privatekey.p12

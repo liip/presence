@@ -1,83 +1,110 @@
-{% extends "master.twig" %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Presence - Availabilities at a Glance</title>
+        <link rel="stylesheet" type="text/css" media="all" href="/css/style.css" />
+        <link rel="stylesheet" href="/css/chosen.css">
+    </head>
 
-{% block content %}
+    <body>
+
         <div id="centered">
             <header>
-                <h1>&#x21F6; Team availabilities</h1>
+                <h1>&#x21F6; Presence</h1>
             </header>
 
             <article>
 
-                <p>Here you can find the availabilities of the following teams, generated from the Google calendar entries:</p>
+                <div class="side">
+                    <section class="teams">
+                        <h2>Teams</h2>
 
-                <ul class="teamList">
-                    {% for teamId,team in teams %}
-                        <li><a href="{{ app.url_generator.generate('availabilities', {'teamId': teamId}) }}">{{ team.name }}</a></li>
-                    {% endfor %}
-                </ul>
+                        <ul class="teamList">
+                            {% for team in teams %}
+                                <li><a href="{{ app.url_generator.generate('availabilities', {'teamId': team.slug}) }}">{{ team.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        
+                    </section>
+                    
+                    <section class="createTeam">
+                    <h2>Create a New Team</h2>
+                    
+                    <form name="createTeam" action="create" method="post">
+                        Team name: <input type="text" name="teamName">
+                        <input type="submit" value="Go">
+                    </form>
+                    
+                    </section>
 
-                <h2>How to use with Google calendar</h2>
+                    <section class="quickhelp">
 
-                <ul class="typeList">
-                    <li><a href="#entryNormal">Event entry</a></li>
-                    <li><a href="#entryHoliday">Holiday entry</a></li>
-                    <li><a href="#entryOff">Off entry</a></li>
-                    <li><a href="#entryLocation">Location entry</a></li>
-                </ul>
+                        <h2>Quick Help</h2>
 
-                <h3 id="entryNormal">&#x21F6; Event entry <a class="top" href="#centered">#top</a></h3>
+                        Example calendar entry tags and their results:
 
-                <p>Every entry, having a period of more than 15 minutes, is displayed in the event list.</p>
+                        <p>
+                            #party
+                            <span class="timeSlotBubble busy">#party</span>
+                        </p>
 
-                <p>Moreover, the morning and afternoon periods are marked busy if event is inserted:</p>
-                <ul>
-                    <li>Entries beginning <b>before 12pm</b>, mark the morning period busy (orange).</li>
-                    <li>Entries ending <b>after 12pm</b>, mark the afternoon period busy (orange).</li>
-                </ul>
+                        <p>
+                            University #off
+                            <span class="timeSlotBubble off">University</span>
+                        </p>
 
-                <h3 id="entryHoliday">&#x21F6; Holiday entry <a class="top" href="#centered">#top</a></h3>
+                        <p>
+                            @Miami<br>
+                            <span style="vertical-align: baseline" class="locationIcon busy">&nbsp;&nbsp;&nbsp;&nbsp;</span>Miami
+                        </p>
 
-                <p>To display a day as on holiday, a <b>#holiday</b> tag has to be added to the event summary.</p>
+                        <p>
+                            Hawaii #holiday
+                            <span class="timeSlotBubble off">Hawaii</span>
+                        </p>
 
-                <p>The holiday entries can be inserted as full-day (multiple as well) or time period calendar entries.</p>
+                            Calendar entries that last longer than 15 minutes appear in the event list and make the morning/afternoon bubble yellow:
+                        <p>
+                            <span class="timeSlotBubble busy"></span>
+                        </p>
 
-                <p>Example: Ibiza #holiday</p>
+                        Everything else means that the person is available and the bubble gets green:
+                        <p>
+                            <span class="timeSlotBubble available"></span>
+                        </p>
 
-                <h3 id="entryOff">&#x21F6; Off entry <a class="top" href="#centered">#top</a></h3>
+                        <p>Read the detailed instructions <a href="{{ app.url_generator.generate("instruction") }}">here</a></p>
 
-                <p>For days off which are not booked on holiday, use the <b>#off</b> tag.</p>
+                    </section>
+                </div>
 
-                <p>The holiday entries can be inserted as full-day (multiple as well) or time period calendar entries.</p>
+                <section class="persons">
 
-                <p>Example: University #off</p>
+                    <h2>Persons</h2>
 
-                <h3 id="entryLocation">&#x21F6; Location entry <a class="top" href="#centered">#top</a></h3>
+                    <select data-placeholder="Search..." id="chosen_teamofone" class="personsearch">
+                        <option value=""></option>
+                        {% for person in persons %}
+                            <option value="{{ person.email }}">{{ person.name }}</option>
+                        {% endfor %}
+                    </select>
 
-                <p>If you spend the day away from your default location, use the <b>@location</b> tag.</p>
+                    <ul class="personList">
+                        {% for person in persons %}
+                            <li><a href="{{ app.url_generator.generate('availabilities', {'teamId': person.email}) }}">{{ person.name }}</a></li>
+                        {% endfor %}
+                    </ul>
 
-                <p>Location entries should only be inserted as full-day events.</p>
-
-                <p>Example: @LS</p>
-
-                <h2>Printing tricks</h2>
-
-                <h3 class="printScale">&#x21F6; Fit on single page <a class="top" href="#centered">#top</a></h3>
-
-                <p>Sometimes it happens that there are too many members, so that the print page does not fit on one page. To make it fit you can scale the printing page:</p>
-
-                <h4>Using Google Chrome</h4>
-                <ul class="typeList">
-                    <li>Print using system dialog... ( &#x2325;&#x2318;P )</li>
-                    <li>Scale XX%</li>
-                </ul>
+                </section>
 
             </article>
-
-            <footer>
-                <a href="#centered">#top</a>
-            </footer>
         </div>
-{% endblock %}
-
-{% block javascript %}
-{% endblock  %}
+        <script src="js/jquery.js" type="text/javascript"></script>
+        <script src="js/chosen.jquery.js" type="text/javascript"></script>
+        <script>
+            $('#chosen_teamofone').chosen().change(function() {
+            window.location = window.location.protocol + '//' + window.location.hostname + '/' + $(this).val();
+            });
+        </script>
+    </body>
+</html>

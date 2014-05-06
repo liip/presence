@@ -1,6 +1,6 @@
 <?php
 
-namespace Teamavailabilities;
+namespace Presence;
 
 use \DateTime;
 
@@ -31,32 +31,11 @@ class Person
     public $name            = '';
 
     /**
-     * The Person's role, e.g. Dev, or ScrumMaster.
-     *
-     * @var string
-     */
-    public $role            = 'Dev';
-
-    /**
      * The Person's location, e.g. Zurich.
      *
      * @var string
      */
     public $location        = '';
-
-    /**
-     * The employment percentage, e.g. 100 for 100%.
-     *
-     * @var integer
-     */
-    public $percentage      = 100;
-
-    /**
-     * The teams the Person belongs to.
-     *
-     * @var array
-     */
-    public $teams           = array();
 
     /**
      * Contains thhe Event objects for this Person.
@@ -85,15 +64,10 @@ class Person
      * @param string $id   The Person's id.
      * @param array  $data The proporties of this Person.
      */
-    public function __construct($id, array $data = array())
+    public function __construct($id, $name)
     {
         $this->id = $id;
-
-        $this->setDataKey($data, 'name');
-        $this->setDataKey($data, 'role');
-        $this->setDataKey($data, 'percentage');
-        $this->setDataKey($data, 'location');
-        $this->setDataKey($data, 'teams');
+        $this->name = $name;
     }
 
     /**
@@ -114,23 +88,21 @@ class Person
     /**
      * Sets the events and initializes each as Event().
      *
-     * @param array   $events      Contains the data from the calendar service.
+     * @param array $events Contains the data from the calendar service.
      *
-     * @return mixed // this is to fix the code sniffer error, should be void
+     * @return void
      */
     public function setEvents(array $events)
     {
-        if (is_array($events)) {
-            foreach ($events as $event) {
-                $this->events[] = new Event($event);
-            }
+        foreach ($events as $event) {
+            $this->events[] = new Event($event);
         }
     }
 
     /**
      * Gets the schedule for this Person.
      *
-     * @param CalendarInterface $calendar    Calendar object.
+     * @param CalendarInterface $calendar Calendar object.
      *
      * @return void
      */
@@ -265,15 +237,19 @@ class Person
             if ($event::TYPE_OFF === $event->type) {
                 return $this->timeSlots[$id] = array(
                     'class' => 'off',
-                    'title' => $event->summary
+                    'title' => str_replace('#', '', $event->summary)
                 );
             }
 
             if ($event::TYPE_PROJECT === $event->type) {
                 return $this->timeSlots[$id] = array(
                     'class' => 'busy',
-                    'title' => $event->summary
+                    'title' => str_replace('#', '', $event->summary)
                 );
+            }
+
+            if ($event::TYPE_APPOINTMENT === $event->type) {
+                $class = 'busy';
             }
         }
 

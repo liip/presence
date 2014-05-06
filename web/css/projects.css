@@ -1,0 +1,97 @@
+
+.projects li.header,
+.projects li.person {
+    padding: 0 20px
+}
+.projects li.person h2{
+    margin-top: 10px;
+}
+
+.projects li.day {
+    position: relative;
+    z-index: 1;
+    padding: 5px 2px;
+}
+
+.projects li.two-weeks{
+    width: 7%;
+}
+
+.projects li.four-weeks{
+    width: 4%;
+}
+
+.projects li.monday {
+    background: transparent;
+    border-radius: 0;
+    border-left: 2px solid #D4D4CD;
+    padding-left: 5px;
+}
+
+.projects .week {
+    position: absolute;
+    display: block;
+    text-align: center;
+    width: 400%;
+    font-size: 1.25em;
+    top: 4px;
+    left: 90%;
+}
+.projects h3.dayNumber {
+    margin: 25px 0 0 0;
+    width: 100%;
+    text-align: center;
+}
+.projects li.day hr {
+    margin: 0;
+    width: 120%;
+}
+.projects span.dayName {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+}
+
+.projects ul.days {
+    float: left;
+}
+
+
+.projects .timeSlotBubble {
+    background-color: #c4c4c4;
+    border: 0 none;
+    border-radius: 2px;
+    padding: 2px;
+}
+.projects .timeSlotBubble.hidden {
+    background-color: transparent;
+    color: transparent;
+}
+.projects .timeSlotBubble.off {
+    background-color: transparent;
+    color: transparent;
+}
+.projects .timeSlotBubble.available {
+    background-color: #e5e5e5;
+}
+
+.projects .timeSlotBubble.available,
+.projects .timeSlotBubble.other {
+    color: black;
+}
+
+.projects .summary {
+    padding: 10px 20px;
+    overflow: auto;
+}
+.projects .summary .result {
+    width: 90.5%;
+    float: left;
+}
+.projects .summary .timeSlotBubble {
+    display: inline-block;
+    min-width: 20px;
+    padding: 10px 10px 6px 10px;
+    margin: 0 10px 10px 0;
+}
+

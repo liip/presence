@@ -55,11 +55,6 @@ h1 span {
 -------------------------------------------------------------- */
 div.header {
     padding: 15px 20px 20px 20px;
-    position: fixed;
-    top:0px;
-    background-color: #fff;
-    width: 100%;
-    z-index: 2;
 }
 
 div.header .title {
@@ -70,6 +65,7 @@ div.header .title {
 div.header .title .teamList {
     display: none;
     position: absolute;
+    z-index: 10;
     padding: 1em 0 0 3em;
 }
 div.header .title .teamList li {
@@ -87,10 +83,6 @@ div.header .title:hover .teamList {
     display: block;
 }
 
-#calendar {
-    margin-top: 96px;
-}
-
 div.additionalInformation {
     display: block;
     float: left;
@@ -103,8 +95,7 @@ div.additionalInformation span.infoBubble {
     background-color: #ebebe4;
     border-radius: 25px;
     padding: 7px 10px 7px 16px;
-    margin: 0 10px 10px 0;
-    display: inline-block;
+    margin-right: 10px;
 }
 
 div.additionalInformation span.number {
@@ -144,12 +135,6 @@ li.day hr {
 li.header {
     padding: 10px 20px;
     border-bottom: 1px solid #e7e7e3;
-    position: fixed;
-    background-color: #fff;
-    width: 100%;
-    top: 0;
-    z-index: 1;
-
 }
 
 li.header h2 {
@@ -159,6 +144,7 @@ li.header h2 {
     font-size: 1.42em;
 }
 
+li.summary,
 li.person {
     padding: 20px;
     background-color: #f9f9f7;
@@ -167,11 +153,8 @@ li.person {
     page-break-inside: avoid;
 }
 
-li.person.first {
-    margin-top: 166px;
-}
-
-li.person h2 {
+li.person h2,
+li.summary h2{
     font-size: 1.42em;
     margin-top: 0px;
     margin-bottom: 10px;
@@ -245,12 +228,15 @@ li.day.fullWidth.error a {
 }
 .timeSlotBubble.available {
     background-color: #9cc02f;
+    border-style: dotted;
 }
 .timeSlotBubble.busy {
     background-color: #edb508;
+    border-style: double;
 }
 .timeSlotBubble.off {
     background-color: #cb6140;
+    border-style: dashed;
 }
 
 .location {
@@ -309,27 +295,20 @@ strong {
 -------------------------------------------------------------- */
 #centered {
     font-size: 2em;
-    margin: 30px auto 0;
-    width: 600px;
-    padding: 20px 20px 150px 20px;
+    width: 100% auto;
+    margin: 20px;
 }
 
 #centered h1 {
-    font-size: 2.5em;
-    border-bottom: 1px solid #616058;
-    padding-bottom: 40px;
-    margin-bottom: 60px;
+    font-size: 2em;
 }
 
 #centered h2 {
-    margin-top: 60px;
-    padding-top: 40px;
-    border-top: 1px solid #616058;
-}
-#centered h3 {
     font-weight: 100;
-    margin-top: 60px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
+
 #centered h3 a.top {
     float: right;
     font-size: 0.6em;
@@ -344,14 +323,43 @@ strong {
 }
 
 #centered li {
-    list-style: square;
-    margin: 0.2em 0 0 1em;
+    list-style: none;
+    margin: 0.2em 0 0 0;
     font-weight: 100;
+}
+
+#centered .quickhelp p {
+    text-align: center;
+    max-width: 250px;
+}
+
+#centered section {
+    margin-bottom: 20px;
 }
 
 #centered .typeList a {
     font-size: 1em;
     font-weight: 100;
+}
+
+#centered .typeList a:hover {
+    color: white;
+}
+
+#centered .personList {
+    padding-top: 10px;
+}
+
+#centered .side {
+    float: left;
+    width: 45%;
+    margin: 2%;
+}
+
+#centered .persons {
+    float: left;
+    width: 45%;
+    margin: 2%;
 }
 
 #centered footer {
@@ -362,13 +370,15 @@ strong {
     font-weight: 100;
 }
 
+/* for chosen, we need a different list styling */
+#centered .chosen-results li {
+    list-style: none;
+    margin: 0pt;
+}
+
 /* Small screens
 -------------------------------------------------------------- */
-@media screen and (max-width: 900px) {
-
-    div.additionalInformation span.infoBubble {
-        font-size: 1.1em;
-    }
+@media screen and (max-width: 800px) {
     .events {
         display: none;
     }

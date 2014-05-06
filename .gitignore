@@ -9,3 +9,6 @@ composer.phar
 
 #ignore IDE specific stuff
 .idea
+
+.vagrant*
+cache/sessions/
