@@ -5,6 +5,7 @@ google:
   key: ************.apps.googleusercontent.com
   secret: ************************
   scope:
+    - profile
     - email
     - https://www.googleapis.com/auth/calendar.readonly
   user_endpoint: https://www.googleapis.com/oauth2/v1/userinfo
