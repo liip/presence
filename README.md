@@ -19,13 +19,10 @@ Installation
   in case you want to help out and contribute to the project or just want to run the provided tests do:
   `php composer.phar install --dev`
   instead.
-* copy `config/services.yaml.sample` file to `config/services.yaml`
-* go to https://code.google.com/apis/console
-* create a new SERVICE ACCOUNT
-* download the privatekey.p12 and place it somewhere on your machine
-* set `clientId`, `serviceAccountName` (Google dev e-mail address) and `keyFile` in `config/services.yaml` file
-* copy `config/people.yaml.sample` file to `config/people.yaml` and configure the teams
-* install the `pre-commit.sh` script as a pre-commit hook in your local repository `ln -s ../../pre-commit.sh .git/hooks/pre-commit`
+* copy `config/settings.yaml.sample` file to `config/settings.yaml`
+* create a project at Google: https://console.developers.google.com/project
+* under APIs make sure the Calendar API is ON
+* generate the OAUTH2 credentials there and add the `key` and `secret` to `settings.yaml`
 
 Run tests
 ---------
