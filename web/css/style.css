@@ -307,6 +307,7 @@ strong {
 .footer div {
     min-width: 20%;
     display: inline-block;
+    padding-right: 20px;
 }
 
 .footer div.infoBubble.delete-team-button {

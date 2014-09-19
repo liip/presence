@@ -161,6 +161,7 @@ $app->get(
             $calendar     = new GoogleCalendar($app, $config->settings['google'], $startDate, $endDate);
             $getTeam      = $sqlite->getTeam($teamId);
             $nonTeam      = $sqlite->getTeamsNonMembers($teamId);
+            $slack        = $sqlite->getSlack($teamId);
 
             if ($getTeam) {
                 $team = new Team(
@@ -192,7 +193,8 @@ $app->get(
                 'weeks'               => $weeks,
                 'showDetails'         => $showDetails,
                 'projectsMode'        => $projectsMode,
-                'nonteam'             => $nonTeam
+                'nonteam'             => $nonTeam,
+                'slack'               => $slack
             )
         );
     }
@@ -268,7 +270,7 @@ $app->post(
     function(Request $request) use ($app, $sqlite) {
         try {
             $name = $request->request->get('teamName');
-            
+
             $slug = ($sqlite->createTeam($name));
             if ($slug) {
                 return $app->redirect('/' . $slug);
@@ -295,5 +297,20 @@ $app->match(
 )
 ->method('GET|POST')
 ->bind('deleteTeam');
+
+$app->post(
+    '/slack',
+    function (Request $request) use ($app, $sqlite) {
+        try {
+            $channel = $request->request->get('channel');
+            $teamId = $request->request->get('teamId');
+            $sqlite->setSlack($teamId, $channel);
+            return $app->redirect('/' . $teamId);
+        } catch (\Exception $e) {
+            $app->abort(404, $e->getMessage());
+        }
+    }
+)
+->bind('slack');
 
 $app->run();

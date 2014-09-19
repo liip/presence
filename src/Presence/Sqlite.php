@@ -33,7 +33,8 @@ class Sqlite {
             'CREATE TABLE teams (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 slug TEXT UNIQUE NOT NULL,
-                name TEXT UNIQUE NOT NULL
+                name TEXT UNIQUE NOT NULL,
+                slack TEXT
             );'
         );
         $setup->execute();
@@ -221,5 +222,23 @@ class Sqlite {
         $stmt = $this->app['db']->prepare($sql);
         $stmt->bindValue(1, $slug);
         $stmt->execute();
+    }
+
+    public function setSlack($slug, $slack) {
+        $sql = "UPDATE teams SET slack = ?
+                WHERE slug = ?";
+        $stmt = $this->app['db']->prepare($sql);
+        $stmt->bindValue(1, $slack);
+        $stmt->bindValue(2, $slug);
+        $stmt->execute();
+    }
+
+    public function getSlack($slug) {
+        $sql = "SELECT slack from teams
+                WHERE slug = ?";
+        $stmt = $this->app['db']->prepare($sql);
+        $stmt->bindValue(1, $slug);
+        $stmt->execute();
+        return $stmt->fetchColumn();
     }
 }

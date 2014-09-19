@@ -205,6 +205,16 @@
         </select>
       </div>
 
+      <div>
+        <h2>Slack channel</h2>
+
+        <form name="createTeam" action="slack" method="post">
+          <input type="text" name="channel" value="{{ slack  }}">
+          <input type="hidden" name="teamId" value="{{ team.id  }}">
+          <input type="submit" value="Submit">
+        </form>
+      </div>
+
       <div class="infoBubble delete-team-button">
         <a href="{{ app.url_generator.generate('deleteTeam', {'teamId': team.id}) }}" method="post">Delete team</a>
       </div>
