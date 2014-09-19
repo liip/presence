@@ -37,7 +37,8 @@
         "symfony/security": "~2.3",
         "gigablah/silex-oauth": "~0.1",
         "symfony/form": "~2.3",
-        "doctrine/dbal":"2.2.*"
+        "doctrine/dbal":"2.2.*",
+        "cleentfaar/slack": "dev-master"
     },
 
     "require-dev": {
