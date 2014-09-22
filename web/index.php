@@ -94,7 +94,7 @@ $app->get(
         $weeks        = $app['request']->get('view', 1);
         $endDate      = $helper->getEndDate($weeks);
         $days         = $helper->getDays($startDate, $endDate);
-        $calendar     = new GoogleCalendar($app, $config->settings['google'], $startDate, $endDate);
+        $calendar     = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
 
         return $app['twig']->render(
             'index.twig',
@@ -172,7 +172,7 @@ $app->get(
             $showDetails  = $app['request']->get('details', 1);
             $endDate      = $helper->getEndDate($weeks);
             $days         = $helper->getDays($startDate, $endDate);
-            $calendar     = new GoogleCalendar($app, $config->settings['google'], $startDate, $endDate);
+            $calendar     = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
             $getTeam      = $sqlite->getTeam($teamId);
             $nonTeam      = $sqlite->getTeamsNonMembers($teamId);
             $slack        = $sqlite->getSlackChannel($teamId);
