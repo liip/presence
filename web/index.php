@@ -5,6 +5,7 @@ namespace Presence;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Silex\Provider\DoctrineServiceProvider;
 
 // we need APC for the caching
 if (! (extension_loaded('apc') && ini_get('apc.enabled'))) {
@@ -16,8 +17,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 // parse and store the yaml configuration
 $yaml             = new \Symfony\Component\Yaml\Parser();
 $config           = new Config();
-$config->settings = $yaml->parse(file_get_contents('../config/settings.yaml'));
-$config->people   = $yaml->parse(file_get_contents('../config/people.yaml'));
+$config->settings = $yaml->parse(file_get_contents(__DIR__ . '/../config/settings.yaml'));
+$config->people   = $yaml->parse(file_get_contents(__DIR__ . '/../config/people.yaml'));
 
 // load Silex and register providers
 $app = new \Silex\Application();
@@ -30,11 +31,24 @@ $app['twig']->getExtension('core')->setTimezone(
 
 Oauth::register($app, $config->settings);
 
-$sqlite = new Sqlite($app);
-$sqlite->register($config->settings);
+$app['debug'] = true;
+
+// register the db
+$app->register(
+    new DoctrineServiceProvider(),
+    array(
+        'db.options' => array(
+            'driver' => 'pdo_sqlite',
+            'path' => $config->settings['dbPath']
+        )
+    )
+);
+
+$sqlite = new Sqlite($app['db']);
+
 if (!file_exists($config->settings['dbPath'])) {
     $sqlite->create();
-    $people = $yaml->parse(file_get_contents('../config/people.yaml'));
+    $people = $yaml->parse(file_get_contents(__DIR__ . '/../config/people.yaml'));
     $persons = $people['persons'];
     $teams = $people['teams'];
     $sqlite->populate($persons, $teams);
@@ -161,19 +175,22 @@ $app->get(
             $calendar     = new GoogleCalendar($app, $config->settings['google'], $startDate, $endDate);
             $getTeam      = $sqlite->getTeam($teamId);
             $nonTeam      = $sqlite->getTeamsNonMembers($teamId);
-            $slack        = $sqlite->getSlack($teamId);
+            $slack        = $sqlite->getSlackChannel($teamId);
+            $refresh      = $app['request']->get('refresh');
 
             if ($getTeam) {
                 $team = new Team(
-                    $sqlite,
                     $teamId,
-                    $calendar
+                    $calendar,
+                    $sqlite,
+                    $refresh
                 );
             } elseif ($sqlite->getPerson($teamId)) {
                 $team = new TeamOfOne(
-                    $sqlite,
                     $teamId,
-                    $calendar
+                    $calendar,
+                    $sqlite,
+                    $refresh
                 );
             } else {
                 $app->abort(404, 'No team or person found with ID ' . $teamId . '.');
@@ -304,7 +321,7 @@ $app->post(
         try {
             $channel = $request->request->get('channel');
             $teamId = $request->request->get('teamId');
-            $sqlite->setSlack($teamId, $channel);
+            $sqlite->setSlackChannel($teamId, $channel);
             return $app->redirect('/' . $teamId);
         } catch (\Exception $e) {
             $app->abort(404, $e->getMessage());
