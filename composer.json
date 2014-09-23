@@ -38,7 +38,7 @@
         "gigablah/silex-oauth": "~0.1",
         "symfony/form": "~2.3",
         "doctrine/dbal":"2.2.*",
-        "polem/slack-notifier": "dev-master"
+        "tailored-tunes/php-slack-notifier": "dev-master"
     },
 
     "require-dev": {

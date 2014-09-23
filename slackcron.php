@@ -6,9 +6,7 @@ use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Silex\Provider\DoctrineServiceProvider;
-use Slack\Client;
-use Slack\Notifier;
-use Slack\Message\Message;
+use TailoredTunes\SlackNotifier;
 
 // we need APC for the caching
 if (! (extension_loaded('apc') && ini_get('apc.enabled'))) {
@@ -79,7 +77,7 @@ foreach ($slackteams as $slackteam) {
             }
         };
 
-        $ftitle = function($title) {
+        $ftitle = function ($title) {
             return ' "' . $title . '"';
         };
 
@@ -119,12 +117,12 @@ foreach ($slackteams as $slackteam) {
 
     }
 
-    $client = new Client(
+    $slackWebhookUrl = sprintf(
+        'https://%s.slack.com/services/hooks/incoming-webhook?token=%s',
         $config->settings['slack']['team'],
         $config->settings['slack']['token']
     );
-    $slack = new Notifier($client);
-    $message = new Message($message);
-    $message->setChannel($slackteam['slack']);
-    $slack->notify($message);
+
+    $slack = new SlackNotifier($slackWebhookUrl);
+    $slack->send($message, $slackteam['slack']);
 }
