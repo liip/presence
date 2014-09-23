@@ -41,7 +41,7 @@ foreach ($slackteams as $slackteam) {
     $startDate = \DateTime::createFromFormat('Y-m-d H:i:s', $today->format('Y-m-d') . ' 00:00:00');
     $endDate = \DateTime::createFromFormat('Y-m-d H:i:s', $today->format('Y-m-d') . ' 23:59:59');
     $calendar = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
-    $refresh = false;
+    $refresh = true;
 
     $team = new Team(
         $slackteam['slug'],
