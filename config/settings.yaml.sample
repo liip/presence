@@ -10,3 +10,13 @@ google:
     - https://www.googleapis.com/auth/calendar.readonly
   user_endpoint: https://www.googleapis.com/oauth2/v1/userinfo
   cacheTtl: 1800
+  service_account:
+    p12_path: /path-to/private-key-file.p12
+    email: *************************@developer.gserviceaccount.com
+    scope:
+      - https://www.googleapis.com/auth/calendar.readonly
+    impersonated_user: email@for-impersonated-user.ch
+
+slack:
+  token: ********************
+  team: liip

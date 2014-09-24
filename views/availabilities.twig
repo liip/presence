@@ -84,12 +84,6 @@
           </a>
         </span>
 
-        {% if not team.members or team.members[0] and team.members[0].id != team.id %}
-            <span class="infoBubble">
-              <a class="weekSwitch" href="{{ app.url_generator.generate('deleteTeam', {'teamId': team.id}) }}" method="post">Delete team</a>
-            </span>
-        {% endif %}
-
         <span class="infoBubble">
           <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}&refresh=all">Refresh</a>
         </span>
@@ -131,13 +125,13 @@
       {% for member in team.members %}
         <li class="person fixed">
           <div class="rowTitle">
-            <h2>{{ member.name }}</h2>
-            {% if member.role %}
-              <p class="memberRole">{{ member.role }}</p>
+            <h2>{{ member.name }}
+              {% if team.id != member.id %}
+                <div class="remove-person-button">
+                  <a href="/{{ team.id }}/{{ member.id }}/delete">remove</a>
+                </div>
             {% endif %}
-            {% if member.role %}
-              <p class="memberPercentage">{{ member.percentage }}%</p>
-            {% endif %}
+            </h2>
           </div>
           <ul class="days">
             {% if member.hasError is sameas(false) %}
@@ -191,17 +185,13 @@
                 You are not allowed to view the calendar of <strong>{{ member.id }}</strong> and therefore Presence cannot show you the nasty details. Please ask the owner of {{ member.id }} to give you viewing permissions on the calendar.
               </li>
             {% endif %}
-            {% if team.id != member.id %}
-              <li>
-                <a href="/{{ team.id }}/{{ member.id }}/delete">Remove from team</a>
-              </li>
-            {% endif %}
           </ul>
         </li>
       {% endfor %}
     </ul>
     {% if not team.members or team.members[0] and team.members[0].id != team.id %}
-      <section class="persons">
+    <div class="footer">
+      <div class="persons">
 
         <h2>Persons not on this team</h2>
 
@@ -213,8 +203,22 @@
             <option value="{{ app.url_generator.generate('add', {'teamId': team.id, 'personId': person.email}) }}">{{ person.name }}</option>
           {% endfor %}
         </select>
+      </div>
 
-      </section>
+      <div>
+        <h2>Slack channel <small>(blank to disable)</small></h2>
+
+        <form name="createTeam" action="slack" method="post">
+          <input type="text" name="channel" value="{{ slack  }}">
+          <input type="hidden" name="teamId" value="{{ team.id  }}">
+          <input type="submit" value="Submit">
+        </form>
+      </div>
+
+      <div class="infoBubble delete-team-button">
+        <a href="{{ app.url_generator.generate('deleteTeam', {'teamId': team.id}) }}" method="post">Delete team</a>
+      </div>
+    </div>
     {% endif %}
     <script src="js/jquery.js" type="text/javascript"></script>
     <script src="js/chosen.jquery.js" type="text/javascript"></script>

@@ -89,6 +89,7 @@ div.additionalInformation {
     padding: 9px 0 0 30px;
 }
 
+.infoBubble,
 div.additionalInformation span.infoBubble {
     font-size: 1.71em;
     font-weight: 100;
@@ -167,6 +168,13 @@ li.person p {
     font-size: 1.15em;
     color: #959590;
 }
+
+li.person h2 div {
+    font-size: 0.7em;
+    margin-top: 15px;
+    vertical-align: middle;
+}
+
 .rowTitle {
     float: left;
     width: 8.5%;
@@ -289,6 +297,24 @@ li.declined span { text-decoration: line-through; }
 
 strong {
     font-weight: bold;
+}
+
+.footer {
+    width: 90%;
+    margin: 2%;
+}
+
+.footer div {
+    min-width: 20%;
+    display: inline-block;
+}
+
+.footer div.infoBubble.delete-team-button {
+    float: right;
+    min-width: 12%;
+    display: inline-block;
+    text-align: center;
+    margin-right: 0px;
 }
 
 /* Front
@@ -454,6 +480,14 @@ strong {
     }
 
     a.weekSwitch {
+        display: none;
+    }
+
+    div.footer {
+        display: none;
+    }
+
+    .remove-person-button {
         display: none;
     }
 }

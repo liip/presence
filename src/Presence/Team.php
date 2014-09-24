@@ -45,17 +45,18 @@ class Team
     /**
      * Assemble the team for this instance.
      *
-     * @param Sqlite            $sqlite   Sqlite object.
      * @param string            $id       The team id.
      * @param CalendarInterface $calendar Calendar object.
+     * @param Sqlite            $sqlite   Sqlite object.
+     * @param boolean           $refresh  Refresh or not.
      */
-    public function __construct($sqlite, $id, CalendarInterface $calendar)
+    public function __construct($id, CalendarInterface $calendar, Sqlite $sqlite, $refresh)
     {
         // TODO add validation
 
         $this->id       = $id;
         $this->calendar = $calendar;
-        $this->refresh  = $sqlite->app['request']->get('refresh');
+        $this->refresh  = $refresh;
         $team           = $sqlite->getTeam($id);
         $this->name     = $team[0]['name'];
         $this->members  = $this->getTeamMembers($sqlite->getTeamsMembers($id));
