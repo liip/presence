@@ -1,5 +1,4 @@
-Presence
-========
+# Presence
 
 Presence shows you the availabilities of your set up team by analyzing their Google Calendar entries.
 
@@ -11,8 +10,7 @@ Features include:
 - Search and display availabilities for individual persons
 - Show projects people working on and calculates man days
 
-Installation
-------------
+## Installation
 
 * install [Composer](http://getcomposer.org/): `curl -s https://getcomposer.org/installer | php`
 * run Composer to install the dependencies: `php composer.phar install`
@@ -21,19 +19,30 @@ Installation
   instead.
 * copy `config/settings.yaml.sample` file to `config/settings.yaml`
 * create a project at Google: https://console.developers.google.com/project
+* configure the "Consent Screen" to manage your organization/server
 * under APIs make sure the Calendar API is ON
-* generate the OAUTH2 credentials there and add the `key` and `secret` to `settings.yaml`
 
-Run tests
----------
+### OAuth2
 
-* make sure you run `php composer.phar install --dev` (use `update --dev` to update dependencies) to fetch necessary dependencies.
-* open a shell and change into the project root
-* run `phpunit`
-  (see [PHPUnit documentation](http://www.phpunit.de/manual/current/en/index.html) to get to know PHPUnit.)
+User access to the website is managed through OAuth2.
 
-Contribute
-----------
+* under Credentials generate a Client ID for "Web Application"
+* add the `key` and `secret` to `settings.yaml`
+
+### Service Account
+
+To fetch the calendar information a service account is used.
+
+* under Credentials generate a Client ID for "Service account"
+* copy the email address to `settings.yaml`
+* copy the .p12 to the server
+* set the path to the .p12 key in `settings.yaml`
+* set the `impersonated_user` to the email of the account that has access to your calendars
+* copy the Client ID of the Service Account and add it on the Google Admin Console (https://admin.google.com/AdminHome?chromeless=1#OGX:ManageOauthClients).
+* as scope for the calendar, use `https://www.googleapis.com/auth/calendar.readonly`
+
+# Contribute
+
 We strongly encourage you to contribute to the project. Please use the following workflow to keep it easy for everyone merging the Pull Requests back to the upstream.
 
 1. Fork it
@@ -42,26 +51,8 @@ We strongly encourage you to contribute to the project. Please use the following
 4. Push to the branch (git push origin my-new-feature)
 5. Create new Pull Request
 
-Google Sources
---------------
-
-  * PHP API Client: http://code.google.com/p/google-api-php-client
-
-  * Google Calendar OAuth 2.0: https://developers.google.com/google-apps/calendar/auth
-
-  * Google Calendar Events List Documentation: https://developers.google.com/google-apps/calendar/v3/reference/events/list
-
-  * Google Calendar API Explorer: https://developers.google.com/apis-explorer/#s/calendar/v3/calendar.events.list?calendarId=bombastic%2540example.com&_h=1&
-
-  * Google API Console: https://code.google.com/apis/console
-
-  * Google Calendar API Reference: https://developers.google.com/google-apps/calendar/v2/reference
-
-  * Google Calendar API Event Fields https://developers.google.com/google-apps/calendar/v3/reference/events
-
-Copyright
----------
+# Copyright
 
 This software is licensed under the GNU GENERAL PUBLIC LICENSE Version 3. Please see the `LICENSE` file for detailed information.
 
-Copyright 2013 Bastian Widmer, Patrick Zahnd, Waldvogel, Hansmartion Geiser
+Copyright 2013 Bastian Widmer, Patrick Zahnd, Waldvogel, Hansmartin Geiser
