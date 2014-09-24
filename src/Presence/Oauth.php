@@ -20,7 +20,7 @@ class Oauth
         self::registerOauthProvider($app, $config['google']);
         self::registerSessionProvider($app);
         self::registerSecurityProvider($app);
-        self::registerHandler($app);
+        self::registerHandler($app, $config);
     }
 
     private static function registerSessionProvider($app)
@@ -77,18 +77,28 @@ class Oauth
         );
     }
 
-    private static function registerHandler($app)
+    private static function registerHandler($app, $config)
     {
         $app->before(
-            function (Request $request) use ($app) {
+            function (Request $request) use ($app, $config) {
                 $token = $app['security']->getToken();
                 $app['user'] = null;
 
                 if ($token && !$app['security.trust_resolver']->isAnonymous($token)) {
                     $app['user'] = $token->getUser();
                     $email = $app['user']->getEmail();
-                    if (!preg_match('/@liip.ch$/', $email)) {
-                        return new Response('Access denied.', 403);
+                    if (isset($config['allowed_domains']) &&
+                        is_array($config['allowed_domains'])
+                    ) {
+                        $allow = false;
+                        foreach ($config['allowed_domains'] as $domain) {
+                            if (preg_match("/@{$domain}$/", $email)) {
+                                $allow = true;
+                            }
+                        }
+                        if ($allow === false) {
+                            return new Response('Access denied.', 403);
+                        }
                     }
                     $refreshToken = $token->getAccessToken()->getRefreshToken();
                     $username = $app['user']->getUsername();

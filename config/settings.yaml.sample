@@ -1,6 +1,9 @@
 timezone: Europe/Zurich
 dbPath: /fullpath/app.db
 
+allowed_domains:
+  - liip.ch
+
 google:
   key: ************.apps.googleusercontent.com
   secret: ************************
