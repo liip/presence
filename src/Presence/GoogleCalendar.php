@@ -92,7 +92,7 @@ class GoogleCalendar implements CalendarInterface
         if (is_null($this->client)) {
             $this->client = new \Google_Client();
         }
-        $this->client->setApplicationName("presence.liip.ch");
+        $this->client->setApplicationName("Presence");
 
         if (isset($_SESSION['service_token'])) {
             $this->client->setAccessToken($_SESSION['service_token']);

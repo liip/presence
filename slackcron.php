@@ -50,7 +50,12 @@ foreach ($slackteams as $slackteam) {
         $refresh
     );
 
-    $message = "Team status for {$team->getName()}\n";
+    $base_url = '';
+    if (isset($config->settings['slack']['base_url'])) {
+        $base_url = $config->settings['slack']['base_url'];
+    }
+    $teamName =  $base_url ? "<{$base_url}/{$slackteam['slug']}|{$team->getName()}>" : $team->getName();
+    $message = "Team status for {$teamName}\n";
 
     foreach ($team->getMembers() as $member) {
 
