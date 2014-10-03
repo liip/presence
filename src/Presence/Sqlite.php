@@ -201,12 +201,21 @@ class Sqlite {
         }
     }
 
-    public function deleteTeam($slug) {
-        $sql = "DELETE FROM teams
-                WHERE slug = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(1, $slug);
-        $stmt->execute();
+    public function deleteTeam($slug, $person) {
+        $this->db->beginTransaction();
+        if ('true' === $person) {
+            $stmt = $this->db->prepare("DELETE FROM teams_to_persons WHERE persons_id IN (SELECT id FROM persons WHERE email = ?)");
+            $stmt->bindValue(1, $slug);
+            $stmt->execute();
+            $stmt = $this->db->prepare("DELETE FROM persons WHERE email = ?");
+            $stmt->bindValue(1, $slug);
+            $stmt->execute();
+        } else {
+            $stmt = $this->db->prepare("DELETE FROM teams WHERE slug = ?");
+            $stmt->bindValue(1, $slug);
+            $stmt->execute();
+        }
+        $this->db->commit();
     }
 
     public function setSlackChannel($slug, $slack) {

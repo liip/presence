@@ -305,7 +305,7 @@ $app->match(
     '/{teamId}/delete',
     function($teamId) use ($app, $sqlite) {
         try {
-            $teamDeleted = ($sqlite->deleteTeam($teamId));
+            $teamDeleted = $sqlite->deleteTeam($teamId, $app['request']->get('isPerson', 'false'));
             return $app->redirect('/');
         } catch (\Exception $e) {
             $app->abort(404, $e->getMessage());

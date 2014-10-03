@@ -219,6 +219,12 @@
         <a href="{{ app.url_generator.generate('deleteTeam', {'teamId': team.id}) }}" method="post">Delete team</a>
       </div>
     </div>
+    {% else %}
+    <div class="footer">
+      <div class="infoBubble delete-team-button">
+        <a href="{{ app.url_generator.generate('deleteTeam', {'teamId': team.id, 'isPerson': 'true'}) }}" method="post">Delete person</a>
+      </div>
+    </div>
     {% endif %}
     <script src="js/jquery.js" type="text/javascript"></script>
     <script src="js/chosen.jquery.js" type="text/javascript"></script>
