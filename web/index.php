@@ -211,7 +211,8 @@ $app->get(
                 'showDetails'         => $showDetails,
                 'projectsMode'        => $projectsMode,
                 'nonteam'             => $nonTeam,
-                'slack'               => $slack
+                'slack'               => $slack,
+                'impersonated_user'   => $config->settings['google']['service_account']['impersonated_user']
             )
         );
     }

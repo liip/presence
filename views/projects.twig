@@ -143,7 +143,7 @@
               {% endfor %}
             {% else %}
               <li class="day fullWidth error">
-                You are not allowed to view the calendar of <strong>{{ member.id }}</strong> and therefore Presence cannot show you the nasty details. Please ask the owner of {{ member.id }} to give you viewing permissions on the calendar.
+                Presence is not allowed to view the calendar of <strong>{{ member.id }}</strong> and therefore cannot show you the nasty details. Please ask the owner of {{ member.id }} to give <strong>{{ impersonated_user }}</strong> viewing permissions on the calendar.
               </li>
             {% endif %}
             {% if team.id != member.id %}
