@@ -82,15 +82,15 @@ class Sqlite {
 
     // Returns array of Person objects for all rows in persons db table.
     public function allPersons() {
-        $sql = "SELECT * FROM persons p";
+        $sql = "SELECT * FROM persons p ORDER BY email";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
     //Returns array of Team objects for all rows in teams db table.
-    public function allTeams($calendar) {
-        $sql = "SELECT * FROM teams t";
+    public function allTeams() {
+        $sql = "SELECT * FROM teams t ORDER by slug";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();

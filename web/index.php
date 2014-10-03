@@ -99,7 +99,7 @@ $app->get(
         return $app['twig']->render(
             'index.twig',
             array(
-                'teams'   => $sqlite->allTeams($calendar),
+                'teams'   => $sqlite->allTeams(),
                 'persons' => $sqlite->allPersons(),
             )
         );
@@ -204,7 +204,7 @@ $app->get(
         return $app['twig']->render(
             (($projectsMode) ? 'projects' : 'availabilities' ). '.twig',
             array(
-                'teams'               => $sqlite->allTeams($calendar),
+                'teams'               => $sqlite->allTeams(),
                 'team'                => $team,
                 'days'                => $days,
                 'weeks'               => $weeks,
