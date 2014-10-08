@@ -90,6 +90,25 @@ class Person
     }
 
     /**
+     * Return the name of the holiday if there is one or an empty string.
+     *
+     * @param DateTime $date The date to check for.
+     * @param string   $type Morning or afternoon.
+     *
+     * @return string
+     */
+    protected function getHolidayName(DateTime $date, $type)
+    {
+        if (isset($this->holidays[$date->format('y-m-d')])) {
+            $holiday = $this->holidays[$date->format('y-m-d')];
+            if (true === $holiday['type'][$type] && true === $holiday['location'][$this->location]) {
+                return $holiday['name'];
+            }
+        }
+        return '';
+    }
+
+    /**
      * Sets the events and initializes each as Event().
      *
      * @param array $events Contains the data from the calendar service.
@@ -167,6 +186,12 @@ class Person
      */
     public function getLocationByDate(DateTime $date)
     {
+
+        if (!empty($this->getHolidayName($date, 'morning') &&
+            !empty($this->getHolidayName($date, 'afternoon')))) {
+            return '';
+        }
+
         $events = $this->getEventsByDate($date);
 
         foreach ($events as $event) {
@@ -178,7 +203,7 @@ class Person
             }
         }
 
-        return $this->location;
+        return strtoupper($this->location);
     }
 
     /**
@@ -226,15 +251,12 @@ class Person
             return $this->timeSlots[$id];
         }
 
-        // bank holiday -> off class
-        if (isset($this->holidays[$date->format('y-m-d')])) {
-            $holiday = $this->holidays[$date->format('y-m-d')];
-            if (true === $holiday['type'][$type] && true === $holiday['location'][$this->location]) {
-                return $this->timeSlots[$id] = array(
-                    'class' => 'off',
-                    'title' => $holiday['name']
-                );
-            }
+        $holiday = $this->getHolidayName($date, $type);
+        if (!empty($holiday)) {
+            return $this->timeSlots[$id] = array(
+                'class' => 'off',
+                'title' => $holiday
+            );
         }
 
         foreach ($events as $event) {
