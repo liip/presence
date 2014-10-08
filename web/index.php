@@ -30,7 +30,7 @@ $app['twig']->getExtension('core')->setTimezone(
 
 Oauth::register($app, $config->settings);
 
-$app['debug'] = true;
+$app['debug'] = false;
 
 // register the db
 $app->register(

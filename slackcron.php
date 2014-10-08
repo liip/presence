@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Silex\Provider\DoctrineServiceProvider;
 use TailoredTunes\SlackNotifier;
+use PDO;
 
 // we need APC for the caching
 if (! (extension_loaded('apc') && ini_get('apc.enabled'))) {
@@ -23,18 +24,8 @@ $config->settings = $yaml->parse(file_get_contents(__DIR__ . '/config/settings.y
 
 
 // register the db
-$app = new \Silex\Application();
-$app->register(
-    new DoctrineServiceProvider(),
-    array(
-        'db.options' => array(
-            'driver' => 'pdo_sqlite',
-            'path' => $config->settings['dbPath']
-        )
-    )
-);
-
-$sqlite = new Sqlite($app['db']);
+$db = new PDO("sqlite:{$config->settings['dbPath']}");
+$sqlite = new Sqlite($db);
 $slackteams = $sqlite->getSlackTeams();
 
 foreach ($slackteams as $slackteam) {
