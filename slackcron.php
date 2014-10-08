@@ -1,3 +1,4 @@
+#!/usr/bin/php -d apc.enable_cli=1
 <?php
 
 namespace Presence;
