@@ -41,11 +41,15 @@ foreach ($slackteams as $slackteam) {
     $startDate = \DateTime::createFromFormat('Y-m-d H:i:s', $today->format('Y-m-d') . ' 00:00:00');
     $endDate = \DateTime::createFromFormat('Y-m-d H:i:s', $today->format('Y-m-d') . ' 23:59:59');
     $calendar = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
+    $zebra = new Zebra($config->settings['zebra']);
+    $holidays     = $zebra->getHolidays();
+    $zebra->syncLocationWithDatabase($sqlite);
     $refresh = true;
 
     $team = new Team(
         $slackteam['slug'],
         $calendar,
+        $holidays,
         $sqlite,
         $refresh
     );

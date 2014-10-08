@@ -28,7 +28,8 @@ class Sqlite {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT UNIQUE NOT NULL,
                 name TEXT NOT NULL,
-                refreshtoken TEXT
+                refreshtoken TEXT,
+                location TEXT
             );'
         );
         $setup->execute();
@@ -243,5 +244,13 @@ class Sqlite {
         $stmt->execute();
         return $stmt->fetchAll();
 
+    }
+
+    public function updateLocation($email, $location) {
+        $sql = "UPDATE persons SET location = ? WHERE email = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(1, $location);
+        $stmt->bindValue(2, $email);
+        $stmt->execute();
     }
 }
