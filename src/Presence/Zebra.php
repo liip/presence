@@ -110,7 +110,9 @@ class Zebra
     {
         $id = 'users';
         $result = apc_fetch($id);
+
         if (false === $result) {
+
             $users = $this->getUsersFromZebra();
             // set flag in cache for 24h
             if (false === apc_store($id, true, 24*60*60)) {
@@ -121,11 +123,22 @@ class Zebra
                 if (isset($user['location_shortname']) && isset($user['email'])) {
                     $location = $user['location_shortname'];
                     $email = $user['email'];
-                    $sqlite->updateLocation($email, $location);
+                    $emails = array($email);
+                    // trying to cover email variations here
+                    if (preg_match('/^[^\.]+(@.*)$/', $email, $matches)) {
+                        if (preg_match('/^.+[\.].+$/', $user['username'])) {
+                            $emails[] = $user['username'] . $matches[1];
+                        } else {
+                            $firstname = strtolower($user['firstname']);
+                            $lastname = strtolower($user['lastname']);
+                            $emails[] = $firstname . '.' . $lastname . $matches[1];
+                        }
+                    }
+                    foreach ($emails as $email) {
+                        $sqlite->updateLocation($email, $location);
+                    }
                 }
             }
         }
     }
 }
-
-// $users = $zebra->getUsers();
