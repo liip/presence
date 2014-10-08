@@ -20,6 +20,7 @@ class TeamOfOne extends Team
         // TODO add validation
         $this->id       = $id;
         $this->calendar = $calendar;
+        $this->holidays = $holidays;
         $this->refresh  = $refresh;
         $person         = $sqlite->getPerson($id);
         $this->name     = $person[0]['name'];
