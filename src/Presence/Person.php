@@ -58,16 +58,20 @@ class Person
      */
     protected $timeSlots    = array();
 
+    private $holidays = array();
+
     /**
      * Constructor of Person object.
      *
-     * @param string $id   The Person's id.
-     * @param array  $data The proporties of this Person.
+     * @param string $id       The Person's id.
+     * @param string $name     Name of the person.
+     * @param string $location Location of the person.
      */
-    public function __construct($id, $name)
+    public function __construct($id, $name, $location)
     {
         $this->id = $id;
         $this->name = $name;
+        $this->location = $location;
     }
 
     /**
@@ -83,6 +87,25 @@ class Person
         if (isset($data[$key])) {
             $this->$key = $data[$key];
         }
+    }
+
+    /**
+     * Return the name of the holiday if there is one or an empty string.
+     *
+     * @param DateTime $date The date to check for.
+     * @param string   $type Morning or afternoon.
+     *
+     * @return string
+     */
+    protected function getHolidayName(DateTime $date, $type)
+    {
+        if (isset($this->holidays[$date->format('y-m-d')])) {
+            $holiday = $this->holidays[$date->format('y-m-d')];
+            if (true === $holiday['type'][$type] && true === $holiday['location'][$this->location]) {
+                return $holiday['name'];
+            }
+        }
+        return '';
     }
 
     /**
@@ -163,6 +186,12 @@ class Person
      */
     public function getLocationByDate(DateTime $date)
     {
+
+        if (!empty($this->getHolidayName($date, 'morning') &&
+            !empty($this->getHolidayName($date, 'afternoon')))) {
+            return '';
+        }
+
         $events = $this->getEventsByDate($date);
 
         foreach ($events as $event) {
@@ -174,7 +203,7 @@ class Person
             }
         }
 
-        return $this->location;
+        return strtoupper($this->location);
     }
 
     /**
@@ -198,11 +227,16 @@ class Person
         return $relevantEvents;
     }
 
+    public function setHolidays($holidays)
+    {
+        $this->holidays = $holidays;
+    }
+
     /**
      * Gets the time slot class and title for a given date and timeslot (morning, afternoon).
      *
-     * @param string   $type The type of the event (morning/afternoon).
-     * @param DateTime $date The day.
+     * @param string   $type     The type of the event (morning/afternoon).
+     * @param DateTime $date     The day.
      *
      * @return array
      */
@@ -215,6 +249,14 @@ class Person
 
         if (!empty($this->timeSlots[$id])) {
             return $this->timeSlots[$id];
+        }
+
+        $holiday = $this->getHolidayName($date, $type);
+        if (!empty($holiday)) {
+            return $this->timeSlots[$id] = array(
+                'class' => 'off',
+                'title' => $holiday
+            );
         }
 
         foreach ($events as $event) {
@@ -297,7 +339,7 @@ class Person
      *
      * @return string
      */
-    public function getLocationAvailabilityClassByDate(DateTime $date)
+    public function getLocationAvailabilityClassByDate(DateTime $date, $holidays = array())
     {
         $events     = $this->getEventsByDate($date);
 

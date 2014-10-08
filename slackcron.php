@@ -1,3 +1,4 @@
+#!/usr/bin/php -d apc.enable_cli=1
 <?php
 
 namespace Presence;
@@ -7,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Silex\Provider\DoctrineServiceProvider;
 use TailoredTunes\SlackNotifier;
+use PDO;
 
 // we need APC for the caching
 if (! (extension_loaded('apc') && ini_get('apc.enabled'))) {
@@ -22,18 +24,8 @@ $config->settings = $yaml->parse(file_get_contents(__DIR__ . '/config/settings.y
 
 
 // register the db
-$app = new \Silex\Application();
-$app->register(
-    new DoctrineServiceProvider(),
-    array(
-        'db.options' => array(
-            'driver' => 'pdo_sqlite',
-            'path' => $config->settings['dbPath']
-        )
-    )
-);
-
-$sqlite = new Sqlite($app['db']);
+$db = new PDO("sqlite:{$config->settings['dbPath']}");
+$sqlite = new Sqlite($db);
 $slackteams = $sqlite->getSlackTeams();
 
 foreach ($slackteams as $slackteam) {
@@ -41,11 +33,15 @@ foreach ($slackteams as $slackteam) {
     $startDate = \DateTime::createFromFormat('Y-m-d H:i:s', $today->format('Y-m-d') . ' 00:00:00');
     $endDate = \DateTime::createFromFormat('Y-m-d H:i:s', $today->format('Y-m-d') . ' 23:59:59');
     $calendar = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
+    $zebra = new Zebra($config->settings['zebra']);
+    $holidays     = $zebra->getHolidays();
+    $zebra->syncLocationWithDatabase($sqlite);
     $refresh = true;
 
     $team = new Team(
         $slackteam['slug'],
         $calendar,
+        $holidays,
         $sqlite,
         $refresh
     );

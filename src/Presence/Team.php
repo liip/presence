@@ -43,19 +43,26 @@ class Team
     protected $refresh  = '';
 
     /**
+     * Holidays from Zebra.
+     *
+     * @var array
+     */
+    protected $holidays = array();
+
+    /**
      * Assemble the team for this instance.
      *
      * @param string            $id       The team id.
      * @param CalendarInterface $calendar Calendar object.
+     * @param array             $holidays Zebra holidays.
      * @param Sqlite            $sqlite   Sqlite object.
      * @param boolean           $refresh  Refresh or not.
      */
-    public function __construct($id, CalendarInterface $calendar, Sqlite $sqlite, $refresh)
+    public function __construct($id, CalendarInterface $calendar, array $holidays, Sqlite $sqlite, $refresh)
     {
-        // TODO add validation
-
         $this->id       = $id;
         $this->calendar = $calendar;
+        $this->holidays = $holidays;
         $this->refresh  = $refresh;
         $team           = $sqlite->getTeam($id);
         $this->name     = $team[0]['name'];
@@ -91,7 +98,7 @@ class Team
         $members = array();
 
         foreach ($persons as $person) {
-            $members[] = $this->getPerson($person['email'], $person['name']);
+            $members[] = $this->getPerson($person['email'], $person['name'], $person['location']);
         }
 
         return $members;
@@ -100,13 +107,13 @@ class Team
     /**
      * Instantiate a Person (team member) from scratch or loads it from the cache.
      *
-     * @param string            $email    The email address of a person (used to identify a person).
-     * @param array             $person   Information about a person.
-     * @param CalendarInterface $calendar Calendar object.
+     * @param string $email    The email address of a person (used to identify a person).
+     * @param string $name     Name of the person.
+     * @param string $location Location of the person.
      *
      * @return Person a Person object
      */
-    protected function getPerson($email, $name)
+    protected function getPerson($email, $name, $location)
     {
         if ($this->calendar) {
             $cacheIdParts = array(
@@ -120,13 +127,15 @@ class Team
                 $member = false : $member = apc_fetch($cacheId);
 
             if (!$member) {
-                $member = new Person($email, $name);
+                $member = new Person($email, $name, $location);
                 $member->getSchedule($this->calendar);
                 apc_store($cacheId, $member, $this->calendar->getCacheTtl());
             }
         } else {
-            $member = new Person($email, $name);
+            $member = new Person($email, $name, $location);
         }
+
+        $member->setHolidays($this->holidays);
 
         return $member;
     }

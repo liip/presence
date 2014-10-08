@@ -18,7 +18,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $yaml             = new \Symfony\Component\Yaml\Parser();
 $config           = new Config();
 $config->settings = $yaml->parse(file_get_contents(__DIR__ . '/../config/settings.yaml'));
-$config->people   = $yaml->parse(file_get_contents(__DIR__ . '/../config/people.yaml'));
 
 // load Silex and register providers
 $app = new \Silex\Application();
@@ -31,7 +30,7 @@ $app['twig']->getExtension('core')->setTimezone(
 
 Oauth::register($app, $config->settings);
 
-$app['debug'] = true;
+$app['debug'] = false;
 
 // register the db
 $app->register(
@@ -177,11 +176,15 @@ $app->get(
             $nonTeam      = $sqlite->getTeamsNonMembers($teamId);
             $slack        = $sqlite->getSlackChannel($teamId);
             $refresh      = $app['request']->get('refresh');
+            $zebra        = new Zebra($config->settings['zebra']);
+            $holidays     = $zebra->getHolidays();
+            $zebra->syncLocationWithDatabase($sqlite);
 
             if ($getTeam) {
                 $team = new Team(
                     $teamId,
                     $calendar,
+                    $holidays,
                     $sqlite,
                     $refresh
                 );
@@ -189,6 +192,7 @@ $app->get(
                 $team = new TeamOfOne(
                     $teamId,
                     $calendar,
+                    $holidays,
                     $sqlite,
                     $refresh
                 );
