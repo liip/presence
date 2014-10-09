@@ -99,7 +99,8 @@ class Zebra
     {
 
         $result = $this->request('user.json');
-        $users = json_decode($result, true)['command']['users']['user'];
+        $decoded = json_decode($result, true);
+        $users = $decoded['command']['users']['user'];
         if (NULL === $users) {
             return array();
         }
