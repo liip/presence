@@ -187,8 +187,9 @@ class Person
     public function getLocationByDate(DateTime $date)
     {
 
-        if (!empty($this->getHolidayName($date, 'morning')) &&
-            !empty($this->getHolidayName($date, 'afternoon'))) {
+        $morningHoliday = $this->getHolidayName($date, 'morning');
+        $afternoonHoliday = $this->getHolidayName($date, 'afternoon');
+        if (!empty($morningHoliday) && !empty($afternoonHoliday)) {
             return '';
         }
 
