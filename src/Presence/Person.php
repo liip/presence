@@ -101,7 +101,10 @@ class Person
     {
         if (isset($this->holidays[$date->format('y-m-d')])) {
             $holiday = $this->holidays[$date->format('y-m-d')];
-            if (true === $holiday['type'][$type] && true === $holiday['location'][$this->location]) {
+            if (isset($holiday['type'][$type]) &&
+                (true === $holiday['type'][$type]) &&
+                isset($holiday['location'][$this->location]) &&
+                (true === $holiday['location'][$this->location])) {
                 return $holiday['name'];
             }
         }
