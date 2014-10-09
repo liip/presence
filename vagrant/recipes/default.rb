@@ -2,11 +2,6 @@ execute "apt-get update"
 
 package "python-software-properties"
 
-execute "add php 5.4 repository" do
-  not_if "grep ondrej /etc/apt/sources.list.d/*"
-  command "add-apt-repository ppa:ondrej/php5 && apt-get update"
-end
-
 # install the software we need
 %w(
 curl
