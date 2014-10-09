@@ -39,8 +39,8 @@ service "apache2" do
 end
 
 execute "disable default site" do
-  only_if "a2query -s 000-default.conf"
-  command "a2dissite 000-default.conf"
+  only_if "test -e /etc/apache2/sites-enabled/000-default"
+  command "a2dissite default"
   notifies :reload, "service[apache2]"
 end
 
