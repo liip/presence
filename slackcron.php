@@ -125,5 +125,10 @@ foreach ($slackteams as $slackteam) {
     );
 
     $slack = new SlackNotifier($slackWebhookUrl);
-    $slack->send($message, $slackteam['slack']);
+    $channel = $slackteam['slack'];
+    // if there is no # then add it
+    if ('#' !== substr($channel, 0, 1)) {
+        $channel = '#' . $channel;
+    }
+    $slack->send($message, $channel);
 }
