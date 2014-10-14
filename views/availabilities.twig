@@ -1,7 +1,7 @@
 <html>
   <head>
 
-    <title>Team {{ team.name }} availabilities</title>
+    <title>{% if team.members[0].id != team.id %}Team {% endif %}{{ team.name }} availabilities</title>
     <link rel="stylesheet" type="text/css" media="all" href="/css/style.css" />
     <link rel="stylesheet" href="/css/chosen.css">
 
