@@ -396,6 +396,13 @@ strong {
     font-weight: 100;
 }
 
+#centered .person-not-found-note {
+    font-size: 0.5em;
+    display: block;
+    margin-top: 5px;
+    padding-top: 10px;
+}
+
 /* for chosen, we need a different list styling */
 #centered .chosen-results li {
     list-style: none;

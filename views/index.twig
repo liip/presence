@@ -89,6 +89,8 @@
                         {% endfor %}
                     </select>
 
+                    <span class="person-not-found-note">Not finding someone? Make sure they have already logged into Presence themselves.</span>
+
                     <ul class="personList">
                         {% for person in persons %}
                             <li><a href="{{ app.url_generator.generate('availabilities', {'teamId': person.email}) }}">{{ person.name }}</a></li>
