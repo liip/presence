@@ -130,7 +130,7 @@ class Sqlite {
         $sql = "SELECT * FROM persons p
                 JOIN teams_to_persons tp
                 ON tp.persons_id = p.id
-                AND tp.teams_id = (SELECT id FROM teams WHERE slug = ?)";
+                AND tp.teams_id = (SELECT id FROM teams WHERE slug = ?) ORDER BY email";
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(1, $slug);
