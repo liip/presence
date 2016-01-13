@@ -343,13 +343,20 @@ class Person
      *
      * @return string
      */
-    public function getLocationAvailabilityClassByDate(DateTime $date, $holidays = array())
+    public function getLocationAvailabilityClassByDate(DateTime $date, $inOffice = null)
     {
         $events     = $this->getEventsByDate($date);
 
         // get morning and afternoon stats
         $morning    = $this->getTimeSlotByDate('morning', $date);
         $afternoon  = $this->getTimeSlotByDate('afternoon', $date);
+
+        if ($inOffice) {
+            $office = $this->getLocationByDate($date);
+            if ($office && $office != $inOffice) {
+		return 'off';
+            }
+	} 
 
         // fully off
         if ('off' === $morning['class'] && 'off' === $afternoon['class']) {

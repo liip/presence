@@ -13,7 +13,7 @@
           <h1><a href="{{ app.url_generator.generate('homepage') }}">&#x21F6;</a> {{ team.name }} <span>&#x25BC;</span></h1>
           <ul class="teamList">
             {% for team in teams %}
-              <li class=""><a href="{{ app.url_generator.generate('availabilities', {'teamId': team.slug, 'view': weeks, 'details': showDetails }) }}">{{ team.name }}</a></li>
+              <li class=""><a href="{{ app.url_generator.generate('availabilities', {'teamId': team.slug, 'view': weeks, 'details': showDetails, 'inOffice': inOffice }) }}">{{ team.name }}</a></li>
             {% endfor %}
           </ul>
         </li>
@@ -27,20 +27,20 @@
 
         <span class="infoBubble">
           Week
-          <a class="weekSwitch" href="?week={{ previousWeekParam }}&view={{ weeks }}&details={{ showDetails }}">&#8592;</a>
+          <a class="weekSwitch" href="?week={{ previousWeekParam }}&view={{ weeks }}&details={{ showDetails }}&inOffice={{ inOffice }}">&#8592;</a>
           <span class="number">{{ days[0] | date('W') }}</span>
-          <a class="weekSwitch" href="?week={{ nextWeekParam }}&view={{ weeks }}&details={{ showDetails }}">&#8594;</a>
+          <a class="weekSwitch" href="?week={{ nextWeekParam }}&view={{ weeks }}&details={{ showDetails }}&inOffice={{ inOffice }}">&#8594;</a>
         </span>
 
         <span class="infoBubble">
           Show
-          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=1&details={{ showDetails }}">
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=1&details={{ showDetails }}&inOffice={{ inOffice }}">
             {% if weeks == 1 %} <span class="number">1</span> {% else %} 1 {% endif %}
           </a>
-          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=2&details={{ showDetails }}">
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=2&details={{ showDetails }}&inOffice={{ inOffice }}">
             {% if weeks == 2 %} <span class="number">2</span> {% else %} 2 {% endif %}
           </a>
-          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=4&details={{ showDetails }}">
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view=4&details={{ showDetails }}&inOffice={{ inOffice }}">
             {% if weeks == 4 %} <span class="number">4</span> {% else %} 4 {% endif %}
           </a>
           week(s)
@@ -48,7 +48,7 @@
 
         <span class="infoBubble">
           Details
-          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details=1">
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details=1&inOffice={{ inOffice }}">
             {% if showDetails %}
               <span class="number">show</span>
             {% else %}
@@ -56,7 +56,7 @@
             {% endif %}
           </a>
           /
-          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details=0">
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details=0&inOffice={{ inOffice }}">
             {% if showDetails %}
               hide
             {% else %}
@@ -67,7 +67,7 @@
 
         <span class="infoBubble">
           Mode
-          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}">
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}&inOffice={{ inOffice }}">
             {% if projectsMode %}
               availability
             {% else %}
@@ -85,7 +85,7 @@
         </span>
 
         <span class="infoBubble">
-          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}&refresh=all">Refresh</a>
+          <a class="weekSwitch" href="?week={{ thisWeekParam }}&view={{ weeks }}&details={{ showDetails }}&refresh=all&inOffice={{ inOffice }}">Refresh</a>
         </span>
 
         <br class="hack" />
@@ -143,7 +143,7 @@
                 {% endif %}
                 <li class="day {{ weekClass }} {{ mondayClass }}">
                   <div class="location">
-                    <span class="locationIcon {{ member.locationAvailabilityClassByDate(day) }}"
+                    <span class="locationIcon {{ member.locationAvailabilityClassByDate(day, inOffice) }}"
                           title="{{ member.locationAvailabilityClassByDate(day) }}"></span>
                     {{ member.locationByDate(day) }}
                   </div>

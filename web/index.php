@@ -169,6 +169,7 @@ $app->get(
             $startDate    = $helper->getStartDate($app['request']->get('week'));
             $weeks        = $app['request']->get('view', 1);
             $showDetails  = $app['request']->get('details', 1);
+            $inOffice     = $app['request']->get('inOffice', "");
             $endDate      = $helper->getEndDate($weeks);
             $days         = $helper->getDays($startDate, $endDate);
             $calendar     = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
@@ -213,6 +214,7 @@ $app->get(
                 'days'                => $days,
                 'weeks'               => $weeks,
                 'showDetails'         => $showDetails,
+                'inOffice'            => $inOffice,
                 'projectsMode'        => $projectsMode,
                 'nonteam'             => $nonTeam,
                 'slack'               => $slack,
