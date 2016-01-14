@@ -15,8 +15,8 @@ class Event
     const TYPE_IRRELEVANT  = 4;
     const TYPE_PROJECT     = 5;
 
-    const OFF_TYPE_REGEX      = '/(^|.*\s+)((?:\#)?(?:off|holiday|ferien|frei|free\ day|daddy\ day))(\s+.*|$)/i';
-    const LOCATION_TYPE_REGEX = '/\@([a-zA-Z]+)/i';
+    const OFF_TYPE_REGEX      = '/(^|.*\s+)((?:\#)?(?:off|holiday|holidays|ferien|frei|free\ day|daddy\ day))(\s+.*|$)/i';
+    const LOCATION_TYPE_REGEX = '/\@([a-zA-Z0-9]+)/i';
 
     /**
      * The raw data of the event.
@@ -177,19 +177,23 @@ class Event
      */
     protected function parseType()
     {
+//var_dump("parse");
+
         // parse off type (if #off tag is set in summary)
         if ($this->isOffType()) {
             return self::TYPE_OFF;
+        }
+
+
+        // parse location type (if @[LOCATION] tag is set in summary)
+        if ($this->isLocationType()) {
+            return self::TYPE_LOCATION;
         }
 
         if ($this->isProjectType()) {
             return self::TYPE_PROJECT;
         }
 
-        // parse location type (if @[LOCATION] tag is set in summary)
-        if ($this->isLocationType()) {
-            return self::TYPE_LOCATION;
-        }
 
         // check if event is irrelevant
         if ($this->eventIsIrrelevant()) {
