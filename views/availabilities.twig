@@ -125,7 +125,7 @@
       {% for member in team.members %}
         <li class="person fixed">
           <div class="rowTitle">
-            <h2><a href="{{ app.url_generator.generate('availabilities', {'teamId': member.email}) }}">{{ member.name }}</a>
+            <h2><a href="{{ app.url_generator.generate('availabilities', {'teamId': member.id}) }}">{{ member.name }}</a>
               {% if team.id != member.id %}
                 <div class="remove-person-button">
                   <a href="/{{ team.id }}/{{ member.id }}/delete">remove</a>
