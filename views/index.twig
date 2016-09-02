@@ -24,17 +24,17 @@
                                 <li><a href="{{ app.url_generator.generate('availabilities', {'teamId': team.slug}) }}">{{ team.name }}</a></li>
                             {% endfor %}
                         </ul>
-                        
+
                     </section>
-                    
+
                     <section class="createTeam">
                     <h2>Create a New Team</h2>
-                    
+
                     <form name="createTeam" action="create" method="post">
                         Team name: <input type="text" name="teamName">
                         <input type="submit" value="Go">
                     </form>
-                    
+
                     </section>
 
                     <section class="quickhelp">
@@ -80,8 +80,11 @@
 
                 <section class="persons">
 
-                    <h2>Persons</h2>
-
+                    {% if isManager %}
+                        <h2><a href="{{ app.url_generator.generate('persons') }}">Persons</a></h2>
+                    {% else %}
+                        <h2>Persons</h2>
+                    {% endif %}
                     <select data-placeholder="Search..." id="chosen_teamofone" class="personsearch">
                         <option value=""></option>
                         {% for person in persons %}

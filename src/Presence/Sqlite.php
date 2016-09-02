@@ -115,6 +115,14 @@ class Sqlite {
         return $stmt->fetchAll();
     }
 
+    public function removePerson($personId)
+    {
+        $sql = 'DELETE FROM persons WHERE id = ?';
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(1, $personId);
+        $stmt->execute();
+    }
+
     public function getPersonsTeams($persons_id) {
         $sql = "SELECT * FROM teams t
                 JOIN teams_to_persons tp

@@ -23,6 +23,7 @@ $config->settings = $yaml->parse(file_get_contents(__DIR__ . '/../config/setting
 $app = new \Silex\Application();
 $app->register(new \Silex\Provider\TwigServiceProvider(), array('twig.path' => __DIR__.'/../views',));
 $app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
+$app->register(new \Silex\Provider\SessionServiceProvider());
 
 $app['twig']->getExtension('core')->setTimezone(
     isset($settings['timezone']) ? $settings['timezone']:'Europe/Zurich'
@@ -93,13 +94,14 @@ $app->get(
         $weeks        = $app['request']->get('view', 1);
         $endDate      = $helper->getEndDate($weeks);
         $days         = $helper->getDays($startDate, $endDate);
-        $calendar     = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
+//        $calendar     = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
 
         return $app['twig']->render(
             'index.twig',
             array(
                 'teams'   => $sqlite->allTeams(),
                 'persons' => $sqlite->allPersons(),
+//                'isManager' => true
             )
         );
     }
@@ -107,8 +109,44 @@ $app->get(
 ->bind('homepage');
 
 $app->get(
+    '/persons',
+    function () use ($app, $sqlite) {
+        return $app['twig']->render('persons.twig', array(
+            'persons' => $sqlite->allPersons()
+        ));
+    }
+)->bind('persons');
+
+$app->get(
+    '/personsPost',
+    function () use ($app, $sqlite) {
+
+        try {
+            $personsPost = $app['request']->get('persons');
+            foreach ($personsPost as $personId) {
+                $sqlite->removePerson((int)$personId);
+            }
+
+            $app['session']->getFlashBag()->add('message', array(
+                'type'    => 'success',
+                'content' => count($personsPost) . ' persons were deleted',
+            ));
+        } catch (\Exception $e) {
+            $app['session']->getFlashBag()->add('message', array(
+                'type'    => 'danger',
+                'content' => $e->getMessage(),
+            ));
+        }
+
+        return $app->redirect($app["url_generator"]->generate("persons"));
+    }
+)
+->method('POST')
+->bind('personsPost');
+
+$app->get(
     '/search/people',
-    function () use ($app, $config) {
+    function () use ($app, $config, $sqlite) {
         $query = strtolower($app['request']->get('q'));
         $result = array();
         if (!empty($query)) {
