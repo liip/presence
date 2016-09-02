@@ -89,21 +89,18 @@ $app->get(
     '/',
     function () use ($app, $config, $sqlite) {
 
-        $helper       = new DateHelper();
-        $startDate    = $helper->getStartDate($app['request']->get('week'));
-        $weeks        = $app['request']->get('view', 1);
-        $endDate      = $helper->getEndDate($weeks);
-        $days         = $helper->getDays($startDate, $endDate);
+//        $helper       = new DateHelper();
+//        $startDate    = $helper->getStartDate($app['request']->get('week'));
+//        $weeks        = $app['request']->get('view', 1);
+//        $endDate      = $helper->getEndDate($weeks);
+//        $days         = $helper->getDays($startDate, $endDate);
 //        $calendar     = new GoogleCalendar($config->settings['google'], $startDate, $endDate);
 
-        return $app['twig']->render(
-            'index.twig',
-            array(
-                'teams'   => $sqlite->allTeams(),
-                'persons' => $sqlite->allPersons(),
-//                'isManager' => true
-            )
-        );
+        return $app['twig']->render('index.twig', array(
+            'teams'     => $sqlite->allTeams(),
+            'persons'   => $sqlite->allPersons(),
+            'isManager' => true
+        ));
     }
 )
 ->bind('homepage');
