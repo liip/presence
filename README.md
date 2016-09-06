@@ -41,6 +41,13 @@ To fetch the calendar information a service account is used.
 * copy the Client ID of the Service Account and add it on the Google Admin Console (https://admin.google.com/AdminHome?chromeless=1#OGX:ManageOauthClients).
 * as scope for the calendar, use `https://www.googleapis.com/auth/calendar.readonly`
 
+## Deployment
+
+* login to `presence.liip.ch` server via `liip-ssh` tool
+* go to `/var/www/presence.liip.ch/src`
+* switch user to `vh000`, password you can find in pw.liip.ch SPD tool
+* `git pull`
+
 # Contribute
 
 We strongly encourage you to contribute to the project. Please use the following workflow to keep it easy for everyone merging the Pull Requests back to the upstream.
