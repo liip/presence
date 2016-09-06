@@ -10,6 +10,12 @@ Features include:
 - Search and display availabilities for individual persons
 - Show projects people working on and calculates man days
 
+## Software Requirements
+
+* [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+* [Vagrant](http://www.vagrantup.com/downloads.html)
+    * Vagrant plugin for hosts, could be installed in cli by ```vagrant plugin install vagrant-hostmanager```
+
 ## Installation
 
 * install [Composer](http://getcomposer.org/): `curl -s https://getcomposer.org/installer | php`
