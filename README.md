@@ -12,15 +12,16 @@ Features include:
 
 ## Installation
 
-* install [Composer](http://getcomposer.org/): `curl -s https://getcomposer.org/installer | php`
-* run Composer to install the dependencies: `php composer.phar install`
-  in case you want to help out and contribute to the project or just want to run the provided tests do:
-  `php composer.phar install --dev`
-  instead.
+[Vagrant](https://www.vagrantup.com/) box provisioning is handled by [Drifter](https://liip-drifter.readthedocs.io/en/stable/index.html).
+
+* run `git submodules update --init` to get Drifter as a submodule
+* bring the box up and provision it: `vagrant up`
 * copy `config/settings.yaml.sample` file to `config/settings.yaml`
 * create a project at Google: https://console.developers.google.com/project
 * configure the "Consent Screen" to manage your organization/server
 * under APIs make sure the Calendar API is ON
+* fill Google credentials into `config/settings.yaml`
+* access the local website at http://presence.lo/
 
 ### OAuth2
 
