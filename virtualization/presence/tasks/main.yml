@@ -1,0 +1,12 @@
+- name: install apcu extension
+  apt: pkg={{ item }} state=installed
+  become: yes
+  with_items:
+    - php5-apcu
+  notify: restart apache
+
+- name: composer install
+  shell: composer.phar install --no-scripts
+  args:
+    chdir: /vagrant/
+    creates: vendor
