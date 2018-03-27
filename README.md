@@ -46,7 +46,6 @@ To fetch the calendar information a service account is used.
 
 * login to `presence.liip.ch` server via `liip-ssh` tool
 * go to `/var/www/presence.liip.ch/src`
-* switch user to `vh000`, password you can find in pw.liip.ch SPD tool
 * `git pull`
 
 # Contribute
