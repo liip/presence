@@ -19,6 +19,8 @@ $yaml             = new \Symfony\Component\Yaml\Parser();
 $config           = new Config();
 $config->settings = $yaml->parse(file_get_contents(__DIR__ . '/../config/settings.yaml'));
 
+Request::setTrustedProxies($config->settings['trusted_proxies']);
+
 // load Silex and register providers
 $app = new \Silex\Application();
 $app->register(new \Silex\Provider\TwigServiceProvider(), array('twig.path' => __DIR__.'/../views',));
