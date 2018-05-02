@@ -10,5 +10,8 @@ composer.phar
 #ignore IDE specific stuff
 .idea
 
+# Ignore secret key
+*.p12
+
 .vagrant*
-cache/sessions/
+cache/

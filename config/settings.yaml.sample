@@ -5,8 +5,8 @@ allowed_domains:
   - liip.ch
 
 google:
-  key: ************.apps.googleusercontent.com
-  secret: ************************
+  key: #************.apps.googleusercontent.com
+  secret: #************************
   scope:
     - profile
     - email
@@ -15,17 +15,17 @@ google:
   cacheTtl: 1800
   service_account:
     p12_path: /path-to/private-key-file.p12
-    email: *************************@developer.gserviceaccount.com
+    email: #*************************@developer.gserviceaccount.com
     scope:
       - https://www.googleapis.com/auth/calendar.readonly
     impersonated_user: email@for-impersonated-user.ch
 
 slack:
-  token: ********************
+  token: #********************
   team: liip
   base_url: http://example.com (optional, links team to presence in message)
 
 zebra:
-  username: *****
-  password: ***********
+  username: #*****
+  password: #***********
   url: https://example.com
