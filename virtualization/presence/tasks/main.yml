@@ -5,6 +5,9 @@
     - php5-apcu
   notify: restart apache
 
+- name: symlink sessions directory
+  file: src=/var/lib/php5/sessions dest=/vagrant/cache/sessions state=link
+
 - name: composer install
   shell: composer.phar install --no-scripts
   args:

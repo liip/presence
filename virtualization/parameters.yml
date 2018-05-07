@@ -3,9 +3,9 @@
 project_name: "presence"
 
 # Main hostname through which the vagrant box will be accessible
-hostname: "presence.lo"
+hostname: "presence.com"
 # Alternative hostnames through which you want to access the vagrant box
-hostnames: []
+hostnames: ["presence.lo"]
 
 # Ports you want forwared to your host. See https://www.vagrantup.com/docs/networking/forwarded_ports.html
 # for details.

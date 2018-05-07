@@ -17,30 +17,35 @@ Features include:
 * run `git submodules update --init` to get Drifter as a submodule
 * bring the box up and provision it: `vagrant up`
 * copy `config/settings.yaml.sample` file to `config/settings.yaml`
+* access the local website at http://presence.com/
+
+### Google project
+
+Presence uses the Google calendar API, so you will need to make a Google APIs project to use it.
+
 * create a project at Google: https://console.developers.google.com/project
-* configure the "Consent Screen" to manage your organization/server
+* under Credentials, configure the "OAuth Consent Screen" to manage your organization/server
 * under APIs make sure the Calendar API is ON
-* fill Google credentials into `config/settings.yaml`
-* access the local website at http://presence.lo/
 
 ### OAuth2
 
 User access to the website is managed through OAuth2.
 
 * under Credentials generate a Client ID for "Web Application"
-* add the `key` and `secret` to `settings.yaml`
+* add the client ID and client secret to `settings.yaml` as `key` and `secret`
 
 ### Service Account
 
 To fetch the calendar information a service account is used.
 
 * under Credentials generate a Client ID for "Service account"
-* copy the email address to `settings.yaml`
+* make sure to enable G Suite Domain-wide Delegation 
+* copy the service account email address to `settings.yaml`
 * copy the .p12 to the server
 * set the path to the .p12 key in `settings.yaml`
-* set the `impersonated_user` to the email of the account that has access to your calendars
 * copy the Client ID of the Service Account and add it on the Google Admin Console (https://admin.google.com/AdminHome?chromeless=1#OGX:ManageOauthClients).
-* as scope for the calendar, use `https://www.googleapis.com/auth/calendar.readonly`
+  NB: to do this you must be G-Suite admin, or ask one to do it for you.
+* as scope for the authorization, use `https://www.googleapis.com/auth/calendar.readonly`
 
 ## Deployment
 

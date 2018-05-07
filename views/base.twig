@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {%  block head %}
+            <title>{% block pagetitle %}{% endblock %}</title>
+            <link rel="stylesheet" type="text/css" media="all" href="/css/style.css" />
+        {% endblock %}
+    </head>
+
+    <body {% block bodyclass %}{% endblock %}>
+        {% block content %}{% endblock %}
+
+        {% block scripts %}
+            <script type="text/javascript" src="/js/jquery.js"></script>
+        {% endblock %}
+    </body>
+</html>

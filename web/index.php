@@ -28,10 +28,8 @@ $app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new \Silex\Provider\SessionServiceProvider());
 
 $app['twig']->getExtension('core')->setTimezone(
-    isset($settings['timezone']) ? $settings['timezone']:'Europe/Zurich'
+    isset($config->settings['timezone']) ? $config->settings['timezone']:'Europe/Zurich'
 );
-
-Oauth::register($app, $config->settings);
 
 $app['debug'] = false;
 
@@ -55,6 +53,9 @@ if (!file_exists($config->settings['dbPath'])) {
     $teams = $people['teams'];
     $sqlite->populate($persons, $teams);
 }
+
+Oauth::register($app, $config->settings);
+
 
 $app->get(
     '/login',
